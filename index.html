@@ -5,8 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Sunny Sitters Production App Engine</title>
+<title>Sunny Sitters</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%2232%22 height=%2232%22><text y=%2226%22 font-size=%2226%22>☀️</text></svg>">
+
 <style>
 :root{
   --sun:#FFD700;--sun-dark:#E6B800;--sun-light:#FFF8D6;
@@ -16,7 +19,7 @@
   --lav:#9575CD;--lav-light:#EDE7F6;
   --ink:#2C2C2A;--ink-mid:#5F5E5A;--ink-light:#B4B2A9;
   --surface:#fff;--s2:#FAFAF8;--s3:#F4F3EE;
-  --border:rgba(0,0,0,0.08);--shadow:0 4px 12px rgba(0,0,0,0.05);
+  --border:rgba(0,0,0,0.08);--shadow:0 6px 16px rgba(0,0,0,0.06);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{
@@ -58,14 +61,37 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
 
 .card{
   background:var(--surface);border:1px solid var(--border);
-  border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow);
+  border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow);
 }
-.input-group{margin-bottom:14px;}
-.input-label{display:block;font-size:14px;font-weight:800;margin-bottom:6px;color:var(--ink-mid);}
+
+/* Beautiful, Welcoming, Fluid Single-Column Input Layouts */
+.input-group{
+  margin-bottom:20px;
+  display:flex;
+  flex-direction:column;
+  width:100%;
+}
+.input-label{
+  display:block;font-size:14px;font-weight:800;margin-bottom:8px;color:var(--ink-mid);
+}
 .input-field{
-  width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);
-  background:var(--s2);font-family:inherit;font-size:15px;color:var(--ink);outline:none;
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:var(--s2);
+  font-family:inherit;
+  font-size:15px;
+  color:var(--ink);
+  outline:none;
+  transition:all 0.2s ease;
 }
+.input-field:focus{
+  border-color:var(--sky-dark);
+  background:var(--surface);
+  box-shadow:0 0 0 3px var(--sky-light);
+}
+
 .btn{
   width:100%;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;
   font-weight:800;border:none;cursor:pointer;text-align:center;margin-bottom:10px;
@@ -108,428 +134,4 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
       <p>Newton Corner Neighborhood Babysitting Portal</p>
     </div>
     <div class="card">
-      <h2>Sign In</h2>
-      <div class="input-group">
-        <label class="input-label">Email Address</label>
-        <input type="email" id="loginEmail" class="input-field" placeholder="name@domain.com">
-      </div>
-      <div class="input-group">
-        <label class="input-label">Password</label>
-        <input type="password" id="loginPass" class="input-field" placeholder="••••••••">
-      </div>
-      <button class="btn btn-primary" onclick="attemptLogin()">Log In</button>
-      <button class="btn btn-secondary" onclick="switchView('view-register-family')">New Neighbor Join Form</button>
-    </div>
-  </div>
-
-  <div id="view-register-family" class="view-frame">
-    <h1>Join the Neighborhood</h1>
-    <p>Complete your layout credentials to register as a system User and establish household profile data.</p>
-    <div class="card" style="max-height: 70vh; overflow-y: auto;">
-      <div class="input-group"><label class="input-label">Parent Full Name</label><input type="text" id="regName" class="input-field" placeholder="Jane Doe"></div>
-      <div class="input-group"><label class="input-label">Email Address (Login ID)</label><input type="email" id="regEmail" class="input-field" placeholder="jane@example.com"></div>
-      <div class="input-group"><label class="input-label">Account Password</label><input type="password" id="regPass" class="input-field" placeholder="••••••••"></div>
-      <div class="input-group"><label class="input-label">Street Address</label><input type="text" id="regAddress" class="input-field" placeholder="Newton Corner, MA"></div>
-      <div class="input-group"><label class="input-label">Children Names & Ages</label><input type="text" id="regKids" class="input-field" placeholder="e.g. Leo (4), Maya (7)"></div>
-      <div class="input-group"><label class="input-label">Dietary & Medical Allergies</label><input type="text" id="regDietary" class="input-field" placeholder="None, Peanut allergy, etc."></div>
-      <div class="input-group"><label class="input-label">Household Pet Notes</label><input type="text" id="regPets" class="input-field" placeholder="e.g. Friendly Golden Retriever"></div>
-      <div style="margin-bottom:15px;"><input type="checkbox" id="regWaiver"> <label for="regWaiver" style="font-size:13px;font-weight:600;">Agree to Liability Waiver and terms</label></div>
-      <button class="btn btn-primary" onclick="submitFamilyRegistration()">Create User & Profile</button>
-    </div>
-  </div>
-
-  <div id="view-vetting-wall" class="view-frame">
-    <div style="text-align:center;padding-top:20px;">
-      <div style="font-size:48px;margin-bottom:10px;">⏳</div>
-      <h1>Verification Pending</h1>
-      <p>Your User Account credentials and Family profile data are safely stored inside your Google Sheet backend.</p>
-      <div class="card" style="background:var(--sky-light); border-color:var(--sky); text-align:left;">
-        <h3 style="color:var(--sky-dark); font-size:16px;">Vetting Phase Activated</h3>
-        <p style="font-size:13px; margin:4px 0 0 0;">An admin is verifying your address to protect neighborhood access. You will be notified via email once approved.</p>
-      </div>
-      <button class="btn btn-secondary" style="margin-top:20px;" onclick="logout()">Return to Login</button>
-    </div>
-  </div>
-
-  <div id="view-customer-dashboard" class="view-frame">
-    <h1>Welcome, Neighbor</h1>
-    <p id="customerWelcomeText">Accessing secure profile mapping...</p>
-    <div class="grid-2">
-      <div class="card" style="background:var(--sun-light); cursor:pointer;" onclick="switchView('view-sitter-marketplace')"><h3>📅 Claim Hours</h3></div>
-      <div class="card" style="background:var(--sky-light); cursor:pointer;" onclick="switchView('view-post-demand')"><h3>... Post Job</h3></div>
-    </div>
-    <h2>Your Scheduled Bookings</h2>
-    <div id="customerBookingsContainer" class="admin-scroller"></div>
-    <button class="btn btn-secondary" style="margin-top:20px;" onclick="logout()">Sign Out</button>
-  </div>
-
-  <div id="view-sitter-dashboard" class="view-frame">
-    <h1>Sitter Operations Portal</h1>
-    <p id="sitterWelcomeText">Loading active jobs panel...</p>
-    <div class="card" style="background:var(--lav-light);">
-      <h3>⏰ Log Your Availability</h3>
-      <button class="btn btn-primary" style="margin-top:10px; font-size:14px; padding:10px;" onclick="alert('Availability post sequence coming next')">Add Time Block</button>
-    </div>
-    <h2>Your Confirmed Sitter Jobs</h2>
-    <div id="sitterJobsContainer" class="admin-scroller"></div>
-    <button class="btn btn-secondary" onclick="logout()">Sign Out</button>
-  </div>
-
-  <div id="view-sitterparent-dashboard" class="view-frame">
-    <h1>🛡️ Guardian Clearance Panel</h1>
-    <p>Safety parameters, authorization triggers, and earnings limits monitoring.</p>
-    <div class="card" style="border-left:4px solid var(--lav);">
-      <h3>Violet's Pending Booking Clearance</h3>
-      <div id="guardianClearanceQueue" class="admin-scroller">All bookings safely authorized.</div>
-    </div>
-    <button class="btn btn-secondary" onclick="logout()">Sign Out</button>
-  </div>
-
-  <div id="view-admin-dashboard" class="view-frame">
-    <h1>🔑 Super Admin Master Panel</h1>
-    <p>Absolute system overrides and operational registers.</p>
-
-    <div class="card" style="border-left:4px solid var(--grass);">
-      <h3>👥 Global User Management Directory</h3>
-      <p style="font-size:12px; margin-bottom:10px;">View, modify roles, or terminate any global persona account inside the database.</p>
-      <div id="adminUserDirectoryContainer" class="admin-scroller">Querying USERS registers...</div>
-    </div>
-
-    <div class="card" style="border-left:4px solid var(--coral);">
-      <h3>⏳ Pending Neighbor Vetting Queue</h3>
-      <p style="font-size:12px; margin-bottom:10px;">Approving updates status to 'verified' in both USERS and FAMILIES tab registers.</p>
-      <div id="adminVettingContainer" class="admin-scroller">Syncing...</div>
-    </div>
-
-    <div class="card" style="border-left:4px solid var(--sky);">
-      <h3>🔧 Tab Registry CRUD Modifier</h3>
-      <div class="input-group">
-        <label class="input-label">Select Spreadsheet Tab Target</label>
-        <select id="adminTargetTab" class="input-field" onchange="fetchTabRawData()">
-          <option value="USERS">USERS (Master Access Registers)</option>
-          <option value="FAMILIES">FAMILIES (Household Metadata Profiles)</option>
-          <option value="BOOKINGS">BOOKINGS (Schedules & Transaction Records)</option>
-          <option value="SITTERS">SITTERS (Rates & Guardian Mappings)</option>
-        </select>
-      </div>
-      <div id="adminTabViewer" class="admin-scroller" style="font-family:monospace; font-size:11px; white-space:pre-wrap;">Select a tab above...</div>
-    </div>
-
-    <button class="btn btn-secondary" onclick="logout()">Exit Master Workspace</button>
-  </div>
-</div>
-
-<nav id="appFooterNav" class="footer-nav">
-  <div class="nav-item active" onclick="routeHome()"><span>🏠</span>Home</div>
-  <div class="nav-item" onclick="forceSystemSync()"><span>🔄</span>Sync Sheet</div>
-  <div class="nav-item" onclick="logout()"><span>🚪</span>Logout</div>
-</nav>
-
-<script>
-// THE PERMANENT MASTER API ROUTER LINK
-const CONFIG = {
-  API_URL: "https://script.google.com/macros/s/AKfycby9xGXHfRw0ZtoXhTw8PtEfZxAsVEduNjzEBqIEXdleGPTdblYbCnvZxaIsM65HdUw3aA/exec"
-};
-
-let CU = { email: "", role: "guest", name: "" };
-let viewHistory = ['view-splash'];
-
-document.addEventListener("DOMContentLoaded", function() {
-  setSyncState("online");
-});
-
-function setSyncState(state) {
-  const badge = document.getElementById('syncIndicator');
-  if (state === "loading") badge.className = "sync-badge loading";
-  if (state === "online") badge.className = "sync-badge online";
-}
-
-function switchView(viewId) {
-  document.querySelectorAll('.view-frame').forEach(f => f.style.display = 'none');
-  const target = document.getElementById(viewId);
-  if (target) {
-    target.style.display = 'flex';
-    window.scrollTo(0,0);
-    if (viewHistory[viewHistory.length - 1] !== viewId) viewHistory.push(viewId);
-    
-    document.getElementById('globalBackBtn').style.display = (viewHistory.length > 1 && !['view-splash', 'view-admin-dashboard', 'view-customer-dashboard', 'view-sitter-dashboard', 'view-sitterparent-dashboard', 'view-vetting-wall'].includes(viewId)) ? 'flex' : 'none';
-    document.getElementById('appFooterNav').style.display = ['view-admin-dashboard', 'view-customer-dashboard', 'view-sitter-dashboard', 'view-sitterparent-dashboard'].includes(viewId) ? 'flex' : 'none';
-  }
-}
-
-function handleGlobalBack() {
-  if (viewHistory.length > 1) {
-    viewHistory.pop();
-    switchView(viewHistory[viewHistory.length - 1]);
-  }
-}
-
-function routeHome() {
-  if (CU.role === "admin") switchView('view-admin-dashboard');
-  else if (CU.role === "customer") switchView('view-customer-dashboard');
-  else if (CU.role === "sitter") switchView('view-sitter-dashboard');
-  else if (CU.role === "sitterparent") switchView('view-sitterparent-dashboard');
-  else switchView('view-splash');
-}
-
-function forceSystemSync() {
-  if (CU.role === "admin") refreshAdminWorkspace();
-  else if (CU.role === "customer") hydrateCustomerDashboard();
-}
-
-// ════════════════════════════════════════════════════════════════
-// ENCRYPTED TRANSACTION API HANDLERS (MATCHES DOPOST SCHEMA)
-// ════════════════════════════════════════════════════════════════
-
-function attemptLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const pass = document.getElementById('loginPass').value.trim();
-  if (!email || !pass) { alert("Credentials required."); return; }
-  
-  setSyncState("loading");
-  document.getElementById('userRoleBadge').innerText = "Syncing...";
-
-  // Strict POST payload structure formatting required by apps_script_backend.js
-  const payload = {
-    action: "login",
-    email: email,
-    password: pass
-  };
-
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify(payload)
-  })
-  .then(res => res.json())
-  .then(data => {
-    setSyncState("online");
-    if (data.status === "success" && data.user) {
-      CU = { email: data.user.Email, role: data.user.Role, name: data.user.Name };
-      document.getElementById('userRoleBadge').innerText = CU.role;
-      
-      // Execute role-gated journey routers based on real spreadsheet definitions
-      if (CU.role === "admin") {
-        switchView('view-admin-dashboard');
-        refreshAdminWorkspace();
-      } else if (CU.role === "customer") {
-        if (data.user.Status === "verified") {
-          switchView('view-customer-dashboard');
-          hydrateCustomerDashboard();
-        } else {
-          switchView('view-vetting-wall');
-        }
-      } else if (CU.role === "sitter") {
-        switchView('view-sitter-dashboard');
-        document.getElementById('sitterWelcomeText').innerText = `Logged in safely as Sitter: ${CU.name}`;
-      } else if (CU.role === "sitterparent") {
-        switchView('view-sitterparent-dashboard');
-      }
-    } else {
-      document.getElementById('userRoleBadge').innerText = "Guest";
-      alert("Authentication Failed: " + data.message);
-    }
-  })
-  .catch(err => {
-    setSyncState("online");
-    document.getElementById('userRoleBadge').innerText = "Error";
-    alert("Connection Error. Ensure Apps Script Web App permissions are open to 'Anyone'.");
-  });
-}
-
-function submitFamilyRegistration() {
-  const payload = {
-    action: "register", // Intercepted by backend logic to handle dual write (USERS + FAMILIES)
-    name: document.getElementById('regName').value.trim(),
-    email: document.getElementById('regEmail').value.trim(),
-    pass: document.getElementById('regPass').value.trim(),
-    address: document.getElementById('regAddress').value.trim(),
-    kids: document.getElementById('regKids').value.trim(),
-    dietary: document.getElementById('regDietary').value.trim(),
-    pets: document.getElementById('regPets').value.trim()
-  };
-
-  if (!payload.name || !payload.email || !payload.pass || !payload.address) { alert("Critical onboarding indicators required."); return; }
-  if (!document.getElementById('regWaiver').checked) { alert("Waiver agreement is mandatory."); return; }
-
-  setSyncState("loading");
-
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify(payload)
-  })
-  .then(res => res.json())
-  .then(data => {
-    setSyncState("online");
-    if (data.status === "success") {
-      alert("User account and Family profile rows successfully committed to spreadsheet!");
-      switchView('view-vetting-wall');
-    } else {
-      alert("Registration failed: " + data.message);
-    }
-  })
-  .catch(() => { setSyncState("online"); switchView('view-vetting-wall'); });
-}
-
-// ════════════════════════════════════════════════════════════════
-// ROLE JOURNEY LAYERS & DATA HYDRATION ENGINES
-// ════════════════════════════════════════════════════════════════
-
-function refreshAdminWorkspace() {
-  setSyncState("loading");
-  
-  // 1. Fetch and process the Global User Directory List
-  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "USERS" }) })
-    .then(res => res.json())
-    .then(data => {
-      const uContainer = document.getElementById('adminUserDirectoryContainer');
-      if (data.status === "success" && data.records.length > 0) {
-        uContainer.innerHTML = "";
-        data.records.forEach(u => {
-          const div = document.createElement('div');
-          div.className = "row-item";
-          const color = u.Role === 'admin' ? '#FFF8D6' : (u.Role === 'customer' ? '#E8F5E9' : '#EDE7F6');
-          div.style.background = color;
-          div.innerHTML = `
-            <strong>👤 ${u.Name}</strong> (${u.Email})
-            <span class="badge" style="background:rgba(0,0,0,0.05);">${u.Role}</span>
-            <span class="badge" style="background:${u.Status==='active'||u.Status==='verified'?'#66BB6A':'#FF7043'}; color:white;">${u.Status}</span>
-            <div style="margin-top:6px; display:flex; gap:6px;">
-              <select class="input-field" style="padding:4px; font-size:11px; width:auto; margin-bottom:0;" onchange="updateUserRole('${u.Email}', this.value)">
-                <option value="">Modify Role...</option>
-                <option value="customer">Customer Parent</option>
-                <option value="sitter">Sitter</option>
-                <option value="sitterparent">Sitter Parent</option>
-              </select>
-              <button class="btn btn-danger" style="padding:4px 8px; font-size:11px; width:auto; margin-bottom:0;" onclick="toggleUserStatus('${u.Email}', '${u.Status}')">${u.Status==='active'||u.Status==='verified'?'Suspend':'Activate'}</button>
-            </div>
-          `;
-          uContainer.appendChild(div);
-        });
-      } else {
-        uContainer.innerHTML = "No users recorded inside spreadsheet registers.";
-      }
-    });
-
-  // 2. Fetch and process the Vetting Approvals Pipeline
-  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "FAMILIES" }) })
-    .then(res => res.json())
-    .then(data => {
-      setSyncState("online");
-      const vContainer = document.getElementById('adminVettingContainer');
-      if (data.status === "success" && data.records.length > 0) {
-        const unverified = data.records.filter(r => r.Verification_Status === "Unverified" || !r.Verification_Status);
-        if (unverified.length === 0) {
-          vContainer.innerHTML = "🎉 All neighbor profiles currently vetted and verified.";
-        } else {
-          vContainer.innerHTML = "";
-          unverified.forEach(f => {
-            const div = document.createElement('div');
-            div.className = "row-item";
-            div.style.borderLeft = "4px solid var(--coral)";
-            div.innerHTML = `
-              <strong>🏠 Family: ${f.Name}</strong> (${f.Email})<br>
-              <span style="font-size:12px; color:var(--ink-mid);">Address: ${f.Address}<br>Kids: ${f.Kids_Ages}</span><br>
-              <button class="btn btn-primary" style="padding:6px 12px; font-size:12px; margin-top:8px; width:auto; margin-bottom:0;" onclick="approveNeighbor('${f.Email}')">Approve & Authorize Profile</button>
-            `;
-            vContainer.appendChild(div);
-          });
-        }
-      } else {
-        vContainer.innerHTML = "🎉 All neighbor profiles currently vetted and verified.";
-      }
-    });
-
-  fetchTabRawData();
-}
-
-function approveNeighbor(email) {
-  setSyncState("loading");
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action: "verifyUser", targetEmail: email })
-  })
-  .then(res => res.json())
-  .then(() => {
-    setSyncState("online");
-    alert("User access flipped to 'verified' across tracking registers!");
-    refreshAdminWorkspace();
-  });
-}
-
-function updateUserRole(email, newRole) {
-  if (!newRole) return;
-  setSyncState("loading");
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action: "updateRole", targetEmail: email, role: newRole })
-  }).then(() => { refreshAdminWorkspace(); });
-}
-
-function toggleUserStatus(email, currentStatus) {
-  const nextStatus = (currentStatus === 'active' || currentStatus === 'verified') ? 'suspended' : 'active';
-  setSyncState("loading");
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action: "updateStatus", targetEmail: email, status: nextStatus })
-  }).then(() => { refreshAdminWorkspace(); });
-}
-
-function fetchTabRawData() {
-  const tab = document.getElementById('adminTargetTab').value;
-  const viewer = document.getElementById('adminTabViewer');
-  viewer.innerText = "Streaming real-time spreadsheet blocks...";
-
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action: "readTab", tab: tab })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if(data.status === "success") {
-      viewer.innerText = JSON.stringify(data.records, null, 2);
-    } else {
-      viewer.innerText = "Empty or un-hydrated tab layout structure parameters.";
-    }
-  });
-}
-
-function hydrateCustomerDashboard() {
-  document.getElementById('customerWelcomeText').innerText = `Logged in securely as household user ID: ${CU.email}`;
-  const container = document.getElementById('customerBookingsContainer');
-  container.innerHTML = "Reading tracking metrics...";
-
-  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "BOOKINGS" }) })
-    .then(res => res.json())
-    .then(data => {
-      if (data.status === "success" && data.records.length > 0) {
-        const jobs = data.records.filter(r => r.Family_Email === CU.email);
-        if (jobs.length === 0) {
-          container.innerHTML = "<p style='font-style:italic; text-align:center; padding:10px; color:var(--ink-light);'>No active bookings found.</p>";
-        } else {
-          container.innerHTML = "";
-          jobs.forEach(j => {
-            const div = document.createElement('div');
-            div.className = "row-item";
-            div.innerHTML = `📅 <strong>Job ID: ${j.Booking_ID}</strong><br>Sitter: ${j.Sitter_Email} | Status: <span style="font-weight:bold; color:var(--sky-dark);">${j.Booking_Status}</span><br>Schedule: ${j.Job_Date} (${j.Start_Time} - ${j.End_Time})`;
-            container.appendChild(div);
-          });
-        }
-      } else {
-        container.innerHTML = "<p style='font-style:italic; text-align:center; padding:10px; color:var(--ink-light);'>No active bookings found.</p>";
-      }
-    });
-}
-
-function logout() {
-  CU = { email: "", role: "guest", name: "" };
-  document.getElementById('userRoleBadge').innerText = "Guest";
-  document.getElementById('userRoleBadge').style.background = "var(--s3)";
-  document.getElementById('userRoleBadge').style.color = "var(--ink-mid)";
-  document.getElementById('loginEmail').value = "";
-  document.getElementById('loginPass').value = "";
-  viewHistory = ['view-splash'];
-  switchView('view-splash');
-}
-</script>
-</body>
-</html>
+      <h2>
