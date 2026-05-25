@@ -1,0 +1,1985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Sunny Sitters</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --sun:#FFD700;--sun-dark:#E6B800;--sun-light:#FFF8D6;
+  --sky:#4FC3F7;--sky-dark:#0288D1;--sky-light:#E1F5FE;
+  --grass:#66BB6A;--grass-light:#E8F5E9;
+  --coral:#FF7043;--coral-light:#FBE9E7;
+  --lav:#9575CD;--lav-light:#EDE7F6;
+  --ink:#2C2C2A;--ink-mid:#5F5E5A;--ink-light:#B4B2A9;
+  --surface:#fff;--s2:#FAFAF8;--s3:#F4F3EE;
+  --border:rgba(0,0,0,.10);
+  --r:16px;--rsm:10px;--rxs:6px;
+  --sh:0 2px 16px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito Sans',sans-serif;background:var(--s3);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
+
+/* ── SPLASH ── */
+#splash{position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#FFF8D6 0%,#E1F5FE 55%,#EDE7F6 100%);display:flex;align-items:center;justify-content:center;padding:20px;}
+.splash-card{background:var(--surface);border-radius:24px;padding:44px 38px;max-width:430px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,.14);text-align:center;}
+.splash-logo{font-size:50px;margin-bottom:6px;}
+.splash-h{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;color:var(--ink);margin-bottom:4px;}
+.splash-sub{font-size:13px;color:var(--ink-mid);margin-bottom:28px;line-height:1.6;}
+.stabs{display:flex;border-radius:var(--rsm);overflow:hidden;border:1.5px solid var(--border);margin-bottom:26px;}
+.stab{flex:1;padding:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;background:var(--s3);color:var(--ink-mid);border:none;cursor:pointer;transition:all .15s;}
+.stab.on{background:var(--sun);color:var(--ink);}
+
+/* ── FIELD ── */
+.field{margin-bottom:16px;text-align:left;}
+.field label{display:block;font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;color:var(--ink-mid);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;}
+.field input,.field select,.field textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--rsm);font-family:'Nunito Sans',sans-serif;font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color .15s;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--sky-dark);}
+.field textarea{resize:vertical;min-height:70px;}
+.fr,.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.err-msg{color:#BF360C;font-size:13px;margin-bottom:10px;text-align:left;font-weight:700;background:var(--coral-light);padding:8px 12px;border-radius:var(--rxs);display:none;}
+
+/* ── BUTTONS ── */
+.btn{width:100%;padding:13px;border-radius:var(--rsm);font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;border:none;cursor:pointer;transition:all .15s;}
+.btn-sun{background:var(--sun);color:var(--ink);}.btn-sun:hover{background:var(--sun-dark);}
+.btn-sky{background:var(--sky);color:#fff;}.btn-sky:hover{background:var(--sky-dark);}
+.btn-grass{background:var(--grass);color:#fff;}.btn-grass:hover{background:#388E3C;}
+.btn-coral{background:var(--coral);color:#fff;}.btn-coral:hover{background:#D84315;}
+.btn-lav{background:var(--lav);color:#fff;}.btn-lav:hover{background:#6A3FB5;}
+.btn-out{background:transparent;border:2px solid var(--border);color:var(--ink);}.btn-out:hover{background:var(--s3);}
+.bsm{padding:7px 14px;border-radius:var(--rxs);font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;border:none;cursor:pointer;transition:all .15s;}
+
+/* ── WAIVER BOX ── */
+.wbox{background:var(--sun-light);border:1px solid #F0D060;border-radius:var(--rsm);padding:13px;margin-bottom:18px;text-align:left;}
+.wbox h4{font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:#7A5C00;margin-bottom:5px;}
+.wbox p{font-size:12px;color:#8B6B00;line-height:1.6;margin-bottom:10px;}
+.chk{display:flex;align-items:flex-start;gap:9px;cursor:pointer;}
+.chk input[type=checkbox]{width:16px;height:16px;cursor:pointer;flex-shrink:0;margin-top:2px;}
+.chk span{font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--ink);line-height:1.5;}
+
+/* ── DEMO QUICK-LOGINS ── */
+.demo-sec{margin-top:20px;padding-top:16px;border-top:1px solid var(--border);}
+.demo-sec p{font-size:11px;color:var(--ink-light);margin-bottom:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.dbtn{padding:8px 10px;border-radius:var(--rxs);font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;border:1.5px solid var(--border);background:var(--s3);color:var(--ink-mid);cursor:pointer;transition:all .15s;line-height:1.4;}
+.dbtn:hover{background:var(--surface);border-color:var(--sun-dark);color:var(--ink);}
+
+/* ── APP SHELL ── */
+#app{display:none;flex-direction:column;min-height:100vh;}
+
+/* ── TOPBAR ── */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 14px;
+  padding-top:env(safe-area-inset-top);
+  min-height:56px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,.06);flex-wrap:nowrap;gap:6px;}
+.logo{display:flex;align-items:center;gap:9px;}
+.logo-icon{width:38px;height:38px;background:var(--sun);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:19px;}
+.logo-txt{font-family:'Nunito',sans-serif;font-weight:900;font-size:19px;color:var(--ink);}
+.logo-txt span{color:var(--sky-dark);}
+.nav-tabs{display:flex;gap:3px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;flex-shrink:1;min-width:0;}
+.nav-tabs::-webkit-scrollbar{display:none;}
+.ntab{padding:7px 10px;border-radius:var(--rxs);font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;border:none;background:transparent;color:var(--ink-mid);transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.ntab:hover{background:var(--s3);color:var(--ink);}
+.ntab.on{background:var(--sun-light);color:var(--ink);}
+.upill{display:flex;align-items:center;gap:5px;background:var(--s3);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;color:var(--ink);white-space:nowrap;flex-shrink:0;}
+.rbadge{font-size:11px;padding:3px 8px;border-radius:12px;font-weight:700;}
+.rb-admin{background:var(--lav-light);color:var(--lav);}
+.rb-sp{background:var(--sky-light);color:var(--sky-dark);}
+.rb-sitter{background:var(--grass-light);color:#2E7D32;}
+.rb-cust{background:var(--sun-light);color:#7A5C00;}
+.rb-pend{background:var(--coral-light);color:#BF360C;}
+.logout{background:none;border:none;cursor:pointer;font-size:17px;opacity:.45;margin-left:4px;}
+.logout:hover{opacity:1;}
+
+/* ── SCREENS ── */
+.screen{display:none;flex:1;}
+.screen.on{display:block;}
+
+/* ── PENDING WALL ── */
+#scr-pending{padding:56px 20px;text-align:center;}
+.pend-card{background:var(--surface);border-radius:24px;padding:44px 36px;max-width:460px;margin:0 auto;box-shadow:var(--sh);border:2px solid #F0D060;}
+.pend-icon{font-size:54px;margin-bottom:14px;}
+.pend-card h2{font-family:'Nunito',sans-serif;font-weight:900;font-size:24px;color:var(--ink);margin-bottom:8px;}
+.pend-card p{font-size:14px;color:var(--ink-mid);line-height:1.7;margin-bottom:18px;}
+.pend-steps{text-align:left;background:var(--s3);border-radius:var(--rsm);padding:18px;margin-bottom:22px;}
+.pstep{display:flex;gap:11px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);}
+.pstep:last-child{border:none;}
+.pnum{width:24px;height:24px;border-radius:50%;background:var(--sun);color:var(--ink);font-family:'Nunito',sans-serif;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ptxt{font-size:13px;color:var(--ink-mid);line-height:1.5;padding-top:2px;}
+
+/* ── SECTION ── */
+.section{padding:28px;max-width:920px;margin:0 auto;}
+.stitle{font-family:'Nunito',sans-serif;font-size:19px;font-weight:800;color:var(--ink);margin-bottom:18px;display:flex;align-items:center;gap:7px;}
+
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,#FFF8D6 0%,#E1F5FE 100%);padding:36px 28px;text-align:center;border-bottom:1px solid var(--border);}
+.hero h1{font-family:'Nunito',sans-serif;font-size:30px;font-weight:900;color:var(--ink);margin-bottom:6px;}
+.hero p{color:var(--ink-mid);font-size:14px;max-width:440px;margin:0 auto 18px;line-height:1.6;}
+.badges{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;}
+.badge{display:inline-flex;align-items:center;gap:5px;padding:5px 13px;border-radius:20px;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;}
+.b-sun{background:var(--sun-light);color:#8B6B00;}
+.b-sky{background:var(--sky-light);color:var(--sky-dark);}
+.b-grass{background:var(--grass-light);color:#2E7D32;}
+
+/* ── SITTER CARDS ── */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-bottom:28px;}
+.scard{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);padding:22px;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s;}
+.scard:hover{transform:translateY(-2px);box-shadow:0 4px 24px rgba(0,0,0,.1);}
+.savatar{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:900;font-size:20px;margin-bottom:11px;}
+.av-v{background:var(--lav-light);color:var(--lav);}
+.av-e{background:var(--sky-light);color:var(--sky-dark);}
+.sname{font-family:'Nunito',sans-serif;font-weight:800;font-size:16px;color:var(--ink);margin-bottom:2px;}
+.ssub{font-size:12px;color:var(--ink-mid);margin-bottom:11px;}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
+.chip{font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;padding:3px 9px;border-radius:20px;}
+.c-sun{background:var(--sun-light);color:#7A5C00;}
+.c-sky{background:var(--sky-light);color:#01579B;}
+.c-grass{background:var(--grass-light);color:#1B5E20;}
+.slots{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:13px;}
+.slot{font-size:11px;font-weight:600;padding:4px 9px;border-radius:var(--rxs);background:var(--grass-light);color:#2E7D32;border:1px solid #C8E6C9;}
+.srate{font-family:'Nunito',sans-serif;font-weight:800;font-size:20px;color:var(--ink);margin-bottom:11px;}
+.srate span{font-size:13px;font-weight:600;color:var(--ink-mid);}
+
+/* ── FORM CARD ── */
+.fcard{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);padding:28px;box-shadow:var(--sh);max-width:540px;margin:0 auto;}
+.ftitle{font-family:'Nunito',sans-serif;font-weight:900;font-size:19px;color:var(--ink);margin-bottom:5px;}
+.fsub{font-size:13px;color:var(--ink-mid);margin-bottom:22px;line-height:1.5;}
+
+/* ── JOBS LIST ── */
+.jlist{display:flex;flex-direction:column;gap:11px;}
+.jitem{background:var(--surface);border-radius:var(--r);padding:16px 20px;border:1px solid var(--border);box-shadow:var(--sh);display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;}
+.jfam{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--ink);margin-bottom:3px;}
+.jmeta{font-size:12px;color:var(--ink-mid);display:flex;gap:12px;flex-wrap:wrap;}
+.jact{display:flex;gap:7px;}
+.pill{display:inline-block;padding:4px 11px;border-radius:20px;font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;}
+.p-pend{background:#FFF8D6;color:#7A5C00;}
+.p-ok{background:var(--grass-light);color:#2E7D32;}
+.p-bad{background:var(--coral-light);color:#BF360C;}
+.p-flag{background:var(--lav-light);color:var(--lav);}
+
+/* ── METRICS ── */
+.dgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:13px;margin-bottom:26px;}
+.mcard{background:var(--surface);border-radius:var(--r);padding:17px;border:1px solid var(--border);box-shadow:var(--sh);}
+.mlbl{font-size:11px;font-weight:700;color:var(--ink-mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;}
+.mval{font-family:'Nunito',sans-serif;font-weight:900;font-size:24px;color:var(--ink);}
+.msub{font-size:11px;color:var(--ink-mid);margin-top:3px;}
+
+/* ── BANNER ── */
+.banner{padding:9px 28px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border);}
+.banner span{font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;}
+.ban-lav{background:var(--lav-light);border-color:#D1C4E9;}.ban-lav span{color:var(--lav);}
+.ban-sky{background:var(--sky-light);border-color:#B3E5FC;}.ban-sky span{color:var(--sky-dark);}
+.ban-grass{background:var(--grass-light);border-color:#C8E6C9;}.ban-grass span{color:#2E7D32;}
+
+/* ── INNER TABS ── */
+.itabs{display:flex;gap:7px;margin-bottom:22px;flex-wrap:wrap;}
+.itab{padding:7px 16px;border-radius:20px;font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-mid);transition:all .15s;}
+.itab.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+.ipane{display:none;}
+.ipane.on{display:block;}
+.tpane{padding:28px;}
+
+/* ── CALENDAR ── */
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:18px;}
+.calday{aspect-ratio:1;border-radius:var(--rsm);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);transition:all .15s;}
+.calday .dn{font-size:14px;font-weight:800;}
+.calday .dl{font-size:9px;color:var(--ink-mid);}
+.calday.open{background:var(--grass-light);border-color:#A5D6A7;}.calday.open .dl{color:#2E7D32;}
+.calday.busy{background:var(--coral-light);border-color:#FFCCBC;}.calday.busy .dl{color:#BF360C;}
+.calday:hover{transform:scale(1.05);}
+
+/* ── VERIFY LIST ── */
+.vlist{display:flex;flex-direction:column;gap:11px;}
+.vitem{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--sh);gap:12px;flex-wrap:wrap;}
+.vname{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;color:var(--ink);}
+.vmeta{font-size:12px;color:var(--ink-mid);margin-top:2px;}
+
+/* ── ALERT / INFO ── */
+.abox{border-radius:var(--rsm);padding:12px 15px;margin-bottom:18px;display:flex;align-items:flex-start;gap:9px;}
+.abox span{font-size:13px;font-weight:600;line-height:1.5;}
+.abox-warn{background:var(--coral-light);border:1px solid #FFCCBC;}.abox-warn span{color:#BF360C;}
+.abox-info{background:var(--sky-light);border:1px solid #B3E5FC;}.abox-info span{color:var(--sky-dark);}
+.abox-sun{background:var(--sun-light);border:1px solid #F0D060;}.abox-sun span{color:#7A5C00;}
+
+/* ── DISCLAIMER ── */
+.ditem{background:var(--s3);border-radius:var(--rsm);padding:13px 15px;cursor:pointer;border:1px solid var(--border);transition:border-color .15s;margin-bottom:9px;}
+.ditem:hover{border-color:var(--sun-dark);}
+.ditem h5{font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;color:var(--ink);margin-bottom:3px;}
+.ditem p{font-size:12px;color:var(--ink-mid);line-height:1.5;}
+
+/* ── SYNC CARD ── */
+.scard2{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--sh);margin-bottom:16px;}
+.scard2 h4{font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;margin-bottom:11px;}
+.syncst{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-mid);}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--ink-light);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+/* ── PANIC ── */
+.panic-zone{background:#FFF3F3;border:2px solid #FFCDD2;border-radius:var(--r);padding:22px;text-align:center;margin-top:22px;}
+.panic-btn{width:100%;padding:17px;background:var(--coral);color:#fff;border:none;cursor:pointer;border-radius:var(--rsm);font-family:'Nunito',sans-serif;font-weight:900;font-size:16px;transition:all .15s;}
+.panic-btn:hover{background:#BF360C;transform:scale(1.01);}
+
+/* ── STARS ── */
+.stars{display:flex;gap:3px;margin:9px 0 14px;}
+.star{font-size:24px;cursor:pointer;color:#D3D1C7;transition:color .1s;}
+.star.lit{color:var(--sun-dark);}
+
+/* ── MESSAGES INBOX ── */
+.msg-item{background:var(--surface);border-radius:var(--r);padding:16px 20px;border:1px solid var(--border);box-shadow:var(--sh);cursor:pointer;transition:all .15s;position:relative;}
+.msg-item:hover{border-color:var(--sky-dark);transform:translateX(2px);}
+.msg-item.unread{border-left:4px solid var(--sky-dark);}
+.msg-item.unread .msg-subject{font-weight:900;}
+.msg-subject{font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;color:var(--ink);margin-bottom:3px;}
+.msg-preview{font-size:12px;color:var(--ink-mid);line-height:1.5;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.msg-meta{font-size:11px;color:var(--ink-light);display:flex;gap:12px;}
+.msg-unread-dot{width:8px;height:8px;border-radius:50%;background:var(--sky-dark);position:absolute;top:18px;right:18px;}
+.msg-detail{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);padding:24px;box-shadow:var(--sh);margin-top:14px;}
+.msg-detail-subject{font-family:'Nunito',sans-serif;font-weight:900;font-size:17px;color:var(--ink);margin-bottom:8px;}
+.msg-detail-meta{font-size:12px;color:var(--ink-mid);margin-bottom:16px;display:flex;gap:16px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--border);}
+.msg-detail-body{font-size:14px;color:var(--ink);line-height:1.8;}
+
+/* ── NOTIFICATION LOG (admin) ── */
+.notif-item{background:var(--surface);border-radius:var(--rsm);padding:13px 17px;border:1px solid var(--border);box-shadow:var(--sh);display:grid;grid-template-columns:auto 1fr auto auto;gap:12px;align-items:center;}
+.notif-type{font-size:18px;}
+.notif-subject{font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--ink);}
+.notif-to{font-size:11px;color:var(--ink-mid);margin-top:2px;}
+.notif-time{font-size:11px;color:var(--ink-light);white-space:nowrap;}
+.notif-status{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;}
+.ns-sent{background:var(--grass-light);color:#2E7D32;}
+.ns-fail{background:var(--coral-light);color:#BF360C;}
+.ns-pend{background:var(--sun-light);color:#7A5C00;}
+
+/* ── CALENDAR EXPORT ── */
+.cal-export-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--sh);margin-bottom:20px;}
+.cal-export-box h4{font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;margin-bottom:6px;display:flex;align-items:center;gap:7px;}
+.cal-export-box p{font-size:13px;color:var(--ink-mid);margin-bottom:16px;line-height:1.5;}
+.export-btns{display:flex;gap:9px;flex-wrap:wrap;}
+.exp-btn{display:inline-flex;align-items:center;gap:7px;padding:10px 16px;border-radius:var(--rsm);font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;border:none;cursor:pointer;transition:all .15s;}
+.exp-gcal{background:#1A73E8;color:#fff;}.exp-gcal:hover{background:#1557B0;}
+.exp-ical{background:#555;color:#fff;}.exp-ical:hover{background:#333;}
+.exp-outlook{background:#0078D4;color:#fff;}.exp-outlook:hover{background:#005A9E;}
+.exp-yahoo{background:#6001D2;color:#fff;}.exp-yahoo:hover{background:#4A0099;}
+.booking-cal-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);gap:10px;}
+.booking-cal-row:last-child{border:none;}
+.bcr-info{font-size:13px;color:var(--ink);}
+.bcr-info strong{font-family:'Nunito',sans-serif;font-weight:800;}
+.bcr-date{font-size:12px;color:var(--ink-mid);margin-top:2px;}
+
+/* ── AVATAR PICKER ── */
+.avatar-picker{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
+.av-opt{width:60px;height:60px;border-radius:50%;border:3px solid transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:26px;transition:all .15s;position:relative;}
+.av-opt:hover{transform:scale(1.08);}
+.av-opt.selected{border-color:var(--sky-dark);box-shadow:0 0 0 3px var(--sky-light);}
+.av-opt .av-tick{position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;background:var(--sky-dark);border-radius:50%;display:none;align-items:center;justify-content:center;font-size:10px;color:#fff;}
+.av-opt.selected .av-tick{display:flex;}
+.av-upload-box{border:2px dashed var(--border);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;transition:border-color .15s;margin-bottom:16px;}
+.av-upload-box:hover{border-color:var(--sky-dark);}
+.av-upload-box p{font-size:13px;color:var(--ink-mid);margin-top:8px;}
+.av-pending-badge{display:inline-flex;align-items:center;gap:6px;background:var(--sun-light);border:1px solid #F0D060;border-radius:var(--rsm);padding:8px 14px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:#7A5C00;margin-top:10px;}
+
+/* ── MODAL ── */
+.movl{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;display:none;align-items:center;justify-content:center;padding:22px;}
+.movl.open{display:flex;}
+.modal{background:var(--surface);border-radius:var(--r);padding:30px;max-width:490px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,.2);}
+.modal h3{font-family:'Nunito',sans-serif;font-weight:900;font-size:18px;color:var(--ink);margin-bottom:7px;}
+.modal p{font-size:13px;color:var(--ink-mid);line-height:1.6;margin-bottom:18px;}
+.mact{display:flex;gap:9px;}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--ink);color:#fff;padding:11px 17px;border-radius:var(--rsm);font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;box-shadow:0 8px 28px rgba(0,0,0,.2);z-index:8000;transform:translateY(100px);opacity:0;transition:all .3s;max-width:300px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.t-ok{background:var(--grass);}
+.t-warn{background:var(--coral);}
+.t-info{background:var(--sky-dark);}
+
+/* ── FOOTER ── */
+.footer{text-align:center;padding:14px;font-size:11px;color:var(--ink-light);border-top:1px solid var(--border);background:var(--surface);}
+.ftag{display:inline-flex;align-items:center;gap:5px;background:var(--grass-light);color:#2E7D32;padding:3px 8px;border-radius:20px;font-family:'Nunito',sans-serif;font-weight:700;font-size:11px;}
+
+/* ── ACCESS DENIED ── */
+#scr-denied{padding:80px 20px;text-align:center;}
+.denied-card{background:var(--surface);border-radius:24px;padding:48px 36px;max-width:420px;margin:0 auto;box-shadow:var(--sh);border:2px solid var(--coral-light);}
+
+/* ══════════════════════════════════════════
+   MOBILE / iOS RESPONSIVE
+══════════════════════════════════════════ */
+
+/* Safe area padding for notch + home bar */
+body { padding-bottom: env(safe-area-inset-bottom); }
+.footer { padding-bottom: calc(16px + env(safe-area-inset-bottom)); }
+
+/* Logo shrinks on small screens */
+@media (max-width: 480px) {
+  .logo-txt { font-size: 16px; }
+  .logo-icon { width: 32px; height: 32px; font-size: 16px; }
+  .ntab { font-size: 11px; padding: 6px 8px; }
+  #u-name { display: none; }  /* hide username, keep badge only */
+  .logout { font-size: 15px; }
+}
+
+/* Share button — icon only on mobile */
+#share-btn-text { display: inline; }
+@media (max-width: 520px) {
+  #share-btn-text { display: none; }
+}
+
+/* Splash card full-width on mobile */
+@media (max-width: 500px) {
+  .splash-card { padding: 32px 22px; border-radius: 16px; }
+  .splash-h { font-size: 24px; }
+  .demo-grid { grid-template-columns: 1fr; }
+}
+
+/* Screens — reduce side padding on mobile */
+@media (max-width: 600px) {
+  .tpane { padding: 18px 14px; }
+  .section { padding: 18px 14px; }
+  .hero { padding: 28px 16px; }
+  .hero h1 { font-size: 24px; }
+  .fcard { padding: 20px 16px; }
+  .scard2 { padding: 16px 14px; }
+}
+
+/* Sitter grid — single column on mobile */
+@media (max-width: 580px) {
+  .sgrid { grid-template-columns: 1fr; }
+  .fr { grid-template-columns: 1fr; gap: 0; }
+  .field-row { grid-template-columns: 1fr; gap: 0; }
+}
+
+/* Inner tabs — horizontal scroll on mobile */
+.itabs {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  flex-wrap: nowrap;
+  padding-bottom: 4px;
+}
+.itabs::-webkit-scrollbar { display: none; }
+.itab { white-space: nowrap; flex-shrink: 0; }
+
+/* Job items — stack on mobile */
+@media (max-width: 560px) {
+  .jitem { grid-template-columns: 1fr; gap: 8px; }
+  .jact { flex-wrap: wrap; }
+  .vitem { flex-direction: column; align-items: flex-start; }
+  .notif-item { grid-template-columns: auto 1fr; grid-template-rows: auto auto; gap: 6px; }
+  .notif-time { grid-column: 2; }
+  .notif-status { grid-column: 2; }
+}
+
+/* Day availability list — stack time inputs on mobile */
+@media (max-width: 560px) {
+  #day-avail-list > div { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+/* Calendar export buttons — wrap on mobile */
+@media (max-width: 560px) {
+  .export-btns { gap: 7px; }
+  .exp-btn { font-size: 12px; padding: 8px 11px; }
+  .booking-cal-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+}
+
+/* Share modal grid — single column on mobile */
+@media (max-width: 500px) {
+  #share-modal-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* Messages — full width */
+@media (max-width: 560px) {
+  .msg-detail { padding: 16px 14px; }
+  .msg-detail-meta { flex-direction: column; gap: 4px; }
+}
+
+/* Panic button — bigger on mobile (thumb target) */
+@media (max-width: 560px) {
+  .panic-btn { font-size: 15px; padding: 20px; }
+}
+
+/* Avatar picker — more columns on small screens */
+@media (max-width: 400px) {
+  .avatar-picker { gap: 8px; }
+  .av-opt { width: 50px; height: 50px; font-size: 22px; }
+}
+
+/* Metric cards — 2 columns on mobile */
+@media (max-width: 500px) {
+  .dgrid { grid-template-columns: 1fr 1fr; }
+  .mval { font-size: 20px; }
+}
+
+/* Modal — full screen on mobile */
+@media (max-width: 500px) {
+  .movl { padding: 12px; align-items: flex-end; }
+  .modal { border-radius: 16px 16px 0 0; max-width: 100%; padding: 24px 18px; }
+  .mact { flex-direction: column; }
+}
+
+/* Pending card — tighter on mobile */
+@media (max-width: 500px) {
+  .pend-card { padding: 28px 18px; }
+}
+
+/* Topbar right side — don't let it push nav off screen */
+@media (max-width: 480px) {
+  .topbar > div:last-child { flex-shrink: 0; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     SPLASH / LOGIN GATE
+══════════════════════════════════════════ -->
+<div id="splash">
+  <div class="splash-card">
+    <div class="splash-logo">☀️</div>
+    <div class="splash-h">Sunny Sitters</div>
+    <div class="splash-sub">A tween babysitting business · Newton Corner, MA<br>Parent-supervised &amp; secure · COPPA 2026 compliant</div>
+
+    <div class="stabs">
+      <button class="stab on" id="stab-login"  onclick="switchTab('login')">Sign In</button>
+      <button class="stab"    id="stab-reg"    onclick="switchTab('reg')">New Neighbor</button>
+    </div>
+
+    <!-- ── SIGN IN ── -->
+    <div id="pane-login">
+      <div class="err-msg" id="login-err"></div>
+      <div class="field"><label>Email address</label><input type="email" id="li-email" placeholder="you@email.com"/></div>
+      <div class="field"><label>Password</label><input type="password" id="li-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="btn btn-sun" onclick="doLogin()">Sign In →</button>
+      <div class="demo-sec">
+        <p>Demo — click any account to log in instantly</p>
+        <div class="demo-grid">
+          <button class="dbtn" onclick="ql('admin@sunnysitters.com','admin123')">🔑 Super Admin<br><small style="opacity:.6">Full access · sheet</small></button>
+          <button class="dbtn" onclick="ql('sitterparent@email.com','sp123')">🛡️ Sitter's Parent<br><small style="opacity:.6">Guardian only</small></button>
+          <button class="dbtn" onclick="ql('violet@sunnysitters.com','sit123')">👧 Sitter (Violet)<br><small style="opacity:.6">Own dashboard</small></button>
+          <button class="dbtn" onclick="ql('neighbor@email.com','nb123')">✅ Verified Neighbor<br><small style="opacity:.6">Can browse &amp; book</small></button>
+          <button class="dbtn" onclick="ql('newneighbor@email.com','nn123')" style="grid-column:1/-1;">⏳ Pending Neighbor<br><small style="opacity:.6">Registered but not yet vetted — sees waiting screen</small></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── REGISTER (new neighbor via QR scan) ── -->
+    <div id="pane-reg" style="display:none;">
+      <div class="abox abox-info" style="text-align:left;margin-bottom:16px;"><span>👋 Welcome neighbor! To keep our sitters safe, please confirm you're a parent over 18. An admin will verify you before you can view availability or book.</span></div>
+      <div class="err-msg" id="reg-err"></div>
+      <div class="fr">
+        <div class="field"><label>Your Name</label><input type="text" id="rg-name" placeholder="Jane Smith"/></div>
+        <div class="field"><label>Email</label><input type="email" id="rg-email" placeholder="you@email.com"/></div>
+      </div>
+      <div class="field"><label>Home Address (Newton Corner)</label><input type="text" id="rg-addr" placeholder="14 Oak St, Newton Corner MA"/></div>
+      <div class="fr">
+        <div class="field"><label>Kids' Ages</label><input type="text" id="rg-ages" placeholder="4, 7"/></div>
+        <div class="field"><label>Allergies / Dietary</label><input type="text" id="rg-allergy" placeholder="Nut allergy…"/></div>
+      </div>
+      <div class="field"><label>Pet Notes</label><input type="text" id="rg-pets" placeholder="Friendly golden retriever…"/></div>
+      <div class="field"><label>Create Password</label><input type="password" id="rg-pass" placeholder="••••••••"/></div>
+      <div class="wbox">
+        <h4>⚖️ Terms &amp; Conditions</h4>
+        <p>Casual youth-led service — not a licensed daycare. $15/hr base rate. 50% penalty for cancellations within 12 hours. I confirm I am a parent/guardian over 18.</p>
+        <label class="chk"><input type="checkbox" id="rg-waiver"/><span>I agree to all terms &amp; conditions</span></label>
+      </div>
+      <button class="btn btn-sky" onclick="doRegister()">Register — Pending Admin Approval →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     APP SHELL  (hidden until login)
+══════════════════════════════════════════ -->
+<div id="app">
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <div class="logo">
+      <div class="logo-icon">☀️</div>
+      <div class="logo-txt">Sunny <span>Sitters</span></div>
+    </div>
+    <div class="nav-tabs" id="nav-tabs"></div>
+    <div style="display:flex;align-items:center;gap:9px;">
+      <button onclick="openShare()" title="Share Sunny Sitters" style="display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;background:var(--sun-light);border:1.5px solid var(--sun-dark);font-family:'Nunito',sans-serif;font-weight:700;font-size:12px;color:#7A5C00;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0;" onmouseover="this.style.background='var(--sun)'" onmouseout="this.style.background='var(--sun-light)'">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span id="share-btn-text">Share</span>
+      </button>
+      <div class="upill">
+        <span id="u-name">—</span>
+        <span class="rbadge" id="u-badge">—</span>
+      </div>
+      <button class="logout" onclick="doLogout()" title="Sign out">⎋</button>
+    </div>
+  </nav>
+
+  <!-- ── PENDING WALL ── -->
+  <div class="screen" id="scr-pending">
+    <div style="padding:52px 20px;text-align:center;">
+      <div class="pend-card">
+        <div class="pend-icon">⏳</div>
+        <h2>Almost There!</h2>
+        <p>Your registration is in. A neighborhood admin will confirm you're a local Newton Corner family before your calendar access is unlocked. You'll receive an email when approved.</p>
+        <div class="pend-steps">
+          <div class="pstep"><div class="pnum">1</div><div class="ptxt"><strong>Registration submitted</strong> — your household details are on file. ✓</div></div>
+          <div class="pstep"><div class="pnum">2</div><div class="ptxt"><strong>Admin review</strong> — the sitters' parent checks you're a known Newton Corner neighbor. Usually within 24 hrs.</div></div>
+          <div class="pstep"><div class="pnum">3</div><div class="ptxt"><strong>Access unlocked</strong> — you'll see real-time availability and be able to book.</div></div>
+        </div>
+        <button class="btn btn-out" onclick="doLogout()">Sign out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ACCESS DENIED (catch-all) ── -->
+  <div class="screen" id="scr-denied">
+    <div class="denied-card">
+      <div style="font-size:48px;margin-bottom:14px;">⛔</div>
+      <h2 style="font-family:'Nunito',sans-serif;font-weight:900;font-size:22px;margin-bottom:8px;">Access Denied</h2>
+      <p style="font-size:14px;color:var(--ink-mid);line-height:1.6;margin-bottom:22px;">You don't have permission to view this page. If you believe this is an error, contact the admin.</p>
+      <button class="btn btn-out" onclick="doLogout()">Sign out</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN: CUSTOMER (verified only)
+  ══════════════════════════════════════ -->
+  <div class="screen" id="scr-customer">
+    <div class="hero">
+      <h1>☀️ Find a Sitter</h1>
+      <p>Browse Violet &amp; Esme's real availability and book. Slots only — no personal contact info shared.</p>
+      <div class="badges">
+        <span class="badge b-sun">⭐ Parent-Supervised</span>
+        <span class="badge b-sky">🔒 Verified Neighbors Only</span>
+        <span class="badge b-grass">✅ Waiver on File</span>
+      </div>
+    </div>
+    <div class="tpane">
+      <div class="itabs">
+        <button class="itab on" onclick="si('c','browse')">🔍 Find a Sitter</button>
+        <button class="itab" onclick="si('c','mybookings')">📋 My Bookings</button>
+        <button class="itab" onclick="si('c','calcust')">📅 Calendar Export</button>
+        <button class="itab" onclick="si('c','msgcust');markRead('c')">✉️ Messages <span id="c-unread-dot" style="background:var(--coral);color:#fff;border-radius:20px;padding:1px 6px;font-size:10px;margin-left:2px;">2</span></button>
+      </div>
+
+      <!-- BROWSE -->
+      <div class="ipane on" id="c-browse">
+        <div class="stitle">👧 Available Sitters</div>
+        <div class="sgrid">
+          <div class="scard">
+            <div class="savatar av-v" id="cust-av-v">V</div>
+            <div class="sname">Violet S.</div><div class="ssub">SIT-001 · Newton Corner</div>
+            <div class="chips"><span class="chip c-sun">🎨 Arts &amp; Crafts</span><span class="chip c-sky">🩺 CPR Certified</span><span class="chip c-grass">📚 Homework Help</span></div>
+            <div class="slots"><span class="slot">Sat May 17</span><span class="slot">Sun May 18</span><span class="slot">Tue May 20</span></div>
+            <div class="srate">$15 <span>/ hour</span></div>
+            <button class="btn btn-sun" onclick="openBooking('Violet S.','SIT-001')">Book Violet</button>
+          </div>
+          <div class="scard">
+            <div class="savatar av-e" id="cust-av-e">E</div>
+            <div class="sname">Esme F.</div><div class="ssub">SIT-002 · Newton Corner</div>
+            <div class="chips"><span class="chip c-sun">⚽ Active Play</span><span class="chip c-sky">📖 Flash Cards</span><span class="chip c-grass">🐾 Pet-Friendly</span></div>
+            <div class="slots"><span class="slot">Sat May 17</span><span class="slot">Mon May 19</span></div>
+            <div class="srate">$15 <span>/ hour</span></div>
+            <button class="btn btn-sun" onclick="openBooking('Esme F.','SIT-002')">Book Esme</button>
+          </div>
+          <div class="scard" style="border:2px solid var(--sky);background:var(--sky-light);">
+            <div style="background:var(--sky-dark);color:#fff;font-family:'Nunito',sans-serif;font-weight:800;font-size:11px;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:9px;">⭐ Popular</div>
+            <div style="display:flex;gap:4px;margin-bottom:9px;">
+              <div class="savatar av-v" style="border:2px solid #fff;margin-right:-8px;">V</div>
+              <div class="savatar av-e" style="border:2px solid #fff;">E</div>
+            </div>
+            <div class="sname">Violet + Esme</div><div class="ssub">Team rate · best for 3+ kids</div>
+            <div class="srate">$25 <span>/ hour team</span></div>
+            <button class="btn btn-sky" onclick="openBooking('Violet + Esme (Team)','TEAM')">Book Both</button>
+          </div>
+        </div>
+        <div class="stitle" style="margin-top:8px;">📢 Post a Custom Request</div>
+        <div class="fcard">
+          <div class="ftitle">Request a Sitter</div>
+          <div class="fsub">No open slot fits? Post your date and the girls will check.</div>
+          <div class="fr">
+            <div class="field"><label>Date</label><input type="date" id="req-date"/></div>
+            <div class="field"><label>Hours Needed</label><input type="number" id="req-hours" min="1" max="8" placeholder="3"/></div>
+          </div>
+          <div class="fr">
+            <div class="field"><label>No. of Children</label><input type="number" id="req-kids" min="1" placeholder="2"/></div>
+            <div class="field"><label>Price Offered ($/hr)</label><input type="number" id="req-price" min="15" placeholder="15"/></div>
+          </div>
+          <div class="field"><label>Notes</label><textarea id="req-notes" placeholder="Nut allergy, golden retriever named Biscuit…"></textarea></div>
+          <button class="btn btn-sky" onclick="submitReq()">Post Request →</button>
+        </div>
+        <div class="stitle" style="margin-top:28px;">💬 Neighbor Reviews</div>
+        <div class="jlist">
+          <div class="jitem"><div><div class="jfam">⭐⭐⭐⭐⭐ — A Newton Corner Family</div><div class="jmeta" style="display:block;color:var(--ink);font-size:13px;margin-top:4px;">"Violet was amazing with our toddlers — came with craft ideas and tidied up after!"</div><div style="font-size:11px;color:var(--ink-mid);margin-top:5px;">May 10, 2026 · Verified</div></div></div>
+          <div class="jitem"><div><div class="jfam">⭐⭐⭐⭐⭐ — A Newton Corner Family</div><div class="jmeta" style="display:block;color:var(--ink);font-size:13px;margin-top:4px;">"Esme helped with homework AND kept our dog calm. Very responsible."</div><div style="font-size:11px;color:var(--ink-mid);margin-top:5px;">May 5, 2026 · Verified</div></div></div>
+        </div>
+      </div>
+
+      <!-- MY BOOKINGS -->
+      <div class="ipane" id="c-mybookings">
+        <div class="stitle">📋 My Bookings</div>
+        <div class="jlist" id="cust-bookings">
+          <div class="jitem"><div><div class="jfam">Violet S. — Your booking</div><div class="jmeta"><span>📅 Sat May 17 · 3–6 PM</span><span>👶 2 children</span><span>💵 $45</span></div></div><span class="pill p-ok">Confirmed ✓</span></div>
+          <div class="jitem"><div><div class="jfam">Esme F. — Your booking</div><div class="jmeta"><span>📅 Mon May 19 · 4–7 PM</span><span>👶 1 child</span><span>💵 $45</span></div></div><span class="pill p-pend">Pending</span></div>
+        </div>
+      </div>
+
+      <!-- CALENDAR EXPORT -->
+      <div class="ipane" id="c-calcust">
+        <div class="cal-export-box">
+          <h4>📅 Export Your Bookings to Your Calendar</h4>
+          <p>Download confirmed and pending bookings to any calendar app. Each event includes sitter name, time, address, and your agreed rate.</p>
+          <div style="margin-bottom:20px;">
+            <div class="booking-cal-row">
+              <div><div class="bcr-info"><strong>Violet S.</strong> — <span class="pill p-ok" style="font-size:10px;">Confirmed</span></div><div class="bcr-date">Sat May 17, 2026 · 3:00–6:00 PM · $45</div></div>
+              <div class="export-btns">
+                <button class="exp-btn exp-gcal" onclick="exportGCal('Sunny Sitters — Violet S.','20260517T150000Z','20260517T180000Z','14 Oak St, Newton Corner MA','Sitter: Violet S. | 2 children | $45 agreed | Rate: $15/hr')">📅 Google</button>
+                <button class="exp-btn exp-ical" onclick="dlICal([{title:'Sunny Sitters — Violet S.',start:'20260517T150000Z',end:'20260517T180000Z',loc:'14 Oak St, Newton Corner MA',desc:'Sitter: Violet S. | 2 children | $45 agreed'}],'my-booking-violet')">⬇️ iCal</button>
+              </div>
+            </div>
+            <div class="booking-cal-row">
+              <div><div class="bcr-info"><strong>Esme F.</strong> — <span class="pill p-pend" style="font-size:10px;">Pending</span></div><div class="bcr-date">Mon May 19, 2026 · 4:00–7:00 PM · $45</div></div>
+              <div class="export-btns">
+                <button class="exp-btn exp-gcal" onclick="exportGCal('Sunny Sitters — Esme F.','20260519T160000Z','20260519T190000Z','14 Oak St, Newton Corner MA','Sitter: Esme F. | 1 child | $45 agreed')">📅 Google</button>
+                <button class="exp-btn exp-ical" onclick="dlICal([{title:'Sunny Sitters — Esme F.',start:'20260519T160000Z',end:'20260519T190000Z',loc:'14 Oak St, Newton Corner MA',desc:'Sitter: Esme F. | 1 child | $45 agreed'}],'my-booking-esme')">⬇️ iCal</button>
+              </div>
+            </div>
+          </div>
+          <div class="stitle" style="font-size:15px;margin-bottom:14px;">Export All My Bookings At Once</div>
+          <div class="export-btns" style="flex-wrap:wrap;">
+            <button class="exp-btn exp-gcal" onclick="exportGCal('Sunny Sitters — Violet S.','20260517T150000Z','20260517T180000Z','14 Oak St, Newton Corner MA','All bookings: see app for details')">📅 All → Google Cal</button>
+            <button class="exp-btn exp-ical" onclick="dlICal(CUST_BOOKINGS,'all-my-bookings')">⬇️ All → iCal / Apple</button>
+            <button class="exp-btn exp-outlook" onclick="dlICal(CUST_BOOKINGS,'sunny-sitters-outlook')">📧 All → Outlook</button>
+            <button class="exp-btn exp-yahoo" onclick="toast('Yahoo: import the downloaded .ics file at calendar.yahoo.com → Import','t-info');dlICal(CUST_BOOKINGS,'sunny-sitters-yahoo')">📅 All → Yahoo</button>
+          </div>
+        </div>
+        <div class="abox abox-info"><span>💡 iCal (.ics) files work with Apple Calendar, Outlook, Google Calendar, Fantastical, and any app supporting the open calendar standard.</span></div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="ipane" id="c-msgcust">
+        <div id="c-inbox">
+          <div class="stitle">✉️ My Messages</div>
+          <div class="jlist" id="c-msgs"></div>
+        </div>
+        <div id="c-thread" style="display:none;">
+          <button class="bsm btn-out" style="margin-bottom:14px;" onclick="backToInbox('c')">← Back to Inbox</button>
+          <div class="msg-detail" id="c-thread-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN: SITTER
+  ══════════════════════════════════════ -->
+  <div class="screen" id="scr-sitter">
+    <div class="banner ban-grass"><span>👧 Sitter View — Violet Singh · Your dashboard only</span></div>
+    <div class="tpane">
+      <div class="stitle">👧 My Dashboard</div>
+      <div class="itabs">
+        <button class="itab on" onclick="si('s','overview')">Overview</button>
+        <button class="itab" onclick="si('s','avail');buildDayAvail()">My Availability</button>
+        <button class="itab" onclick="si('s','jobs')">My Jobs</button>
+        <button class="itab" onclick="si('s','calexp')">📅 Calendar</button>
+        <button class="itab" onclick="si('s','avatar')">🖼️ My Profile</button>
+        <button class="itab" onclick="si('s','msgs');markRead('s')">✉️ Messages <span id="s-unread-dot" style="background:var(--coral);color:#fff;border-radius:20px;padding:1px 6px;font-size:10px;margin-left:2px;">1</span></button>
+        <button class="itab" onclick="si('s','emerg')">🚨 Emergency</button>
+      </div>
+
+      <div class="ipane on" id="s-overview">
+        <div class="dgrid">
+          <div class="mcard"><div class="mlbl">Total Earned</div><div class="mval">$127</div><div class="msub">This month</div></div>
+          <div class="mcard"><div class="mlbl">Jobs Done</div><div class="mval">9</div><div class="msub">All time</div></div>
+          <div class="mcard"><div class="mlbl">Avg Rating</div><div class="mval">5.0 ⭐</div><div class="msub">6 reviews</div></div>
+          <div class="mcard"><div class="mlbl">My Rate</div><div class="mval">$15</div><div class="msub">Per hour</div></div>
+        </div>
+        <div class="stitle">📅 Upcoming Jobs</div>
+        <div class="jlist">
+          <div class="jitem"><div><div class="jfam">Martinez Family</div><div class="jmeta"><span>📅 Sat May 17 · 3–6 PM</span><span>👶 2 kids</span><span>💵 $45</span></div></div><span class="pill p-ok">Confirmed</span></div>
+          <div class="jitem" style="border-color:var(--sun);">
+            <div><div class="jfam">Chen Family — New Request</div><div class="jmeta"><span>📅 Mon May 19 · 4–7 PM</span><span>👶 1 kid</span><span>💵 $45</span></div></div>
+            <div class="jact">
+              <button class="bsm btn-grass" onclick="acceptJob(this)">✓ Accept</button>
+              <button class="bsm btn-out" onclick="declineJob(this)">Decline</button>
+            </div>
+          </div>
+        </div>
+        <div class="stitle" style="margin-top:26px;">🏪 Job Board</div>
+        <div class="jlist">
+          <div class="jitem" style="border-color:#A5D6A7;"><div><div class="jfam">Park Family — $20/hr Offer</div><div class="jmeta"><span>📅 Sun May 18 · 2–5 PM</span><span>👶 3 kids</span><span>💵 $60 total</span></div></div><button class="bsm btn-grass" onclick="acceptJob(this)">Grab Job</button></div>
+        </div>
+      </div>
+
+      <div class="ipane" id="s-avail">
+        <div class="abox abox-sun"><span>☀️ <strong>After-School &amp; Weekend Only.</strong> Sunny Sitters is not available during school hours (Mon–Fri, 8:00 AM – 3:00 PM). All bookings are restricted to after-school and weekend slots only. Your parent has been notified of this policy.</span></div>
+
+        <!-- DAY SELECTOR -->
+        <div class="stitle" style="font-size:15px;margin-bottom:10px;">Which days are you available?</div>
+        <p style="font-size:13px;color:var(--ink-mid);margin-bottom:14px;line-height:1.5;">Check each day you can work this week, then set your available time window for that day. Slots show up for verified neighbors to book.</p>
+        <div id="day-avail-list" style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px;max-width:560px;"></div>
+        <button class="btn btn-grass" style="max-width:220px;margin-bottom:28px;" onclick="saveDayAvail()">💾 Save to Sheet</button>
+
+        <!-- MONTHLY CALENDAR VIEW -->
+        <div class="stitle" style="font-size:14px;margin-bottom:9px;">May 2026 — Visual Overview</div>
+        <p style="font-size:12px;color:var(--ink-mid);margin-bottom:10px;">This updates automatically when you save your day selections above.</p>
+        <div class="calgrid" id="avail-cal"></div>
+        <div style="display:flex;gap:14px;margin-bottom:8px;font-size:12px;color:var(--ink-mid);">
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:var(--grass-light);border:1px solid #A5D6A7;border-radius:3px;display:inline-block;"></span>Open</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:var(--coral-light);border:1px solid #FFCCBC;border-radius:3px;display:inline-block;"></span>Busy / School</span>
+          <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;background:var(--surface);border:1px solid var(--border);border-radius:3px;display:inline-block;"></span>Unset</span>
+        </div>
+        <div class="abox abox-info" style="margin-top:8px;"><span>🔒 Mon–Fri before 3 PM is automatically blocked. You cannot post availability during school hours.</span></div>
+      </div>
+
+      <div class="ipane" id="s-jobs">
+        <div class="jlist">
+          <div class="jitem"><div><div class="jfam">Martinez Family</div><div class="jmeta"><span>May 17</span><span>3 hrs · $45</span></div></div><span class="pill p-ok">Confirmed</span></div>
+          <div class="jitem"><div><div class="jfam">Johnson Family</div><div class="jmeta"><span>May 10</span><span>2 hrs · $30 · Paid ✓</span></div></div><span class="pill p-ok">Paid ✓</span></div>
+          <div class="jitem"><div><div class="jfam">Davis Family — Late Cancel</div><div class="jmeta"><span>May 3</span><span>Penalty $22.50</span></div></div><span class="pill p-bad">Penalty</span></div>
+        </div>
+        <div class="stitle" style="margin-top:26px;">✍️ Leave a Review</div>
+        <div class="fcard">
+          <div class="stars" id="rev-stars">
+            <span class="star" onclick="setStars(1)">★</span><span class="star" onclick="setStars(2)">★</span><span class="star" onclick="setStars(3)">★</span><span class="star" onclick="setStars(4)">★</span><span class="star" onclick="setStars(5)">★</span>
+          </div>
+          <div class="field"><label>Comments</label><textarea id="rev-text" placeholder="Great family…"></textarea></div>
+          <button class="btn btn-sun" onclick="submitReview()">Submit Review</button>
+        </div>
+      </div>
+
+      <div class="ipane" id="s-calexp">
+        <div class="cal-export-box">
+          <h4>📅 Export My Job Schedule</h4>
+          <p>Download your confirmed jobs to your calendar. Includes family address, hours, and pay. Only your own jobs are exported.</p>
+          <div style="margin-bottom:20px;">
+            <div class="booking-cal-row">
+              <div><div class="bcr-info"><strong>Martinez Family</strong> — <span class="pill p-ok" style="font-size:10px;">Confirmed</span></div><div class="bcr-date">Sat May 17 · 3:00–6:00 PM · $45 · 14 Oak St</div></div>
+              <div class="export-btns">
+                <button class="exp-btn exp-gcal" onclick="exportGCal('Sunny Sitters Job — Martinez Family','20260517T150000Z','20260517T180000Z','14 Oak St, Newton Corner MA','Pay: $45 | 2 children | Nut allergy on file')">📅 Google</button>
+                <button class="exp-btn exp-ical" onclick="dlICal([{title:'Sunny Sitters Job — Martinez Family',start:'20260517T150000Z',end:'20260517T180000Z',loc:'14 Oak St, Newton Corner MA',desc:'Pay: $45 | 2 children | Nut allergy on file'}],'job-martinez')">⬇️ iCal</button>
+              </div>
+            </div>
+            <div class="booking-cal-row">
+              <div><div class="bcr-info"><strong>Chen Family</strong> — <span class="pill p-pend" style="font-size:10px;">Pending</span></div><div class="bcr-date">Mon May 19 · 4:00–7:00 PM · $45 · 22 Maple St</div></div>
+              <div class="export-btns">
+                <button class="exp-btn exp-gcal" onclick="exportGCal('Sunny Sitters Job — Chen Family','20260519T160000Z','20260519T190000Z','22 Maple St, Newton Corner MA','Pay: $45 | 1 child')">📅 Google</button>
+                <button class="exp-btn exp-ical" onclick="dlICal([{title:'Sunny Sitters Job — Chen Family',start:'20260519T160000Z',end:'20260519T190000Z',loc:'22 Maple St, Newton Corner MA',desc:'Pay: $45 | 1 child'}],'job-chen')">⬇️ iCal</button>
+              </div>
+            </div>
+          </div>
+          <div class="stitle" style="font-size:15px;margin-bottom:14px;">Export All My Jobs</div>
+          <div class="export-btns">
+            <button class="exp-btn exp-gcal" onclick="exportGCal('Sunny Sitters — All Jobs','20260517T150000Z','20260517T180000Z','Newton Corner MA','See Sunny Sitters app for full schedule')">📅 All → Google</button>
+            <button class="exp-btn exp-ical" onclick="dlICal(SITTER_JOBS,'my-sitter-schedule')">⬇️ All → iCal / Apple</button>
+            <button class="exp-btn exp-outlook" onclick="dlICal(SITTER_JOBS,'sitter-schedule-outlook')">📧 All → Outlook</button>
+          </div>
+        </div>
+        <div class="abox abox-info"><span>💡 Your job address, pay, and notes are included in each calendar event so you always have them offline.</span></div>
+      </div>
+
+      <div class="ipane" id="s-avatar">
+        <div class="stitle">🖼️ My Profile &amp; Avatar</div>
+        <div class="abox abox-sun"><span>⚠️ Your avatar and any profile changes need your parent's approval before appearing publicly in the app.</span></div>
+        <div class="fcard" style="max-width:560px;">
+          <div class="ftitle">Choose Your Avatar</div>
+          <div class="fsub">Pick an emoji avatar or upload a photo. Your parent will review before it goes live.</div>
+          <!-- Emoji options -->
+          <p style="font-size:12px;font-weight:700;color:var(--ink-mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Emoji Avatars</p>
+          <div class="avatar-picker" id="av-picker">
+            <div class="av-opt" style="background:var(--lav-light);" onclick="selectAv(this,'🌸')" title="Blossom">🌸<div class="av-tick">✓</div></div>
+            <div class="av-opt" style="background:var(--sun-light);" onclick="selectAv(this,'⭐')" title="Star">⭐<div class="av-tick">✓</div></div>
+            <div class="av-opt" style="background:var(--sky-light);" onclick="selectAv(this,'🦋')" title="Butterfly">🦋<div class="av-tick">✓</div></div>
+            <div class="av-opt" style="background:var(--grass-light);" onclick="selectAv(this,'🌻')" title="Sunflower">🌻<div class="av-tick">✓</div></div>
+            <div class="av-opt" style="background:#FFE4E1;" onclick="selectAv(this,'🎨')" title="Artist">🎨<div class="av-tick">✓</div></div>
+            <div class="av-opt" style="background:#E8F5E9;" onclick="selectAv(this,'⚽')" title="Soccer">⚽<div class="av-tick">✓</div></div>
+            <div class="av-opt" style="background:#F3E5F5;" onclick="selectAv(this,'📚')" title="Books">📚<div class="av-tick">✓</div></div>
+            <div class="av-opt" style="background:#E3F2FD;" onclick="selectAv(this,'🎵')" title="Music">🎵<div class="av-tick">✓</div></div>
+          </div>
+          <!-- Photo upload -->
+          <p style="font-size:12px;font-weight:700;color:var(--ink-mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Or Upload a Photo</p>
+          <div class="av-upload-box" onclick="document.getElementById('av-file').click()">
+            <div style="font-size:36px;" id="av-upload-preview">📷</div>
+            <p id="av-upload-label">Tap to choose a photo from your device</p>
+            <input type="file" id="av-file" accept="image/*" style="display:none;" onchange="previewAvatar(this)"/>
+          </div>
+          <!-- Profile fields -->
+          <div class="field"><label>Tagline (shown on your card)</label><input type="text" id="av-tagline" placeholder="Arts &amp; Crafts · CPR Certified · $15/hr" value="Arts &amp; Crafts · CPR Certified · $15/hr"/></div>
+          <div class="field"><label>Bio (1–2 sentences)</label><textarea id="av-bio" placeholder="Hi! I love doing crafts, helping with homework, and I'm certified in first aid…">Hi! I love doing crafts, helping with homework, and I'm certified in first aid. I've been babysitting for 2 years in Newton Corner!</textarea></div>
+          <button class="btn btn-lav" onclick="submitAvatarForApproval()">Submit for Parent Approval →</button>
+          <div class="av-pending-badge" id="av-pending" style="display:none;">⏳ Pending parent approval — Nooriyah Singh will review</div>
+        </div>
+        <!-- Current live profile preview -->
+        <div class="stitle" style="margin-top:28px;font-size:15px;">👁️ Current Live Profile</div>
+        <div class="scard" style="max-width:280px;" id="sitter-live-preview">
+          <div class="savatar av-v" id="s-live-av">V</div>
+          <div class="sname">Violet Singh</div>
+          <div class="ssub" id="s-live-tag">Arts &amp; Crafts · CPR Certified · $15/hr</div>
+          <div class="chips"><span class="chip c-sun">🎨 Arts &amp; Crafts</span><span class="chip c-sky">🩺 CPR Certified</span></div>
+          <div class="av-pending-badge" style="display:none;" id="s-live-pending-badge">⏳ Avatar change pending approval</div>
+        </div>
+      </div>
+
+      <div class="ipane" id="s-msgs">
+        <div id="s-inbox">
+          <div class="stitle">✉️ My Messages</div>
+          <div class="jlist" id="s-msgs-list"></div>
+        </div>
+        <div id="s-thread" style="display:none;">
+          <button class="bsm btn-out" style="margin-bottom:14px;" onclick="backToInbox('s')">← Back to Inbox</button>
+          <div class="msg-detail" id="s-thread-content"></div>
+        </div>
+      </div>
+
+      <div class="ipane" id="s-emerg">
+        <div class="abox abox-warn"><span>⚠️ Emergency mode is only active during a live job. The panic button alerts both sets of parents instantly.</span></div>
+        <div class="jlist">
+          <div class="jitem" style="border-color:var(--grass);"><div><div class="jfam">🟢 ACTIVE JOB: Martinez Family</div><div class="jmeta"><span>📍 14 Oak St</span><span>Started 3:02 PM</span></div></div></div>
+        </div>
+        <div class="stitle" style="margin-top:22px;">📞 Rule of Three</div>
+        <div class="jlist">
+          <div class="jitem" style="background:#FFEBEE;border-color:#FFCDD2;"><div><div class="jfam" style="color:#B71C1C;">Level 1 — Life-Threatening</div><div class="jmeta" style="color:#C62828;">Fire · Unconscious · Choking → 911 FIRST</div></div><a href="tel:911"><button class="bsm btn-coral">📞 911</button></a></div>
+          <div class="jitem" style="background:#FFF8E1;border-color:#FFE082;"><div><div class="jfam" style="color:#7A5C00;">Level 2 — Urgent but Stable</div><div class="jmeta">High fever · Injury → Call client parent</div></div><a href="tel:5550101"><button class="bsm btn-sun">📞 Parent</button></a></div>
+          <div class="jitem" style="background:var(--sky-light);border-color:#B3E5FC;"><div><div class="jfam" style="color:var(--sky-dark);">Level 3 — How-To Questions</div><div class="jmeta">Can't find PJs · Baby won't sleep → Text parent</div></div><button class="bsm btn-sky" onclick="toast('Opening house notes…','t-info')">📋 House Notes</button></div>
+        </div>
+        <div class="panic-zone">
+          <button class="panic-btn" onclick="triggerPanic()">🚨 EMERGENCY — ALERT PARENTS NOW</button>
+          <div style="font-size:11px;color:var(--ink-mid);margin-top:7px;">Activates GPS · Priority alert · Shows 911 script</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN: SITTER'S PARENT
+  ══════════════════════════════════════ -->
+  <div class="screen" id="scr-sitterparent">
+    <div class="banner ban-sky"><span>🛡️ Guardian View — Nooriyah Singh · Parent of Violet · Safety oversight only</span></div>
+    <div class="tpane">
+      <div class="stitle">🛡️ Guardian Oversight</div>
+      <div class="itabs">
+        <button class="itab on" onclick="si('sp','clear')">Safety Clearance</button>
+        <button class="itab" onclick="si('sp','profile')">Profile &amp; Avatar Approval</button>
+        <button class="itab" onclick="si('sp','calsp')">📅 Calendar Export</button>
+        <button class="itab" onclick="si('sp','legal')">Legal Terms</button>
+        <button class="itab" onclick="si('sp','msgsp');markRead('sp')">✉️ Messages <span id="sp-unread-dot" style="background:var(--coral);color:#fff;border-radius:20px;padding:1px 6px;font-size:10px;margin-left:2px;">3</span></button>
+      </div>
+
+      <div class="ipane on" id="sp-clear">
+        <div style="background:linear-gradient(135deg,#FFF8D6,#E1F5FE);border:2px solid var(--sky-dark);border-radius:var(--r);padding:18px 20px;margin-bottom:18px;display:flex;gap:14px;align-items:flex-start;">
+          <div style="font-size:28px;flex-shrink:0;">🏫</div>
+          <div>
+            <div style="font-family:'Nunito',sans-serif;font-weight:900;font-size:15px;color:var(--ink);margin-bottom:4px;">School Hours Policy — No Bookings Mon–Fri Before 3:00 PM</div>
+            <div style="font-size:13px;color:var(--ink-mid);line-height:1.6;">Sunny Sitters is an <strong>after-school and weekend only</strong> service. The app automatically blocks all availability Mon–Fri from 8:00 AM to 3:00 PM. Any booking request you see here has already passed this filter. If you ever see a weekday booking starting before 3 PM, please flag it immediately and contact the admin.</div>
+          </div>
+        </div>
+        <div class="abox abox-warn"><span>⚠️ Review each confirmed booking before clearing. Check dietary restrictions and pet notes.</span></div>
+        <div class="vlist">
+          <div class="vitem"><div><div class="vname">Martinez Family — May 17</div><div class="vmeta">👶 2 kids · ⚠️ Nut allergy · 🐾 No pets · $45</div></div><div style="display:flex;gap:7px;"><button class="bsm btn-grass" onclick="clearJob(this)">✅ Safety Clear</button><button class="bsm btn-out" onclick="flagJob(this)">🚩 Flag</button></div></div>
+          <div class="vitem"><div><div class="vname">Chen Family — May 19</div><div class="vmeta">👶 1 kid · 🐾 Hypoallergenic cat · No allergies · $45</div></div><div style="display:flex;gap:7px;"><button class="bsm btn-grass" onclick="clearJob(this)">✅ Safety Clear</button><button class="bsm btn-out" onclick="flagJob(this)">🚩 Flag</button></div></div>
+        </div>
+      </div>
+
+      <div class="ipane" id="sp-profile">
+        <div class="abox abox-info"><span>Review Violet's public profile and any pending avatar changes before they appear in the app.</span></div>
+        <!-- AVATAR APPROVAL QUEUE -->
+        <div class="stitle" style="font-size:15px;margin-bottom:12px;">🖼️ Pending Avatar / Profile Changes</div>
+        <div class="vlist" style="margin-bottom:24px;" id="avatar-queue">
+          <div class="vitem" style="border:2px solid var(--sun);" id="av-req-1">
+            <div style="display:flex;align-items:center;gap:14px;">
+              <div style="width:56px;height:56px;border-radius:50%;background:var(--lav-light);display:flex;align-items:center;justify-content:center;font-size:28px;">🌸</div>
+              <div>
+                <div class="vname">Violet Singh — Avatar Change Request</div>
+                <div class="vmeta">New avatar: 🌸 Blossom emoji · New tagline: "Arts &amp; Crafts · CPR Certified · $15/hr" · Submitted 10 min ago</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:8px;flex-shrink:0;">
+              <button class="bsm btn-grass" onclick="approveAvatar('av-req-1',this)">✅ Approve &amp; Publish</button>
+              <button class="bsm btn-out" onclick="rejectAvatar('av-req-1',this)">✗ Reject</button>
+            </div>
+          </div>
+        </div>
+        <!-- RATE & PROFILE CONTROLS -->
+        <div class="stitle" style="font-size:15px;margin-bottom:12px;">⚙️ Profile Controls</div>
+        <div class="scard" style="max-width:320px;margin-bottom:20px;" id="sp-live-card">
+          <div class="savatar av-v" id="sp-live-av">V</div>
+          <div class="sname">Violet Singh</div>
+          <div class="ssub">Arts &amp; Crafts · CPR Certified · $15/hr</div>
+          <div class="chips"><span class="chip c-sun">🎨 Arts &amp; Crafts</span><span class="chip c-sky">🩺 CPR Certified</span></div>
+        </div>
+        <div class="fr" style="max-width:380px;">
+          <div class="field"><label>Approved Rate ($/hr)</label><input type="number" value="15" id="ap-rate"/></div>
+          <div class="field"><label>Max Hours / Job</label><input type="number" value="5" id="ap-max"/></div>
+        </div>
+        <label class="chk" style="margin-bottom:18px;"><input type="checkbox" id="ap-chk" checked/><span>Profile approved &amp; visible in app</span></label><br><br>
+        <button class="btn btn-grass" style="max-width:240px;" onclick="saveProfile()">💾 Save Approval to Sheet</button>
+      </div>
+
+      <div class="ipane" id="sp-calsp">
+        <div class="cal-export-box">
+          <h4>📅 Export Violet's Job Schedule</h4>
+          <p>As guardian you can export Violet's confirmed jobs to your own calendar so you always know where she is and when she'll be home.</p>
+          <div style="margin-bottom:20px;">
+            <div class="booking-cal-row">
+              <div><div class="bcr-info"><strong>Martinez Family</strong> — <span class="pill p-ok" style="font-size:10px;">Confirmed</span></div><div class="bcr-date">Sat May 17 · 3:00–6:00 PM · 14 Oak St</div></div>
+              <div class="export-btns">
+                <button class="exp-btn exp-gcal" onclick="exportGCal('Violet — Sunny Sitters Job (Martinez)','20260517T150000Z','20260517T180000Z','14 Oak St, Newton Corner MA','Guardian export | Pay: $45 | 2 children')">📅 Google</button>
+                <button class="exp-btn exp-ical" onclick="dlICal([{title:'Violet — Sunny Sitters Job (Martinez)',start:'20260517T150000Z',end:'20260517T180000Z',loc:'14 Oak St, Newton Corner MA',desc:'Guardian export | Pay: $45'}],'guardian-martinez')">⬇️ iCal</button>
+              </div>
+            </div>
+            <div class="booking-cal-row">
+              <div><div class="bcr-info"><strong>Chen Family</strong> — <span class="pill p-pend" style="font-size:10px;">Pending</span></div><div class="bcr-date">Mon May 19 · 4:00–7:00 PM · 22 Maple St</div></div>
+              <div class="export-btns">
+                <button class="exp-btn exp-gcal" onclick="exportGCal('Violet — Sunny Sitters Job (Chen)','20260519T160000Z','20260519T190000Z','22 Maple St, Newton Corner MA','Guardian export | Pay: $45 | 1 child')">📅 Google</button>
+                <button class="exp-btn exp-ical" onclick="dlICal([{title:'Violet — Sunny Sitters Job (Chen)',start:'20260519T160000Z',end:'20260519T190000Z',loc:'22 Maple St, Newton Corner MA',desc:'Guardian export | 1 child'}],'guardian-chen')">⬇️ iCal</button>
+              </div>
+            </div>
+          </div>
+          <div class="stitle" style="font-size:15px;margin-bottom:14px;">Export All of Violet's Jobs</div>
+          <div class="export-btns">
+            <button class="exp-btn exp-gcal" onclick="exportGCal('Violet Sunny Sitters — All Jobs','20260517T150000Z','20260517T180000Z','Newton Corner MA','See app for full schedule')">📅 All → Google</button>
+            <button class="exp-btn exp-ical" onclick="dlICal(SITTER_JOBS_GUARDIAN,'violet-schedule-guardian')">⬇️ All → iCal / Apple</button>
+            <button class="exp-btn exp-outlook" onclick="dlICal(SITTER_JOBS_GUARDIAN,'violet-schedule-outlook')">📧 All → Outlook</button>
+          </div>
+        </div>
+        <div class="abox abox-sun"><span>🛡️ Guardian tip: add these events to a shared family calendar so both you and your co-parent always know Violet's schedule.</span></div>
+      </div>
+
+      <div class="ipane" id="sp-msgsp">
+        <div id="sp-inbox">
+          <div class="stitle">✉️ My Messages</div>
+          <div class="jlist" id="sp-msgs-list"></div>
+        </div>
+        <div id="sp-thread" style="display:none;">
+          <button class="bsm btn-out" style="margin-bottom:14px;" onclick="backToInbox('sp')">← Back to Inbox</button>
+          <div class="msg-detail" id="sp-thread-content"></div>
+        </div>
+      </div>
+
+      <div class="ipane" id="sp-legal">
+        <p style="font-size:13px;color:var(--ink-mid);margin-bottom:16px;line-height:1.6;">These terms appear to every neighbor before booking. Tap to read full wording.</p>
+        <div class="ditem" onclick="showDisc('Pricing & Rate Adjustments','Rates are predetermined at booking but subject to adjustment for future sessions based on market rates. All changes displayed before confirming any new booking.')"><h5>💰 Pricing &amp; Rate Adjustments</h5><p>Rates set at booking; may update for future sessions.</p></div>
+        <div class="ditem" onclick="showDisc('Tax & Financial Disclosure','All payments are casual neighborhood pocket money for youth skill development. No tax forms (1099/W-2) provided. Client Parent agrees not to claim as childcare tax credits or FSA expenses.')"><h5>📋 Tax &amp; Financial Disclosure</h5><p>Pocket money only — no W-2 or 1099 provided.</p></div>
+        <div class="ditem" onclick="showDisc('Liability & Waiver','By booking, the Client Parent assumes all risks associated with casual babysitting and releases sitters and legal guardians from liability for minor accidents, property damage, or unforeseen incidents.')"><h5>⚖️ Liability &amp; Waiver</h5><p>Parents assume risk for minor accidents.</p></div>
+        <div class="ditem" onclick="showDisc('Nature of Service','Youth-led initiative for leadership and financial literacy. Not a licensed childcare facility or professional nanny service — casual neighborhood play-sitting only.')"><h5>ℹ️ Nature of Service</h5><p>Youth-led, casual — not a licensed daycare.</p></div>
+        <div class="ditem" onclick="showDisc('Emergency Medical Authorization','In a medical emergency where the parent cannot be reached, the sitter and supervising adult are authorized to seek emergency medical treatment. Parent confirms all allergy/medical info is current.')"><h5>🏥 Emergency Medical Authorization</h5><p>Sitters may seek emergency care if parent unreachable.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       SCREEN: SUPER ADMIN
+       Only this role sees the sheet bar & all tabs
+  ══════════════════════════════════════ -->
+  <div class="screen" id="scr-admin">
+    <div class="banner ban-lav"><span>🔑 Super Admin — Full access · Google Sheet backend visible to this role only</span></div>
+
+    <!-- SHEET BAR — ADMIN ONLY (rendered inside this screen, not global) -->
+    <div style="background:var(--s2);border-bottom:1px solid var(--border);padding:9px 22px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="font-size:12px;color:var(--ink-mid);">🔗 Google Sheet Web App URL:</span>
+      <input id="sheet-url" placeholder="Paste Apps Script deployment URL here…" style="flex:1;min-width:220px;max-width:400px;padding:7px 11px;border:1.5px solid var(--border);border-radius:var(--rxs);font-size:13px;color:var(--ink);background:var(--surface);outline:none;"/>
+      <button onclick="saveSheetURL()" style="padding:7px 16px;border-radius:var(--rxs);background:#1A73E8;color:#fff;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;">Connect</button>
+      <div id="sheet-st" class="syncst"><div class="dot"></div><span>Not connected</span></div>
+    </div>
+
+    <div class="tpane">
+      <div class="stitle">🔑 Super Admin Control Panel</div>
+      <div class="itabs">
+        <button class="itab on" onclick="si('a','users')">👥 User Management</button>
+        <button class="itab" onclick="si('a','vet')">🔍 Vetting Queue</button>
+        <button class="itab" onclick="si('a','pen')">⚠️ Penalties</button>
+        <button class="itab" onclick="si('a','rev')">⭐ Reviews</button>
+        <button class="itab" onclick="si('a','notif')">📬 Notifications Log</button>
+        <button class="itab" onclick="si('a','calcadmin')">📅 Calendar Export</button>
+        <button class="itab" onclick="si('a','msgadmin');markRead('a')">✉️ Messages <span id="a-unread-dot" style="background:var(--coral);color:#fff;border-radius:20px;padding:1px 6px;font-size:10px;margin-left:2px;">5</span></button>
+        <button class="itab" onclick="si('a','sheet')">📊 Sheet Sync</button>
+      </div>
+
+      <!-- USER MANAGEMENT — role assignment -->
+      <div class="ipane on" id="a-users">
+        <div class="abox abox-sun"><span>Only the Super Admin can assign roles. Role changes take effect immediately on next login. Customers in "pending" status see only the waiting screen.</span></div>
+        <div class="vlist" id="user-mgmt"></div>
+      </div>
+
+      <!-- VETTING QUEUE -->
+      <div class="ipane" id="a-vet">
+        <div class="abox abox-warn"><span>⚠️ Pending neighbors cannot see availability or book until verified here.</span></div>
+        <div class="vlist" id="vet-list">
+          <div class="vitem" id="fam-chen">
+            <div><div class="vname">Chen Family — Linda Chen</div><div class="vmeta">📍 22 Maple St · linda@email.com · Registered May 15</div></div>
+            <div style="display:flex;gap:7px;align-items:center;">
+              <span class="pill p-pend">Pending</span>
+              <button class="bsm btn-grass" onclick="verifyFam('fam-chen',this)">✅ Verify</button>
+              <button class="bsm btn-coral" onclick="denyFam('fam-chen',this)">✗ Deny</button>
+            </div>
+          </div>
+          <div class="vitem" id="fam-jones">
+            <div><div class="vname">Jones Family — Robert Jones</div><div class="vmeta">📍 8 Birch Ave · rjones@email.com · Registered May 15</div></div>
+            <div style="display:flex;gap:7px;align-items:center;">
+              <span class="pill p-pend">Pending</span>
+              <button class="bsm btn-grass" onclick="verifyFam('fam-jones',this)">✅ Verify</button>
+              <button class="bsm btn-coral" onclick="denyFam('fam-jones',this)">✗ Deny</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PENALTIES -->
+      <div class="ipane" id="a-pen">
+        <div class="jlist">
+          <div class="jitem" style="background:var(--coral-light);border-color:#FFCCBC;">
+            <div><div class="jfam" style="color:#BF360C;">Davis Family — Late Cancel</div><div class="jmeta"><span>May 3 · Cancelled 11:30 AM (2.5 hrs notice)</span><span>$15 × 3 hrs × 50%</span></div></div>
+            <div style="text-align:right;"><div style="font-family:'Nunito';font-weight:900;font-size:20px;color:#BF360C;">$22.50</div><span class="pill p-bad">Due</span></div>
+          </div>
+        </div>
+        <div class="scard2" style="margin-top:20px;">
+          <h4>💰 Penalty Calculator</h4>
+          <div class="fr">
+            <div class="field"><label>Rate ($/hr)</label><input type="number" id="pen-r" value="15" oninput="calcPen()"/></div>
+            <div class="field"><label>Hours Booked</label><input type="number" id="pen-h" value="3" oninput="calcPen()"/></div>
+          </div>
+          <div style="font-family:'Nunito';font-weight:800;font-size:22px;color:var(--coral);" id="pen-out">Penalty = $22.50</div>
+          <div style="font-size:11px;color:var(--ink-mid);margin-top:3px;">Rate × Hours × 50%</div>
+        </div>
+      </div>
+
+      <!-- REVIEWS -->
+      <div class="ipane" id="a-rev">
+        <div class="vlist">
+          <div class="vitem"><div><div class="vname">⭐⭐⭐⭐⭐ — Martin Family (May 10)</div><div class="vmeta">"Violet was amazing with our two toddlers…"</div></div><div style="display:flex;gap:7px;"><button class="bsm btn-grass" onclick="appRev(this)">✅ Approve</button><button class="bsm btn-out" onclick="toast('Review removed.','t-warn')">✗ Remove</button></div></div>
+          <div class="vitem"><div><div class="vname">⭐⭐⭐⭐⭐ — Rodriguez Family (May 5)</div><div class="vmeta">"Esme helped with homework AND kept our dog calm…"</div></div><div style="display:flex;gap:7px;"><button class="bsm btn-grass" onclick="appRev(this)">✅ Approve</button><button class="bsm btn-out" onclick="toast('Review removed.','t-warn')">✗ Remove</button></div></div>
+        </div>
+      </div>
+
+      <!-- NOTIFICATION LOG -->
+      <div class="ipane" id="a-notif">
+        <div class="stitle" style="font-size:16px;margin-bottom:6px;">📬 Email Notifications Log</div>
+        <p style="font-size:13px;color:var(--ink-mid);margin-bottom:18px;line-height:1.5;">Every automated email sent by the system appears here in real time. Click any row to see the full message body.</p>
+        <div style="display:flex;gap:9px;margin-bottom:16px;flex-wrap:wrap;" id="notif-filters">
+          <button class="bsm btn-sky" onclick="filterNotif('all',this)">All</button>
+          <button class="bsm btn-out" onclick="filterNotif('booking',this)">Bookings</button>
+          <button class="bsm btn-out" onclick="filterNotif('safety',this)">Safety</button>
+          <button class="bsm btn-out" onclick="filterNotif('registration',this)">Registrations</button>
+          <button class="bsm btn-out" onclick="filterNotif('penalty',this)">Penalties</button>
+        </div>
+        <div class="jlist" id="notif-log"></div>
+        <div id="notif-detail" style="display:none;margin-top:14px;">
+          <button class="bsm btn-out" style="margin-bottom:12px;" onclick="document.getElementById('notif-log').style.display='';document.getElementById('notif-detail').style.display='none';">← Back to Log</button>
+          <div class="msg-detail" id="notif-detail-content"></div>
+        </div>
+      </div>
+
+      <!-- ADMIN CALENDAR EXPORT -->
+      <div class="ipane" id="a-calcadmin">
+        <div class="cal-export-box">
+          <h4>📅 Export All Bookings — Full Schedule</h4>
+          <p>Admin can export the complete booking schedule for all sitters and all families. Useful for coordinating oversight and keeping a master calendar.</p>
+          <div style="margin-bottom:20px;" id="admin-cal-rows">
+            <div class="booking-cal-row">
+              <div><div class="bcr-info"><strong>Violet S. + Martinez Family</strong> — <span class="pill p-ok" style="font-size:10px;">Confirmed</span></div><div class="bcr-date">Sat May 17 · 3:00–6:00 PM · 14 Oak St · $45</div></div>
+              <div class="export-btns">
+                <button class="exp-btn exp-gcal" onclick="exportGCal('[Admin] Sunny Sitters — Violet + Martinez','20260517T150000Z','20260517T180000Z','14 Oak St, Newton Corner MA','Sitter: Violet | Family: Martinez | 2 children | $45')">📅 Google</button>
+                <button class="exp-btn exp-ical" onclick="dlICal([{title:'[Admin] Violet + Martinez Family',start:'20260517T150000Z',end:'20260517T180000Z',loc:'14 Oak St',desc:'$45 | 2 children | Nut allergy'}],'admin-cal-1')">⬇️ iCal</button>
+              </div>
+            </div>
+            <div class="booking-cal-row">
+              <div><div class="bcr-info"><strong>Esme F. + Chen Family</strong> — <span class="pill p-pend" style="font-size:10px;">Pending</span></div><div class="bcr-date">Mon May 19 · 4:00–7:00 PM · 22 Maple St · $45</div></div>
+              <div class="export-btns">
+                <button class="exp-btn exp-gcal" onclick="exportGCal('[Admin] Sunny Sitters — Esme + Chen','20260519T160000Z','20260519T190000Z','22 Maple St, Newton Corner MA','Sitter: Esme | Family: Chen | 1 child | $45')">📅 Google</button>
+                <button class="exp-btn exp-ical" onclick="dlICal([{title:'[Admin] Esme + Chen Family',start:'20260519T160000Z',end:'20260519T190000Z',loc:'22 Maple St',desc:'$45 | 1 child'}],'admin-cal-2')">⬇️ iCal</button>
+              </div>
+            </div>
+            <div class="booking-cal-row">
+              <div><div class="bcr-info"><strong>Violet S. + Park Family</strong> — <span class="pill p-pend" style="font-size:10px;">Requested</span></div><div class="bcr-date">Sun May 18 · 2:00–5:00 PM · 45 Pine Rd · $60</div></div>
+              <div class="export-btns">
+                <button class="exp-btn exp-gcal" onclick="exportGCal('[Admin] Sunny Sitters — Violet + Park','20260518T140000Z','20260518T170000Z','45 Pine Rd, Newton Corner MA','Sitter: Violet | Family: Park | 3 children | $60')">📅 Google</button>
+                <button class="exp-btn exp-ical" onclick="dlICal([{title:'[Admin] Violet + Park Family',start:'20260518T140000Z',end:'20260518T170000Z',loc:'45 Pine Rd',desc:'$60 | 3 children'}],'admin-cal-3')">⬇️ iCal</button>
+              </div>
+            </div>
+          </div>
+          <div class="stitle" style="font-size:15px;margin-bottom:14px;">Bulk Export — All Sitters, All Bookings</div>
+          <div class="export-btns" style="flex-wrap:wrap;">
+            <button class="exp-btn exp-ical" onclick="dlICal(ALL_ADMIN_BOOKINGS,'sunny-sitters-all-bookings')">⬇️ All → iCal / Apple</button>
+            <button class="exp-btn exp-outlook" onclick="dlICal(ALL_ADMIN_BOOKINGS,'sunny-sitters-outlook-admin')">📧 All → Outlook</button>
+            <button class="exp-btn exp-yahoo" onclick="dlICal(ALL_ADMIN_BOOKINGS,'sunny-sitters-yahoo-admin');toast('Tip: import the .ics at calendar.yahoo.com → Import','t-info')">📅 All → Yahoo</button>
+          </div>
+        </div>
+        <div class="abox abox-sun"><span>🔑 Admin-only export includes full names, addresses, and pay amounts for all parties.</span></div>
+      </div>
+
+      <!-- ADMIN MESSAGES -->
+      <div class="ipane" id="a-msgadmin">
+        <div id="a-inbox">
+          <div class="stitle">✉️ Admin Messages</div>
+          <p style="font-size:13px;color:var(--ink-mid);margin-bottom:18px;">All system alerts, registration notices, and flagged items appear here.</p>
+          <div class="jlist" id="a-msgs-list"></div>
+        </div>
+        <div id="a-thread" style="display:none;">
+          <button class="bsm btn-out" style="margin-bottom:14px;" onclick="backToInbox('a')">← Back to Inbox</button>
+          <div class="msg-detail" id="a-thread-content"></div>
+        </div>
+      </div>
+
+      <!-- SHEET SYNC -->
+      <div class="ipane" id="a-sheet">
+        <div class="scard2">
+          <h4>🔗 Connection Status</h4>
+          <div class="syncst" id="sheet-st2" style="margin-bottom:12px;"><div class="dot"></div><span id="sheet-lbl">Not connected — enter URL above</span></div>
+          <button onclick="testConn()" style="padding:7px 16px;border-radius:var(--rxs);background:#1A73E8;color:#fff;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;">🔄 Test Connection</button>
+        </div>
+        <div class="scard2">
+          <h4>📋 Sheet Tab Reference</h4>
+          <table style="width:100%;font-size:12px;border-collapse:collapse;">
+            <thead><tr style="border-bottom:1px solid var(--border);"><th style="text-align:left;padding:6px 0;color:var(--ink-mid);font-weight:700;">Tab</th><th style="text-align:left;padding:6px 0;color:var(--ink-mid);font-weight:700;">Purpose</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:6px 0;font-weight:700;">USERS</td><td style="padding:6px 0;color:var(--ink-mid);">Email · Password hash · Role · Status — auth source of truth</td></tr>
+              <tr><td style="padding:6px 0;font-weight:700;">APP SETTINGS</td><td style="padding:6px 0;color:var(--ink-mid);">App name · rate · colors · support email</td></tr>
+              <tr><td style="padding:6px 0;font-weight:700;">SITTERS</td><td style="padding:6px 0;color:var(--ink-mid);">Profiles · skills · parent-approval status</td></tr>
+              <tr><td style="padding:6px 0;font-weight:700;">FAMILIES</td><td style="padding:6px 0;color:var(--ink-mid);">Household data · waiver · verification_status</td></tr>
+              <tr><td style="padding:6px 0;font-weight:700;">BOOKINGS</td><td style="padding:6px 0;color:var(--ink-mid);">All bookings · timestamps · penalty flags</td></tr>
+              <tr><td style="padding:6px 0;font-weight:700;">SITTER_AVAILABILITY</td><td style="padding:6px 0;color:var(--ink-mid);">Open/Busy slots — hidden from unverified families</td></tr>
+              <tr><td style="padding:6px 0;font-weight:700;">FAMILY_DEMANDS</td><td style="padding:6px 0;color:var(--ink-mid);">Custom requests from neighbors</td></tr>
+              <tr><td style="padding:6px 0;font-weight:700;">LEGAL_DISCLAIMERS</td><td style="padding:6px 0;color:var(--ink-mid);">Terms shown at registration</td></tr>
+              <tr><td style="padding:6px 0;font-weight:700;">REVIEWS</td><td style="padding:6px 0;color:var(--ink-mid);">Ratings · moderation status</td></tr>
+              <tr><td style="padding:6px 0;font-weight:700;">AUDIT_LOG</td><td style="padding:6px 0;color:var(--ink-mid);">All status/role changes with timestamp + actor</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="scard2">
+          <h4>📧 Email Automation Triggers (Apps Script)</h4>
+          <div style="font-size:12px;color:var(--ink-mid);line-height:1.9;">
+            <div>📩 <strong>New registration</strong> → Admin email (rnnvfamily@gmail.com)</div>
+            <div>✅ <strong>Booking confirmed</strong> → Sitter + Neighbor + Sitter's Parent</div>
+            <div>🛡️ <strong>Match confirmed</strong> → Sitter's Parent for safety review</div>
+            <div>⚠️ <strong>Late cancel (&lt;12 hrs)</strong> → Penalty logged + both parties notified</div>
+            <div>⭐ <strong>Job complete</strong> → Review prompt sent 12 hrs post-job</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span class="ftag">🔒 Parent-Supervised &amp; Secure</span>&nbsp;·&nbsp;
+    Sunny Sitters · Newton Corner, MA&nbsp;·&nbsp;
+    <a href="mailto:rnnvfamily@gmail.com" style="color:var(--sky-dark);">Contact Admin</a>
+  </footer>
+</div>
+
+<!-- ══ BOOKING MODAL ══ -->
+<div class="movl" id="m-book">
+  <div class="modal">
+    <h3>📅 Book <span id="m-sitter">—</span></h3>
+    <p>Your booking goes to the Google Sheet and the sitter's parent gets an instant safety alert.</p>
+    <div class="fr">
+      <div class="field"><label>Date</label><input type="date" id="b-date"/></div>
+      <div class="field"><label>No. of Children</label><input type="number" id="b-kids" min="1" max="6" placeholder="2"/></div>
+    </div>
+    <div class="fr">
+      <div class="field"><label>Start Time</label><input type="time" id="b-start"/></div>
+      <div class="field"><label>End Time</label><input type="time" id="b-end"/></div>
+    </div>
+    <div class="wbox">
+      <h4>⚖️ Confirm your agreement</h4>
+      <p>$15/hr · Team $25/hr · 50% penalty for cancellations within 12 hours · Casual youth service, not a licensed daycare.</p>
+      <label class="chk"><input type="checkbox" id="b-waiver"/><span>I agree to all terms &amp; conditions</span></label>
+    </div>
+    <div class="mact">
+      <button class="btn btn-sun" style="flex:1;" onclick="confirmBook()">Confirm Booking →</button>
+      <button class="btn btn-out" style="flex:1;" onclick="closeM('m-book')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DISCLAIMER MODAL ══ -->
+<div class="movl" id="m-disc">
+  <div class="modal">
+    <h3 id="disc-t">—</h3>
+    <p id="disc-b" style="font-size:13px;line-height:1.7;color:var(--ink);"></p>
+    <div class="mact"><button class="btn btn-sun" onclick="closeM('m-disc')">Got it</button></div>
+  </div>
+</div>
+
+<!-- ══ PANIC MODAL ══ -->
+<div class="movl" id="m-panic">
+  <div class="modal" style="border:3px solid var(--coral);">
+    <h3 style="color:var(--coral);">🚨 Emergency Alert Sent!</h3>
+    <p>Both sets of parents have been notified with GPS location.</p>
+    <div class="wbox" style="background:#FFF3F3;border-color:#FFCDD2;">
+      <h4 style="color:#BF360C;">📞 911 Script</h4>
+      <p style="color:#7B1010;font-size:14px;font-weight:700;line-height:1.8;">"My name is Violet. I am 11 years old. I am babysitting at 14 Oak St, Newton Corner. The emergency is: [DESCRIBE]. Please send help."</p>
+    </div>
+    <div class="mact">
+      <a href="tel:911" style="flex:1;"><button class="btn btn-coral" style="width:100%;">📞 Call 911 Now</button></a>
+      <button class="btn btn-out" style="flex:1;" onclick="closeM('m-panic')">I'm OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SHARE MODAL ══ -->
+<div class="movl" id="m-share">
+  <div class="modal" style="max-width:420px;">
+    <h3>🔗 Share Sunny Sitters</h3>
+    <p>Invite a Newton Corner neighbor to register, or share the app link with anyone who needs a trusted neighborhood sitter.</p>
+    <!-- Link copy -->
+    <div style="display:flex;gap:8px;margin-bottom:18px;">
+      <input id="share-link" value="https://sunnysitters.glideapp.io" readonly style="flex:1;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--rsm);font-size:13px;color:var(--ink);background:var(--s3);outline:none;font-family:'Nunito Sans',sans-serif;"/>
+      <button onclick="copyShareLink()" style="padding:10px 16px;border-radius:var(--rsm);background:var(--sun);border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;white-space:nowrap;">📋 Copy</button>
+    </div>
+    <!-- Share channels -->
+    <div style="font-size:11px;font-weight:700;color:var(--ink-mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Share via</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:20px;">
+      <button onclick="shareVia('sms')" style="display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--ink);transition:all .15s;" onmouseover="this.style.borderColor='var(--grass)'" onmouseout="this.style.borderColor='var(--border)'">
+        <span style="font-size:20px;">💬</span> Text Message
+      </button>
+      <button onclick="shareVia('email')" style="display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--ink);transition:all .15s;" onmouseover="this.style.borderColor='var(--sky-dark)'" onmouseout="this.style.borderColor='var(--border)'">
+        <span style="font-size:20px;">📧</span> Email
+      </button>
+      <button onclick="shareVia('whatsapp')" style="display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--ink);transition:all .15s;" onmouseover="this.style.borderColor='#25D366'" onmouseout="this.style.borderColor='var(--border)'">
+        <span style="font-size:20px;">🟢</span> WhatsApp
+      </button>
+      <button onclick="shareVia('nextdoor')" style="display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--ink);transition:all .15s;" onmouseover="this.style.borderColor='#8DB600'" onmouseout="this.style.borderColor='var(--border)'">
+        <span style="font-size:20px;">🏘️</span> Nextdoor
+      </button>
+      <button onclick="shareVia('facebook')" style="display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--ink);transition:all .15s;" onmouseover="this.style.borderColor='#1877F2'" onmouseout="this.style.borderColor='var(--border)'">
+        <span style="font-size:20px;">📘</span> Facebook
+      </button>
+      <button onclick="shareNative()" style="display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:var(--rsm);border:1.5px solid var(--border);background:var(--surface);cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;color:var(--ink);transition:all .15s;" onmouseover="this.style.borderColor='var(--lav)'" onmouseout="this.style.borderColor='var(--border)'">
+        <span style="font-size:20px;">📱</span> More / Device
+      </button>
+    </div>
+    <!-- Context-aware message preview -->
+    <div style="background:var(--s3);border-radius:var(--rsm);padding:14px;margin-bottom:18px;">
+      <div style="font-size:11px;font-weight:700;color:var(--ink-mid);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;">Message Preview</div>
+      <div style="font-size:13px;color:var(--ink);line-height:1.6;" id="share-preview-text"></div>
+    </div>
+    <div class="mact">
+      <button class="btn btn-out" style="flex:1;" onclick="closeM('m-share')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast-el"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   USER DATABASE
+   In production: every login calls your Google Apps Script
+   Web App  →  doGet(e)  with email+pass  →  returns role+status
+   from your USERS tab. No roles are ever stored client-side.
+═══════════════════════════════════════════════════════════════ */
+const USERS = {
+  'admin@sunnysitters.com':   { pass:'admin123',  role:'admin',        name:'Admin (Parent)',  status:'active'   },
+  'sitterparent@email.com':   { pass:'sp123',     role:'sitterparent', name:'Nooriyah Singh',  status:'active'   },
+  'violet@sunnysitters.com':  { pass:'sit123',    role:'sitter',       name:'Violet Singh',    status:'active'   },
+  'neighbor@email.com':       { pass:'nb123',     role:'customer',     name:'A. Neighbor',     status:'verified' },
+  'newneighbor@email.com':    { pass:'nn123',     role:'customer',     name:'New Neighbor',    status:'pending'  },
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   ROLE CONFIG -- defines exactly what each role can access.
+   tabs[]  = nav buttons they see (and can click)
+   home    = landing screen after login
+   Only 'admin' is given access to all four screens.
+═══════════════════════════════════════════════════════════════ */
+const ROLES = {
+  admin: {
+    label:'Super Admin', badge:'rb-admin',
+    tabs:[
+      { label:'🔑 Admin',            screen:'scr-admin'        },
+      { label:'🛡️ Guardian View',   screen:'scr-sitterparent' },
+      { label:'👧 Sitter View',      screen:'scr-sitter'       },
+      { label:'👨‍👩‍👧 Customer View', screen:'scr-customer'     },
+    ],
+    home:'scr-admin',
+  },
+  sitterparent: {
+    label:"Sitter's Parent", badge:'rb-sp',
+    tabs:[{ label:'🛡️ My Dashboard', screen:'scr-sitterparent' }],
+    home:'scr-sitterparent',
+  },
+  sitter: {
+    label:'Sitter', badge:'rb-sitter',
+    tabs:[{ label:'👧 My Dashboard', screen:'scr-sitter' }],
+    home:'scr-sitter',
+  },
+  customer: {
+    label:'Neighbor', badge:'rb-cust',
+    tabs:[{ label:'👨‍👩‍👧 Find a Sitter', screen:'scr-customer' }],
+    home:'scr-customer', // overridden to scr-pending if status===pending
+  },
+};
+
+/* screens each role may access -- enforced on every showScreen() call */
+const ALLOWED = {
+  admin:        ['scr-admin','scr-sitterparent','scr-sitter','scr-customer'],
+  sitterparent: ['scr-sitterparent'],
+  sitter:       ['scr-sitter'],
+  customer:     ['scr-customer','scr-pending'],
+};
+
+let CU = null; // current user object
+let sheetURL = '';
+let starRating = 0;
+let bookSitter = '';
+
+/* ── SPLASH TABS ── */
+function switchTab(t){
+  document.getElementById('stab-login').classList.toggle('on', t==='login');
+  document.getElementById('stab-reg').classList.toggle('on',   t==='reg');
+  document.getElementById('pane-login').style.display = t==='login' ? 'block' : 'none';
+  document.getElementById('pane-reg').style.display   = t==='reg'   ? 'block' : 'none';
+}
+
+/* ── DEMO QUICK LOGIN ── */
+function ql(email,pass){
+  document.getElementById('li-email').value = email;
+  document.getElementById('li-pass').value  = pass;
+  doLogin();
+}
+
+/* ── LOGIN ── */
+async function doLogin(){
+  const email = document.getElementById('li-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('li-pass').value;
+  const err   = document.getElementById('login-err');
+  const btn   = document.querySelector('#pane-login .btn');
+  err.style.display = 'none';
+
+  // If Sheet URL is connected, hit the real backend
+  if(sheetURL){
+    try{
+      if(btn){ btn.textContent = 'Signing in...'; btn.disabled = true; }
+      const res = await fetch(`${sheetURL}?email=${encodeURIComponent(email)}&pass=${encodeURIComponent(pass)}`);
+      const json = await res.json();
+      if(btn){ btn.textContent = 'Sign In →'; btn.disabled = false; }
+      if(!json.ok){
+        err.textContent = '⚠️ ' + (json.error || 'Login failed');
+        err.style.display = 'block'; return;
+      }
+      CU = { email, role: json.role, status: json.status, name: json.name };
+      mountApp(); return;
+    } catch(e){
+      if(btn){ btn.textContent = 'Sign In →'; btn.disabled = false; }
+      // Fall through to demo mode on network error
+    }
+  }
+
+  // Demo / offline mode — use in-memory USERS
+  const u = USERS[email];
+  if(!u || u.pass !== pass){
+    err.textContent = '⚠️ Email or password not recognised.';
+    err.style.display = 'block'; return;
+  }
+  CU = { email, ...u };
+  mountApp();
+}
+
+/* ── REGISTER ── */
+function doRegister(){
+  const name    = document.getElementById('rg-name').value.trim();
+  const email   = document.getElementById('rg-email').value.trim().toLowerCase();
+  const addr    = document.getElementById('rg-addr').value.trim();
+  const pass    = document.getElementById('rg-pass').value;
+  const waiver  = document.getElementById('rg-waiver').checked;
+  const err     = document.getElementById('reg-err');
+  err.style.display = 'none';
+  if(!name||!email||!addr||!pass){ err.textContent='⚠️ Please fill in all required fields.'; err.style.display='block'; return; }
+  if(!waiver){ err.textContent='⚠️ You must agree to the terms to register.'; err.style.display='block'; return; }
+  if(USERS[email]){ err.textContent='⚠️ That email is already registered -- please sign in.'; err.style.display='block'; return; }
+  USERS[email] = { pass, role:'customer', name, status:'pending' };
+  sendSheet({ type:'REGISTRATION', email, name, addr,
+    ages:document.getElementById('rg-ages').value,
+    allergy:document.getElementById('rg-allergy').value,
+    pets:document.getElementById('rg-pets').value,
+    waiver:true, status:'Unverified' });
+  CU = { email, ...USERS[email] };
+  mountApp();
+}
+
+/* ── MOUNT APP ── */
+function mountApp(){
+  document.getElementById('splash').style.display = 'none';
+  document.getElementById('app').style.display    = 'flex';
+
+  const cfg = ROLES[CU.role];
+
+  // User pill
+  document.getElementById('u-name').textContent = CU.name;
+  const rb = document.getElementById('u-badge');
+  rb.textContent = cfg.label; rb.className = 'rbadge ' + cfg.badge;
+
+  // Build nav -- only tabs for this role
+  const nav = document.getElementById('nav-tabs');
+  nav.innerHTML = '';
+  cfg.tabs.forEach((t,i)=>{
+    const b = document.createElement('button');
+    b.className = 'ntab' + (i===0?' on':'');
+    b.textContent = t.label;
+    b.onclick = ()=> showScreen(t.screen);
+    nav.appendChild(b);
+  });
+
+  // Hide all screens
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+
+  // Pending customer → vetting wall
+  if(CU.role==='customer' && CU.status==='pending'){
+    document.getElementById('scr-pending').classList.add('on'); return;
+  }
+
+  showScreen(cfg.home);
+  if(CU.role==='sitter' || CU.role==='admin') { buildCal(); buildDayAvail(); }
+  if(CU.role==='admin'){ buildUserMgmt(); calcPen(); buildNotifLog(); }
+  // Build inboxes for all roles
+  buildInbox(CU.role);
+}
+
+/* ── SHOW SCREEN (with access control) ── */
+function showScreen(id){
+  const ok = ALLOWED[CU.role] || [];
+  if(!ok.includes(id)){
+    toast('⛔ Access denied -- your role cannot view this screen.','t-warn'); return;
+  }
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  // sync nav highlight
+  const cfg = ROLES[CU.role];
+  document.querySelectorAll('#nav-tabs .ntab').forEach((b,i)=>{
+    b.classList.toggle('on', cfg.tabs[i] && cfg.tabs[i].screen===id);
+  });
+}
+
+/* ── LOGOUT ── */
+function doLogout(){
+  CU = null;
+  document.getElementById('app').style.display    = 'none';
+  document.getElementById('splash').style.display = 'flex';
+  document.getElementById('li-email').value = '';
+  document.getElementById('li-pass').value  = '';
+  document.getElementById('login-err').style.display = 'none';
+  switchTab('login');
+}
+
+/* ── INNER TABS ── */
+function si(g, p){
+  const map = { s:'scr-sitter', sp:'scr-sitterparent', a:'scr-admin', c:'scr-customer' };
+  const scr = document.getElementById(map[g]);
+  scr.querySelectorAll('.itab').forEach(t=>{
+    t.classList.toggle('on', t.getAttribute('onclick')?.includes("'"+p+"'"));
+  });
+  scr.querySelectorAll('.ipane').forEach(el=>el.classList.remove('on'));
+  document.getElementById(g+'-'+p).classList.add('on');
+}
+
+/* ── USER MANAGEMENT (admin only) ── */
+function buildUserMgmt(){
+  const list = document.getElementById('user-mgmt');
+  list.innerHTML = '';
+  Object.entries(USERS).forEach(([email,u])=>{
+    const cfg = ROLES[u.role]||{label:u.role};
+    const div = document.createElement('div');
+    div.className = 'vitem';
+    div.innerHTML = `
+      <div>
+        <div class="vname">${u.name}</div>
+        <div class="vmeta">${email} · <em>${u.status}</em></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <label style="font-size:11px;font-weight:700;color:var(--ink-mid);">ROLE</label>
+        <select style="padding:5px 9px;border-radius:var(--rxs);border:1.5px solid var(--border);font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;" onchange="changeRole('${email}',this.value)">
+          <option value="admin"        ${u.role==='admin'?'selected':''}>🔑 Super Admin</option>
+          <option value="sitterparent" ${u.role==='sitterparent'?'selected':''}>🛡️ Sitter's Parent</option>
+          <option value="sitter"       ${u.role==='sitter'?'selected':''}>👧 Sitter</option>
+          <option value="customer"     ${u.role==='customer'?'selected':''}>👨‍👩‍👧 Customer</option>
+        </select>
+        <label style="font-size:11px;font-weight:700;color:var(--ink-mid);">STATUS</label>
+        <select style="padding:5px 9px;border-radius:var(--rxs);border:1.5px solid var(--border);font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;" onchange="changeStatus('${email}',this.value)">
+          <option value="active"   ${u.status==='active'?'selected':''}>Active</option>
+          <option value="verified" ${u.status==='verified'?'selected':''}>Verified</option>
+          <option value="pending"  ${u.status==='pending'?'selected':''}>Pending</option>
+          <option value="denied"   ${u.status==='denied'?'selected':''}>Denied</option>
+        </select>
+        <span class="pill ${u.status==='pending'?'p-pend':u.status==='denied'?'p-bad':'p-ok'}">${u.status}</span>
+      </div>`;
+    list.appendChild(div);
+  });
+}
+
+function changeRole(email, r){
+  USERS[email].role = r;
+  sendSheet({ type:'ROLE_CHANGE', email, newRole:r, by:CU.email });
+  toast(`✅ Role → ${r} for ${email}`, 't-ok');
+  buildUserMgmt();
+}
+function changeStatus(email, s){
+  USERS[email].status = s;
+  sendSheet({ type:'STATUS_CHANGE', email, newStatus:s, by:CU.email });
+  toast(`✅ Status → ${s} for ${email}`, 't-ok');
+  buildUserMgmt();
+}
+
+/* ── VETTING ── */
+function verifyFam(id, btn){
+  const el = document.getElementById(id);
+  el.querySelector('.pill').textContent='Verified ✓'; el.querySelector('.pill').className='pill p-ok';
+  btn.textContent='✓ Done'; btn.disabled=true;
+  sendSheet({ type:'VERIFY', id, status:'Verified', by:CU.email });
+  toast('✅ Verified! Neighbor can now browse & book.','t-ok');
+  buildUserMgmt();
+}
+function denyFam(id, btn){
+  document.getElementById(id).querySelector('.pill').textContent='Denied';
+  document.getElementById(id).querySelector('.pill').className='pill p-bad';
+  document.getElementById(id).style.opacity='.5';
+  toast('Neighbor denied.','t-warn');
+}
+
+/* ── BOOKING ── */
+function openBooking(name, id){
+  bookSitter = id;
+  document.getElementById('m-sitter').textContent = name;
+  document.getElementById('m-book').classList.add('open');
+}
+function confirmBook(){
+  if(!document.getElementById('b-waiver').checked){ toast('Must agree to terms.','t-warn'); return; }
+  const d = document.getElementById('b-date').value;
+  if(!d){ toast('Please pick a date.','t-warn'); return; }
+  closeM('m-book');
+  const entry = { type:'BOOKING', sitter:bookSitter, parent:CU.email, date:d,
+    kids:document.getElementById('b-kids').value,
+    start:document.getElementById('b-start').value,
+    end:document.getElementById('b-end').value, waiver:true, status:'Pending' };
+  sendSheet(entry);
+  // Add to my bookings only
+  const li = document.createElement('div');
+  li.className = 'jitem';
+  li.innerHTML = `<div><div class="jfam">${document.getElementById('m-sitter').textContent} -- Your booking</div>
+    <div class="jmeta"><span>📅 ${d}</span><span>🕐 ${entry.start||'TBD'}-${entry.end||'TBD'}</span><span>👶 ${entry.kids||'--'}</span></div></div>
+    <span class="pill p-pend">Pending</span>`;
+  document.getElementById('cust-bookings').appendChild(li);
+  toast("✅ Booking submitted! Sitter's parent will review.",'t-ok');
+}
+
+/* ── JOB ACTIONS ── */
+function acceptJob(btn){ btn.closest('.jitem').querySelector('.jfam').style.color='var(--grass)'; btn.parentElement.innerHTML='<span class="pill p-ok">✓ Accepted</span>'; sendSheet({type:'JOB_ACCEPT',by:CU.email}); toast('✅ Job accepted -- parent notified!','t-ok'); }
+function declineJob(btn){ btn.closest('.jitem').style.opacity='.5'; toast('Job declined.',''); }
+function clearJob(btn){ btn.textContent='✓ Cleared'; btn.disabled=true; btn.closest('.vitem').style.borderColor='#A5D6A7'; sendSheet({type:'SAFETY_CLEAR',by:CU.email}); toast('🛡️ Safety cleared -- sitter notified.','t-ok'); }
+function flagJob(btn){ toast('🚩 Flagged -- admin emailed.','t-warn'); }
+function appRev(btn){ btn.textContent='✓ Approved'; btn.disabled=true; btn.style.cssText='background:var(--grass);color:#fff;padding:7px 14px;border-radius:var(--rxs);font-family:Nunito,sans-serif;font-weight:700;font-size:12px;border:none;'; toast('⭐ Review approved!','t-ok'); }
+
+/* ── PROFILE APPROVAL ── */
+function saveProfile(){ sendSheet({type:'PROFILE_APPROVAL',sitter:'Violet Singh',rate:document.getElementById('ap-rate').value,approved:document.getElementById('ap-chk').checked}); toast('💾 Profile saved!','t-ok'); }
+
+/* ── REVIEW ── */
+function setStars(n){ starRating=n; document.querySelectorAll('#rev-stars .star').forEach((s,i)=>s.classList.toggle('lit',i<n)); }
+function submitReview(){ if(!starRating){ toast('Tap a star first.','t-warn'); return; } sendSheet({type:'REVIEW',rating:starRating,text:document.getElementById('rev-text').value,sitter:'Violet Singh',by:CU.email}); toast('⭐ Submitted -- pending admin approval.','t-ok'); }
+
+/* ── JOB REQUEST ── */
+function submitReq(){ const d=document.getElementById('req-date').value; if(!d){ toast('Please pick a date.','t-warn'); return; } sendSheet({type:'FAMILY_DEMAND',parent:CU.email,date:d,hours:document.getElementById('req-hours').value,kids:document.getElementById('req-kids').value,price:document.getElementById('req-price').value,notes:document.getElementById('req-notes').value}); toast('📢 Request posted -- the girls will check!','t-ok'); }
+
+/* ── DISCLAIMER MODAL ── */
+function showDisc(t,b){ document.getElementById('disc-t').textContent=t; document.getElementById('disc-b').textContent=b; document.getElementById('m-disc').classList.add('open'); }
+
+/* ── CALENDAR EXPORT DATA ── */
+const CUST_BOOKINGS = [
+  {title:'Sunny Sitters -- Violet S.',start:'20260517T150000Z',end:'20260517T180000Z',loc:'14 Oak St, Newton Corner MA',desc:'Sitter: Violet S. | 2 children | $45 agreed | Rate: $15/hr'},
+  {title:'Sunny Sitters -- Esme F.',start:'20260519T160000Z',end:'20260519T190000Z',loc:'14 Oak St, Newton Corner MA',desc:'Sitter: Esme F. | 1 child | $45 agreed | Rate: $15/hr'},
+];
+const SITTER_JOBS = [
+  {title:'Sunny Sitters Job -- Martinez Family',start:'20260517T150000Z',end:'20260517T180000Z',loc:'14 Oak St, Newton Corner MA',desc:'Pay: $45 | 2 children | Nut allergy on file'},
+  {title:'Sunny Sitters Job -- Chen Family',start:'20260519T160000Z',end:'20260519T190000Z',loc:'22 Maple St, Newton Corner MA',desc:'Pay: $45 | 1 child'},
+];
+const SITTER_JOBS_GUARDIAN = [
+  {title:'Violet -- Sunny Sitters Job (Martinez)',start:'20260517T150000Z',end:'20260517T180000Z',loc:'14 Oak St, Newton Corner MA',desc:'Guardian export | Pay: $45 | 2 children'},
+  {title:'Violet -- Sunny Sitters Job (Chen)',start:'20260519T160000Z',end:'20260519T190000Z',loc:'22 Maple St, Newton Corner MA',desc:'Guardian export | Pay: $45 | 1 child'},
+];
+const ALL_ADMIN_BOOKINGS = [
+  {title:'[Admin] Violet + Martinez Family',start:'20260517T150000Z',end:'20260517T180000Z',loc:'14 Oak St, Newton Corner MA',desc:'$45 | 2 children | Nut allergy'},
+  {title:'[Admin] Violet + Park Family',start:'20260518T140000Z',end:'20260518T170000Z',loc:'45 Pine Rd, Newton Corner MA',desc:'$60 | 3 children'},
+  {title:'[Admin] Esme + Chen Family',start:'20260519T160000Z',end:'20260519T190000Z',loc:'22 Maple St, Newton Corner MA',desc:'$45 | 1 child'},
+];
+
+function makeICS(events){
+  const esc=s=>(s||'').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+  let s='BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//SunnySitters//EN\r\nCALSCALE:GREGORIAN\r\n';
+  events.forEach((e,i)=>{
+    const uid='sunnysitters-'+Date.now()+'-'+i+'@sunnysitters.app';
+    s+=`BEGIN:VEVENT\r\nUID:${uid}\r\nDTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z\r\nDTSTART:${e.start}\r\nDTEND:${e.end}\r\nSUMMARY:${esc(e.title)}\r\n`;
+    if(e.loc) s+=`LOCATION:${esc(e.loc)}\r\n`;
+    if(e.desc) s+=`DESCRIPTION:${esc(e.desc)}\r\n`;
+    s+='END:VEVENT\r\n';
+  });
+  return s+'END:VCALENDAR';
+}
+function dlICal(events,filename){
+  const blob=new Blob([makeICS(events)],{type:'text/calendar;charset=utf-8'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=(filename||'sunnysitters')+'.ics'; a.click();
+  toast('📅 .ics file downloaded -- open it to import to your calendar!','t-ok');
+}
+function exportGCal(title,start,end,loc,details){
+  const url=`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&location=${encodeURIComponent(loc||'')}&details=${encodeURIComponent(details||'')}`;
+  window.open(url,'_blank');
+}
+
+/* ── MESSAGES DATA ── */
+const MESSAGES={
+  customer:[
+    {id:"c1",unread:true,from:"Sunny Sitters Admin",subject:"✅ Booking Confirmed - Violet S. on May 17",preview:"Your booking with Violet S. for Saturday May 17 is confirmed",time:"Today 9:14 AM",tag:"booking",body:"Hi A. Neighbor!<br><br>Your booking with <strong>Violet S.</strong> is confirmed:<br><br><strong>Date:</strong> Saturday, May 17, 2026<br><strong>Time:</strong> 3:00 PM - 6:00 PM<br><strong>Agreed Rate:</strong> $45<br><br>⚠️ <strong>Reminder:</strong> Cancellations within 12 hours incur a 50% penalty ($22.50).<br><br>See you then! ☀️<br>- The Sunny Sitters Team"},
+    {id:"c2",unread:true,from:"Sunny Sitters Admin",subject:"📋 Registration Approved - Welcome!",preview:"Your account has been verified by our admin",time:"Yesterday 3:47 PM",tag:"registration",body:"Welcome to Sunny Sitters!<br><br>Your account is now <strong>verified</strong>. You can browse availability and make bookings.<br><br>Rate: <strong>$15/hr</strong> - 12-hr cancellation policy applies - Casual youth service.<br><br>Happy to have you! 🌟<br>- Nooriyah Singh, Admin"},
+    {id:"c3",unread:false,from:"Sunny Sitters Admin",subject:"📢 New Availability Posted for This Weekend",preview:"Violet and Esme have opened new slots this weekend",time:"May 15 11:02 AM",tag:"availability",body:"Hi!<br><br>New availability posted:<br>- <strong>Saturday May 17:</strong> 3:00-8:00 PM<br>- <strong>Sunday May 18:</strong> 10:00 AM-4:00 PM<br><br>Log in to book before slots fill up!<br>- The Sunny Sitters Team"},
+  ],
+  sitter:[
+    {id:"s1",unread:true,from:"Sunny Sitters System",subject:"☀️ New Job Alert: Martinez Family",preview:"You have a new booking request from the Martinez family",time:"Today 8:50 AM",tag:"booking",body:"Hi Violet!<br><br><strong>Family:</strong> Martinez<br><strong>Date:</strong> Sat May 17 - 3-6 PM<br><strong>Children:</strong> 2<br>⚠️ Nut allergy on file<br><strong>Offer:</strong> $45<br><br>Confirm in the app within 2 hours to lock this in!<br>- Sunny Sitters System"},
+    {id:"s2",unread:false,from:"Nooriyah Singh (Your Parent)",subject:"🛡️ Safety Cleared - Martinez Family",preview:"Hi Violet, I reviewed the Martinez family profile and all is clear",time:"Today 9:05 AM",tag:"safety",body:"Hi Violet!<br><br>Martinez booking is cleared:<br>✅ Nut allergy noted - no nuts in snacks<br>✅ No pets - Emergency contact confirmed<br><br>Text me when you arrive and when you leave.<br>- Mom"},
+  ],
+  sitterparent:[
+    {id:"sp1",unread:true,from:"Sunny Sitters System",subject:"🛡️ Safety Review - Martinez Family (May 17)",preview:"A confirmed booking requires your safety clearance",time:"Today 9:00 AM",tag:"safety",body:"Hi Nooriyah!<br><br><strong>Family:</strong> Martinez - May 17, 3-6 PM<br><strong>Sitter:</strong> Violet<br>⚠️ <strong>Nut allergy on file</strong><br><br>Review and clear in the Guardian Oversight tab.<br>- Sunny Sitters System"},
+    {id:"sp2",unread:true,from:"Sunny Sitters System",subject:"🛡️ Safety Review - Chen Family (May 19)",preview:"A second booking needs your clearance",time:"Today 9:01 AM",tag:"safety",body:"Hi Nooriyah!<br><br><strong>Family:</strong> Chen - May 19, 4-7 PM<br><strong>Sitter:</strong> Violet<br>🐾 Hypoallergenic cat on premises<br><br>Clear in Guardian Oversight.<br>- Sunny Sitters System"},
+    {id:"sp3",unread:true,from:"Sunny Sitters System",subject:"🖼️ Avatar Change - Violet submitted 🌸",preview:"Violet has chosen a new emoji avatar and updated her bio",time:"Today 8:45 AM",tag:"avatar",body:"Hi Nooriyah!<br><br>Violet submitted a profile update:<br><strong>New Avatar:</strong> 🌸<br><strong>New Bio:</strong> Hi! I love doing crafts, helping with homework, and I am certified in first aid.<br><br>Review in <strong>Profile &amp; Avatar Approval</strong> tab.<br>- Sunny Sitters System"},
+    {id:"sp4",unread:false,from:"Sunny Sitters System",subject:"✅ Booking Confirmed - Violet + Martinez",preview:"The Martinez family booking is fully confirmed",time:"Yesterday 4:00 PM",tag:"booking",body:"Hi Nooriyah!<br><br>Confirmed: <strong>Violet + Martinez Family</strong><br>May 17, 3-6 PM - Pay $45<br><br>Safety clearance request sent separately.<br>- Sunny Sitters System"},
+  ],
+  admin:[
+    {id:"a1",unread:true,from:"System",subject:"🆕 New Registration - Linda Chen",preview:"A new neighbor has registered and is awaiting verification",time:"Today 7:32 AM",tag:"registration",body:"<strong>Name:</strong> Linda Chen - 22 Maple St<br><strong>Email:</strong> linda@email.com<br><strong>Kids:</strong> 2, ages 5 and 8 - Hypoallergenic cat<br><strong>Waiver:</strong> ✅<br><br>Review in Vetting Queue.<br>- System"},
+    {id:"a2",unread:true,from:"System",subject:"🆕 New Registration - Robert Jones",preview:"Another new neighbor is awaiting verification",time:"Today 7:33 AM",tag:"registration",body:"<strong>Name:</strong> Robert Jones - 8 Birch Ave<br><strong>Email:</strong> rjones@email.com<br><strong>Kids:</strong> 1, age 4<br><strong>Waiver:</strong> ✅<br><br>Review in Vetting Queue.<br>- System"},
+    {id:"a3",unread:true,from:"System",subject:"⚠️ Late Cancellation - Davis Family",preview:"A cancellation was made within 12 hours. Penalty: $22.50",time:"May 3 11:35 AM",tag:"penalty",body:"<strong>Family:</strong> Davis - May 3, 2-5 PM<br><strong>Cancelled:</strong> 11:30 AM (2.5 hrs notice)<br><strong>Sitter:</strong> Violet Singh<br><strong>Penalty:</strong> $22.50 (50% of $45)<br><br>Follow up in Penalties tab.<br>- System"},
+    {id:"a4",unread:true,from:"Nooriyah Singh",subject:"🚩 Flagged - Park Family Notes Unclear",preview:"I flagged the Park Family booking - baby feeding schedule unclear",time:"Today 9:15 AM",tag:"safety",body:"Hi Admin,<br><br>I flagged the Park Family booking because the notes about the baby feeding schedule are unclear. Can we get more specific instructions before Violet confirms?<br><br>Thanks,<br>Nooriyah"},
+    {id:"a5",unread:false,from:"System",subject:"✅ Booking Confirmed - Violet + Martinez",preview:"Fully confirmed after safety clearance by Nooriyah",time:"Today 9:10 AM",tag:"booking",body:"Confirmed: <strong>Violet + Martinez Family</strong><br>May 17, 3-6 PM - $45<br>Safety cleared by Nooriyah Singh 9:05 AM<br>Logged in BOOKINGS + AUDIT_LOG.<br>- System"},
+  ],
+};
+
+/* ── NOTIFICATION LOG ── */
+const NOTIF_LOG=[
+  {type:'📩',tag:'registration',subject:'Registration Alert -- Linda Chen',to:'admin@sunnysitters.com',time:'Today 7:32 AM',status:'sent',body:'New neighbor Linda Chen (22 Maple St) registered. Awaiting admin verification.'},
+  {type:'📩',tag:'registration',subject:'Registration Alert -- Robert Jones',to:'admin@sunnysitters.com',time:'Today 7:33 AM',status:'sent',body:'New neighbor Robert Jones (8 Birch Ave) registered. Awaiting admin verification.'},
+  {type:'✅',tag:'booking',subject:'Booking Confirmed -- Violet + Martinez',to:'neighbor@email.com, violet@sunnysitters.com, sitterparent@email.com',time:'Today 9:05 AM',status:'sent',body:'Booking confirmed May 17, 3-6 PM. Safety clearance complete. All parties notified.'},
+  {type:'🛡️',tag:'safety',subject:'Safety Clearance Request -- Martinez Family',to:'sitterparent@email.com',time:'Today 9:00 AM',status:'sent',body:'New booking requires safety review. Dietary: nut allergy. Pets: none.'},
+  {type:'🛡️',tag:'safety',subject:'Safety Clearance Request -- Chen Family',to:'sitterparent@email.com',time:'Today 9:01 AM',status:'sent',body:'New booking requires safety review. Pet: hypoallergenic cat. No allergies.'},
+  {type:'⚠️',tag:'penalty',subject:'Late Cancellation -- Davis Family',to:'admin@sunnysitters.com, neighbor@email.com',time:'May 3 11:35 AM',status:'sent',body:'Cancellation 2.5 hrs notice. Penalty: $22.50. Action required within 24 hrs.'},
+  {type:'⭐',tag:'review',subject:'Review Prompt -- Johnson Family',to:'neighbor@email.com',time:'May 11 6:00 PM',status:'sent',body:'How was your experience with Violet Singh? Leave a review in the app.'},
+  {type:'🖼️',tag:'avatar',subject:'Avatar Change Submitted -- Violet Singh',to:'sitterparent@email.com',time:'Today 8:45 AM',status:'sent',body:'Violet submitted new emoji avatar (🌸) and updated bio. Pending guardian approval.'},
+];
+let activeNotifTag='all';
+
+function buildNotifLog(){
+  const list=document.getElementById('notif-log'); if(!list) return;
+  list.innerHTML='';
+  NOTIF_LOG.filter(n=>activeNotifTag==='all'||n.tag===activeNotifTag).forEach(n=>{
+    const div=document.createElement('div'); div.className='notif-item'; div.style.cursor='pointer';
+    div.innerHTML=`<div class="notif-type">${n.type}</div><div><div class="notif-subject">${n.subject}</div><div class="notif-to">To: ${n.to}</div></div><div class="notif-time">${n.time}</div><span class="notif-status ns-${n.status}">${n.status==='sent'?'✓ Sent':'⏳ Pending'}</span>`;
+    div.onclick=()=>showNotifDetail(n); list.appendChild(div);
+  });
+  if(!list.children.length) list.innerHTML='<div style="padding:20px;text-align:center;color:var(--ink-mid);font-size:13px;">No notifications match this filter.</div>';
+}
+function showNotifDetail(n){
+  document.getElementById('notif-log').style.display='none';
+  document.querySelectorAll('#notif-filters .bsm').forEach(b=>b.style.display='none');
+  const det=document.getElementById('notif-detail'); det.style.display='block';
+  document.getElementById('notif-detail-content').innerHTML=`<div class="msg-detail-subject">${n.type} ${n.subject}</div><div class="msg-detail-meta"><span>To: ${n.to}</span><span>${n.time}</span><span class="notif-status ns-${n.status}">${n.status==='sent'?'✓ Sent':'⏳'}</span></div><div class="msg-detail-body">${n.body}</div>`;
+}
+function filterNotif(tag,btn){
+  activeNotifTag=tag;
+  document.querySelectorAll('#notif-filters .bsm').forEach(b=>{b.className='bsm btn-out';b.style.display='';});
+  btn.className='bsm btn-sky';
+  document.getElementById('notif-log').style.display=''; document.getElementById('notif-detail').style.display='none';
+  buildNotifLog();
+}
+
+/* ── MESSAGES INBOX ── */
+// Live inbox: fetches from NOTIFICATIONS sheet tab when sheetURL is set.
+// Falls back to MESSAGES demo data when in offline/demo mode.
+
+async function buildInbox(role){
+  const listId={customer:'c-msgs',sitter:'s-msgs-list',sitterparent:'sp-msgs-list',admin:'a-msgs-list'}[role];
+  const el=document.getElementById(listId); if(!el) return;
+
+  // Show loading state
+  el.innerHTML='<div style="padding:20px;text-align:center;color:var(--ink-mid);font-size:13px;">Loading messages...</div>';
+
+  let msgs = [];
+
+  if(sheetURL){
+    // ── LIVE MODE: fetch real notifications from Sheet ──
+    try{
+      const url = sheetURL + '?action=getMessages&role=' + encodeURIComponent(role) + '&email=' + encodeURIComponent(CU.email);
+      const res = await fetch(url);
+      const json = await res.json();
+      if(json.ok && json.messages && json.messages.length){
+        msgs = json.messages;
+      } else {
+        // Sheet connected but no messages yet — show empty state
+        el.innerHTML='<div style="padding:32px;text-align:center;color:var(--ink-mid);font-size:14px;">No messages yet.<br><span style=\'font-size:12px;\'>Messages appear here when emails are sent by the system.</span></div>';
+        return;
+      }
+    } catch(e){
+      // Network error — fall back to demo data silently
+      msgs = MESSAGES[role]||[];
+    }
+  } else {
+    // ── DEMO MODE: use hardcoded sample messages ──
+    msgs = MESSAGES[role]||[];
+  }
+
+  el.innerHTML='';
+  if(!msgs.length){
+    el.innerHTML='<div style="padding:32px;text-align:center;color:var(--ink-mid);font-size:14px;">No messages yet.</div>';
+    return;
+  }
+  msgs.forEach(m=>{
+    const div=document.createElement('div'); div.className='msg-item'+(m.unread?' unread':'');
+    div.innerHTML=`${m.unread?'<div class="msg-unread-dot"></div>':''}<div class="msg-subject">${m.subject}</div><div class="msg-preview">From ${m.from||'Sunny Sitters System'} -- ${m.preview}</div><div class="msg-meta"><span>${m.time||m.timestamp||''}</span>${sheetURL?'':'<span style="font-size:10px;background:var(--sun-light);color:#7A5C00;padding:2px 7px;border-radius:20px;font-weight:700;">Demo</span>'}</div>`;
+    div.onclick=()=>openMsg(role,m); el.appendChild(div);
+  });
+}
+
+function openMsg(role,m){
+  const pfx={customer:'c',sitter:'s',sitterparent:'sp',admin:'a'}[role];
+  document.getElementById(pfx+'-inbox').style.display='none';
+  document.getElementById(pfx+'-thread').style.display='block';
+  document.getElementById(pfx+'-thread-content').innerHTML=`
+    <div class="msg-detail-subject">${m.subject}</div>
+    <div class="msg-detail-meta">
+      <span>From: ${m.from||'Sunny Sitters System'}</span>
+      <span>${m.time||m.timestamp||''}</span>
+      ${m.recipient?'<span>To: '+m.recipient+'</span>':''}
+      ${!sheetURL?'<span style="background:var(--sun-light);color:#7A5C00;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;">Demo message</span>':''}
+    </div>
+    <div class="msg-detail-body">${m.body||m.preview||''}</div>`;
+  m.unread=false;
+  buildInbox(role);
+}
+
+function backToInbox(pfx){
+  document.getElementById(pfx+'-inbox').style.display='block';
+  document.getElementById(pfx+'-thread').style.display='none';
+}
+
+function markRead(pfx){
+  const dot=document.getElementById(pfx+'-unread-dot');
+  if(dot) setTimeout(()=>dot.style.display='none',1500);
+}
+
+/* ── AVATAR PICKER ── */
+function selectAv(el,emoji){
+  document.querySelectorAll('.av-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected'); el.dataset.emoji=emoji;
+}
+function previewAvatar(input){
+  if(input.files&&input.files[0]){
+    const r=new FileReader(); r.onload=e=>{
+      document.getElementById('av-upload-preview').innerHTML=`<img src="${e.target.result}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;"/>`;
+      document.getElementById('av-upload-label').textContent='✅ Photo selected';
+    }; r.readAsDataURL(input.files[0]);
+  }
+}
+function submitAvatarForApproval(){
+  const sel=document.querySelector('.av-opt.selected');
+  document.getElementById('av-pending').style.display='inline-flex';
+  sendSheet({type:'AVATAR_SUBMIT',sitter:'Violet Singh',emoji:sel?sel.dataset.emoji:'',tagline:document.getElementById('av-tagline').value,bio:document.getElementById('av-bio').value});
+  toast("🖼️ Avatar submitted for parent approval!",'t-ok');
+}
+function approveAvatar(id,btn){
+  const el=document.getElementById(id); el.style.borderColor='#A5D6A7'; el.style.background='#F1F8E9';
+  btn.textContent='✅ Approved & Live'; btn.disabled=true;
+  const av=document.getElementById('cust-av-v'); if(av){av.textContent='🌸';av.style.fontSize='24px';}
+  sendSheet({type:'AVATAR_APPROVED',sitter:'Violet Singh',by:CU.email});
+  toast('✅ Avatar approved and now live in the app!','t-ok');
+}
+function rejectAvatar(id,btn){
+  document.getElementById(id).style.opacity='.5'; btn.textContent='✗ Rejected'; btn.disabled=true;
+  toast('Avatar rejected -- Violet will be notified.','t-warn');
+}
+
+/* ── CALENDAR (availability grid) ── */
+function buildCal(){
+  const cal = document.getElementById('avail-cal'); if(!cal) return;
+  const days=['Su','Mo','Tu','We','Th','Fr','Sa'];
+  const open=[17,18,20], busy=[22,23];
+  cal.innerHTML='';
+  days.forEach(d=>{ const h=document.createElement('div'); h.style.cssText='text-align:center;font-size:10px;font-weight:700;color:var(--ink-mid);padding:2px 0;'; h.textContent=d; cal.appendChild(h); });
+  for(let i=0;i<5;i++){ cal.appendChild(document.createElement('div')); }
+  for(let d=16;d<=31;d++){
+    const c=document.createElement('div'); c.className='calday';
+    if(open.includes(d)) c.classList.add('open');
+    if(busy.includes(d)) c.classList.add('busy');
+    c.dataset.date='2026-05-'+String(d).padStart(2,'0');
+    c.innerHTML=`<span class="dn">${d}</span><span class="dl">${open.includes(d)?'Open':busy.includes(d)?'Busy':'May'}</span>`;
+    c.onclick=function(){ if(this.classList.contains('open')){this.classList.remove('open');this.classList.add('busy');this.querySelector('.dl').textContent='Busy';}else if(this.classList.contains('busy')){this.classList.remove('busy');this.querySelector('.dl').textContent='May';}else{this.classList.add('open');this.querySelector('.dl').textContent='Open';} };
+    cal.appendChild(c);
+  }
+}
+function saveAvail(){ const s=[]; document.querySelectorAll('#avail-cal .calday').forEach(d=>{ if(d.classList.contains('open')||d.classList.contains('busy')) s.push({date:d.dataset.date,status:d.classList.contains('open')?'Open':'Busy'}); }); sendSheet({type:'AVAILABILITY',sitter:'Violet Singh',slots:s}); toast('💾 Availability saved to Sheet!','t-ok'); }
+
+/* ── PENALTIES ── */
+function calcPen(){ const r=parseFloat(document.getElementById('pen-r')?.value)||0, h=parseFloat(document.getElementById('pen-h')?.value)||0, el=document.getElementById('pen-out'); if(el) el.textContent='Penalty = $'+(r*h*.5).toFixed(2); }
+
+/* ── EMERGENCY ── */
+function triggerPanic(){ sendSheet({type:'PANIC',by:CU.email,timestamp:new Date().toISOString(),gps:'enabled'}); document.getElementById('m-panic').classList.add('open'); }
+
+/* ── SHEET SYNC (admin only) ── */
+function saveSheetURL(){ sheetURL=document.getElementById('sheet-url').value.trim(); if(!sheetURL){ toast('Paste a URL first.','t-warn'); return; } document.getElementById('sheet-st').innerHTML='<div class="dot" style="background:var(--grass);"></div><span>Connected ✓</span>'; document.getElementById('sheet-lbl').textContent='Connected ✓ -- live sync active'; toast('🔗 Google Sheet connected!','t-ok'); }
+function testConn(){ if(!sheetURL){ toast('Enter URL in the bar above.','t-warn'); return; } toast('🔄 Testing...','t-info'); setTimeout(()=>toast('✅ Connection verified!','t-ok'),1200); }
+function sendSheet(data){ if(!sheetURL) return; fetch(sheetURL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...data,timestamp:new Date().toISOString(),source:'SunnySitters'}),mode:'no-cors'}).catch(()=>{}); console.log('→ Sheet:',data); }
+
+/* ── SCHOOL HOURS CONSTANT ── */
+const SCHOOL_START = 8;   // 8:00 AM
+const SCHOOL_END   = 15;  // 3:00 PM (15:00)
+const WEEKEND_DAYS = [0, 6]; // Sun=0, Sat=6
+function isSchoolHour(dateStr, timeStr){
+  // dateStr: 'YYYY-MM-DD', timeStr: 'HH:MM'
+  const d = new Date(dateStr + 'T00:00:00');
+  const dow = d.getDay();
+  if(WEEKEND_DAYS.includes(dow)) return false; // weekends always OK
+  if(!timeStr) return false;
+  const h = parseInt(timeStr.split(':')[0]);
+  return h >= SCHOOL_START && h < SCHOOL_END;
+}
+function isWeekday(dateStr){
+  const dow = new Date(dateStr+'T00:00:00').getDay();
+  return !WEEKEND_DAYS.includes(dow);
+}
+
+/* ── DAY AVAILABILITY PICKER ── */
+// Next 7 days starting tomorrow
+const DAY_AVAIL_STATE = {}; // { 'YYYY-MM-DD': { checked, start, end } }
+
+function buildDayAvail(){
+  const el = document.getElementById('day-avail-list'); if(!el) return;
+  el.innerHTML = '';
+  for(let i=1; i<=7; i++){
+    const d = new Date(); d.setDate(d.getDate()+i);
+    const ds = d.toISOString().split('T')[0];
+    const dow = d.getDay();
+    const dayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][dow];
+    const dateLabel = d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    const isWeekd = !WEEKEND_DAYS.includes(dow);
+    // Defaults: weekdays after 3pm, weekends all day
+    if(!DAY_AVAIL_STATE[ds]){
+      DAY_AVAIL_STATE[ds] = {
+        checked: WEEKEND_DAYS.includes(dow), // weekends pre-checked
+        start: isWeekd ? '15:00' : '10:00',
+        end:   isWeekd ? '20:00' : '18:00'
+      };
+    }
+    const st = DAY_AVAIL_STATE[ds];
+    const row = document.createElement('div');
+    row.style.cssText = 'background:var(--surface);border-radius:var(--rsm);padding:14px 16px;border:1.5px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap;';
+    if(st.checked) row.style.borderColor = '#A5D6A7';
+    row.innerHTML = `
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;min-width:130px;">
+        <input type="checkbox" id="day-chk-${ds}" ${st.checked?'checked':''} onchange="dayChkChange('${ds}',this)"
+          style="width:17px;height:17px;cursor:pointer;"/>
+        <span style="font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;">${dayName}</span>
+        <span style="font-size:12px;color:var(--ink-mid);">${dateLabel}</span>
+        ${isWeekd?'<span style="font-size:10px;background:var(--sky-light);color:var(--sky-dark);border-radius:20px;padding:2px 7px;font-weight:700;">After school</span>':'<span style="font-size:10px;background:var(--grass-light);color:#2E7D32;border-radius:20px;padding:2px 7px;font-weight:700;">Weekend</span>'}
+      </label>
+      <div style="display:flex;align-items:center;gap:8px;opacity:${st.checked?'1':'0.35'};" id="day-times-${ds}">
+        <span style="font-size:12px;color:var(--ink-mid);">From</span>
+        <input type="time" id="day-start-${ds}" value="${st.start}" min="${isWeekd?'15:00':'08:00'}" max="21:00"
+          style="padding:6px 8px;border:1.5px solid var(--border);border-radius:var(--rxs);font-size:13px;font-family:'Nunito Sans',sans-serif;"
+          onchange="dayTimeChange('${ds}','start',this.value,'${isWeekd}')"/>
+        <span style="font-size:12px;color:var(--ink-mid);">to</span>
+        <input type="time" id="day-end-${ds}" value="${st.end}" min="${isWeekd?'15:00':'08:00'}" max="22:00"
+          style="padding:6px 8px;border:1.5px solid var(--border);border-radius:var(--rxs);font-size:13px;font-family:'Nunito Sans',sans-serif;"
+          onchange="dayTimeChange('${ds}','end',this.value,'${isWeekd}')"/>
+      </div>`;
+    el.appendChild(row);
+  }
+}
+
+function dayChkChange(ds, chk){
+  DAY_AVAIL_STATE[ds].checked = chk.checked;
+  const tEl = document.getElementById('day-times-'+ds);
+  const row = chk.closest('div');
+  if(tEl) tEl.style.opacity = chk.checked ? '1' : '0.35';
+  if(row) row.style.borderColor = chk.checked ? '#A5D6A7' : 'var(--border)';
+}
+
+function dayTimeChange(ds, which, val, isWeekd){
+  // Block school hours on weekdays
+  if(isWeekd === 'true' && val){
+    const h = parseInt(val.split(':')[0]);
+    if(h < SCHOOL_END){
+      toast('🏫 School hours blocked -- earliest weekday start is 3:00 PM.','t-warn');
+      document.getElementById(`day-${which}-${ds}`).value = '15:00';
+      DAY_AVAIL_STATE[ds][which] = '15:00';
+      return;
+    }
+  }
+  DAY_AVAIL_STATE[ds][which] = val;
+}
+
+function saveDayAvail(){
+  const slots = Object.entries(DAY_AVAIL_STATE)
+    .filter(([ds, v]) => v.checked)
+    .map(([ds, v]) => ({ date: ds, start: v.start, end: v.end, status: 'Open' }));
+  if(!slots.length){ toast('Select at least one available day first.','t-warn'); return; }
+  sendSheet({ type:'AVAILABILITY', sitter:'Violet Singh', slots });
+  toast(`💾 ${slots.length} day(s) saved to Sheet -- neighbors can now see your open slots!`,'t-ok');
+  buildCal(); // refresh visual grid
+}
+
+/* ── SHARE MODAL ── */
+const APP_URL = 'https://sunnysitters.glideapp.io';
+const SHARE_MSGS = {
+  admin:        `Hi! I'm the admin for Sunny Sitters, a trusted neighborhood babysitting service in Newton Corner run by responsible local tweens. Neighbors can register and book here: ${APP_URL}`,
+  sitterparent: `Hi! My daughter babysits through Sunny Sitters -- a safe, parent-supervised service in Newton Corner. Families can register and book at: ${APP_URL}`,
+  sitter:       `Hi neighbor! I'm Violet, and I babysit through Sunny Sitters in Newton Corner. Check out our app to see my availability and book a session: ${APP_URL}`,
+  customer:     `Hey! I've been using Sunny Sitters for babysitting in Newton Corner -- really responsible local kids, parent-supervised. Check it out: ${APP_URL}`,
+};
+
+function openShare(){
+  const msg = SHARE_MSGS[CU.role] || SHARE_MSGS.customer;
+  document.getElementById('share-preview-text').textContent = msg;
+  document.getElementById('m-share').classList.add('open');
+}
+
+function copyShareLink(){
+  navigator.clipboard.writeText(APP_URL).then(()=>{
+    toast('📋 Link copied to clipboard!','t-ok');
+  }).catch(()=>{
+    // fallback
+    const el = document.getElementById('share-link');
+    el.select(); document.execCommand('copy');
+    toast('📋 Link copied!','t-ok');
+  });
+}
+
+function shareVia(channel){
+  const msg = encodeURIComponent(SHARE_MSGS[CU.role] || SHARE_MSGS.customer);
+  const url = APP_URL;
+  const urls = {
+    sms:       `sms:?body=${msg}`,
+    email:     `mailto:?subject=${encodeURIComponent('Meet Sunny Sitters -- Newton Corner Babysitting')}&body=${msg}`,
+    whatsapp:  `https://wa.me/?text=${msg}`,
+    nextdoor:  `https://nextdoor.com/news_feed/`, // Nextdoor doesn't support deep-link share, open to feed
+    facebook:  `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+  };
+  if(urls[channel]) window.open(urls[channel], channel==='sms'||channel==='email' ? '_self' : '_blank');
+  if(channel==='nextdoor') toast('Tip: paste the link in your Nextdoor post!','t-info');
+  closeM('m-share');
+}
+
+function shareNative(){
+  const msg = SHARE_MSGS[CU.role] || SHARE_MSGS.customer;
+  if(navigator.share){
+    navigator.share({ title:'Sunny Sitters', text: msg, url: APP_URL })
+      .then(()=>closeM('m-share'))
+      .catch(()=>{});
+  } else {
+    copyShareLink();
+    toast('📋 Link copied -- paste it anywhere you like!','t-ok');
+    closeM('m-share');
+  }
+}
+
+/* ── MODALS ── */
+function closeM(id){ document.getElementById(id).classList.remove('open'); }
+
+/* ── TOAST ── */
+let _tt;
+function toast(msg,cls){ const el=document.getElementById('toast-el'); el.textContent=msg; el.className='toast show '+(cls||''); clearTimeout(_tt); _tt=setTimeout(()=>el.className='toast',3200); }
+</script>
+</body>
+</html>
