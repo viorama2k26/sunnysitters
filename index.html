@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Sunny Sitters</title>
+<title>Sunny Sitters Neighborhood Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%2232%22 height=%2232%22><text y=%2226%22 font-size=%2226%22>☀️</text></svg>">
@@ -19,7 +19,7 @@
   --lav:#9575CD;--lav-light:#EDE7F6;
   --ink:#2C2C2A;--ink-mid:#5F5E5A;--ink-light:#B4B2A9;
   --surface:#fff;--s2:#FAFAF8;--s3:#F4F3EE;
-  --border:rgba(0,0,0,0.08);--shadow:0 6px 16px rgba(0,0,0,0.06);
+  --border:rgba(0,0,0,0.08);--shadow:0 8px 24px rgba(0,0,0,0.06);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{
@@ -49,16 +49,17 @@ body{
 .sync-badge.loading{background:var(--sun);animation:blink 1s infinite;}
 @keyframes blink{50%{opacity:0.4;}}
 
-/* Complete Structural View Framework Isolation Layout */
+/* Enforces full width block layouts to smash parent split-screen compression bugs */
 .view-frame {
   display:none;
   width:100% !important;
   max-width:100% !important;
-  padding:20px 16px 100px 16px;
+  padding:16px 16px 120px 16px;
   position:relative;
-  box-sizing:border-box;
+  box-sizing:border-box !important;
+  float:none !important;
+  clear:both !important;
 }
-/* Re-forces standard layout flow downward on visual changes */
 .view-frame.active{
   display:block !important;
 }
@@ -69,25 +70,32 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
 
 .card{
   background:var(--surface);border:1px solid var(--border);
-  border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow);
-  width:100% !important;box-sizing:border-box;
+  border-radius:24px;padding:24px;margin-bottom:16px;box-shadow:var(--shadow);
+  width:100% !important;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+  display:block !important;
 }
 
-/* Beautiful, Welcoming, Fluid Single-Column Input Layout Blocks */
+/* Roomy & Breathable Single-Column Input Layout System */
 .input-group{
-  margin-bottom:20px;
+  margin-bottom:22px;
   display:flex !important;
   flex-direction:column !important;
+  align-items:stretch !important;
   width:100% !important;
-  clear:both;
+  max-width:100% !important;
+  box-sizing:border-box !important;
+  clear:both !important;
 }
 .input-label{
-  display:block;font-size:14px;font-weight:800;margin-bottom:8px;color:var(--ink-mid);text-align:left;
+  display:block !important;font-size:14px;font-weight:800;margin-bottom:8px;color:var(--ink-mid);text-align:left;
 }
 .input-field{
   width:100% !important;
+  max-width:100% !important;
   display:block !important;
-  padding:14px;
+  padding:14px 16px;
   border-radius:14px;
   border:1px solid var(--border);
   background:var(--s2);
@@ -104,6 +112,25 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   box-shadow:0 0 0 3px var(--sky-light);
 }
 
+/* Scrollable Legal Disclosures Box Styling */
+.disclosure-scroller {
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+  height:180px;
+  overflow-y:auto;
+  font-size:13px;
+  line-height:1.6;
+  color:var(--ink-mid);
+  text-align:left;
+  margin-bottom:16px;
+  width:100%;
+  box-sizing:border-box;
+}
+.disclosure-section { margin-bottom:14px; }
+.disclosure-title { font-weight:800; color:var(--ink); margin-bottom:4px; text-transform:uppercase; font-size:11px; letter-spacing:0.5px;}
+
 .btn{
   width:100%;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;
   font-weight:800;border:none;cursor:pointer;text-align:center;margin-bottom:10px;
@@ -114,10 +141,9 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 
 .admin-scroller{max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:12px;padding:8px;background:var(--s2);margin-bottom:12px;}
-.row-item{background:var(--surface);padding:12px;border-radius:10px;margin-bottom:8px;border:1px solid var(--border);font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,0.01);}
+.row-item{background:var(--surface);padding:12px;border-radius:10px;margin-bottom:8px;border:1px solid var(--border);font-size:13px;}
 .badge{display:inline-block;padding:2px 6px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase;margin-left:6px;}
 
-/* Constant Bottom Navigation Frame */
 .footer-nav {
   position:fixed;bottom:0;max-width:500px;width:100%;height:65px;
   background:var(--surface);border-top:1px solid var(--border);
@@ -163,12 +189,14 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   </div>
 
   <div id="view-register-family" class="view-frame">
-    <div style="margin-bottom:20px; padding:10px 4px 0 4px; text-align:left;">
+    <div style="margin-bottom:24px; padding:8px 4px 0 4px; text-align:left;">
       <h1 style="font-size:28px; line-height:1.2; margin-bottom:10px;">Welcome to Sunny Sitters! ☀️</h1>
-      <p style="font-size:16px; margin-bottom:0;">We are thrilled to welcome your family to our neighborhood circle. Let's create your account profile to quickly verify your address and get you connected with local sitters.</p>
+      <p style="font-size:16px; margin-bottom:0; color:var(--ink-mid);">We are thrilled to welcome your family to our neighborhood circle. Let's create your account profile to quickly verify your address and get you connected with local sitters.</p>
     </div>
     
-    <div class="card" style="max-height: 68vh; overflow-y: auto; border-top: 4px solid var(--sun); width:100% !important;">
+    <div class="card" style="max-height: 68vh; overflow-y: auto; border-top: 4px solid var(--sun);">
+      <h3 style="font-size:18px; margin-bottom:16px; font-weight:800; text-align:left;">1. Account Credentials</h3>
+      
       <div class="input-group">
         <label class="input-label">Parent Full Name</label>
         <input type="text" id="regName" class="input-field" placeholder="Jane Doe">
@@ -184,6 +212,8 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
         <input type="password" id="regPass" class="input-field" placeholder="••••••••">
       </div>
       
+      <h3 style="font-size:18px; margin:24px 0 16px 0; font-weight:800; text-align:left;">2. Household Profile</h3>
+      
       <div class="input-group">
         <label class="input-label">Your Street Address</label>
         <input type="text" id="regAddress" class="input-field" placeholder="e.g., 42 Magnolia Ave, Newton Corner">
@@ -196,7 +226,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
       
       <div class="input-group">
         <label class="input-label">Dietary Restrictions or Medical Allergies</label>
-        <textarea id="regDietary" class="input-field" style="height:85px; resize:none;" placeholder="Detail any specific needs, or note 'None'"></textarea>
+        <textarea id="regDietary" class="input-field" style="height:90px; resize:none;" placeholder="Detail any specific needs, or note 'None'"></textarea>
       </div>
       
       <div class="input-group">
@@ -204,12 +234,38 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
         <input type="text" id="regPets" class="input-field" placeholder="e.g., 1 Friendly Golden Retriever, or note 'None'">
       </div>
       
-      <div style="margin:24px 0; display:flex; gap:12px; align-items:flex-start; text-align:left;">
-        <input type="checkbox" id="regWaiver" style="width:22px; height:22px; accent-color:var(--sun); cursor:pointer; flex-shrink:0; margin-top:2px;"> 
-        <label for="regWaiver" style="font-size:14px; font-weight:600; line-height:1.4; color:var(--ink-mid);">I explicitly agree to the safety disclaimers, the 12-Hour Cancellation Policy, and neighborhood guidelines.</label>
+      <h3 style="font-size:18px; margin:24px 0 12px 0; font-weight:800; text-align:left;">3. Legal Disclaimers & Policies</h3>
+      <p style="font-size:13px; margin-bottom:10px; text-align:left;">Please scroll through and thoroughly review our local network operating parameters before joining:</p>
+      
+      <div class="disclosure-scroller">
+        <div class="disclosure-section">
+          <div class="disclosure-title">1. Pricing Transparency Policy</div>
+          <div>All rates are strictly fixed by the neighborhood group. Base rate is locked at $15/hour for a single sitter, and a unified team rate of $25/hour applies when multiple sitters are deployed. Rounding up or custom side haggling is explicitly prohibited to maintain fairness across families.</div>
+        </div>
+        <div class="disclosure-section">
+          <div class="disclosure-title">2. Casual Youth Pocket Money & Tax Status</div>
+          <div>Sunny Sitters operates strictly as a casual neighborhood network assisting local youth in secure pocket-money earnings. This engagement does not constitute formal corporate childcare or commercial business employment. Families acknowledge responsibility for verifying individual compliance with personal casual labor metrics.</div>
+        </div>
+        <div class="disclosure-section">
+          <div class="disclosure-title">3. Limitation of Network Liability</div>
+          <div>This digital portal functions solely as an intake communication routing pipeline between pre-screened Newton Corner neighbors. The administration and creators of the portal assume zero liability for specific personal actions, scheduling discrepancies, or private agreements resulting from time-block coordinates.</div>
+        </div>
+        <div class="disclosure-section">
+          <div class="disclosure-title">4. 12-Hour Cancellation Rule</div>
+          <div>To protect the schedule commitments of neighborhood sitters, cancellations submitted within 12 hours of a scheduled block's start time automatically trigger a late-cancellation penalty fee equivalent to 50% of the projected session value (calculated at a minimum baseline of 3 hours).</div>
+        </div>
+        <div class="disclosure-section">
+          <div class="disclosure-title">5. Emergency Medical Authorization</div>
+          <div>By completing membership profiles, joining parents explicitly grant authorized sitters the provisional right to trigger emergency safety services and summon medical support if an urgent crisis arises while caring for registered children on household premises.</div>
+        </div>
       </div>
       
-      <button class="btn btn-primary" style="font-size:17px; padding:16px; margin-bottom:5px;" onclick="submitFamilyRegistration()">Create My Family Account</button>
+      <div style="margin:16px 0 24px 0; display:flex; gap:12px; align-items:flex-start; text-align:left;">
+        <input type="checkbox" id="regWaiver" style="width:22px; height:22px; accent-color:var(--sun); cursor:pointer; flex-shrink:0; margin-top:2px;"> 
+        <label for="regWaiver" style="font-size:14px; font-weight:700; line-height:1.4; color:var(--ink);">I have thoroughly read and explicitly agree to all 5 Legal Disclaimers, the 12-Hour Cancellation Rule, and community guidelines.</label>
+      </div>
+      
+      <button class="btn btn-primary" style="font-size:17px; padding:16px; margin-bottom:5px;" onclick="submitFamilyRegistration()">Accept Policies & Create Account</button>
     </div>
   </div>
 
@@ -251,7 +307,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
 
   <div id="view-post-demand" class="view-frame">
     <h1>Post an Open Job Demand</h1>
-    <p>Broadcast a customized time block listing to the open sitter bulletin pool.</p>
+    <p>Broadcast a customized time block listing to the open sitter pool.</p>
     <div class="card">
       <div class="input-group"><label class="input-label">Date</label><input type="date" class="input-field"></div>
       <button class="btn btn-primary" onclick="alert('Demand listing submitted!')">Publish Listing</button>
@@ -345,7 +401,7 @@ function switchView(viewId) {
   document.querySelectorAll('.view-frame').forEach(f => f.style.display = 'none');
   const target = document.getElementById(viewId);
   if (target) {
-    target.style.display = 'block'; // Changed to standard block configuration to drop horizontal compression errors
+    target.style.display = 'block'; // Fixed layout grid structure errors
     window.scrollTo(0,0);
     
     if (viewHistory[viewHistory.length - 1] !== viewId) {
@@ -355,7 +411,7 @@ function switchView(viewId) {
     const systemProtectedBases = ['view-splash', 'view-customer-dashboard', 'view-sitter-dashboard', 'view-sitterparent-dashboard', 'view-admin-dashboard', 'view-vetting-wall'];
     document.getElementById('globalBackBtn').style.display = (viewHistory.length > 1 && !systemProtectedBases.includes(viewId)) ? 'flex' : 'none';
     
-    // Constant menu access verification checks
+    // Controlled footer hidden states
     document.getElementById('appFooterNav').style.display = ['view-splash', 'view-vetting-wall', 'view-register-family'].includes(viewId) ? 'none' : 'flex';
     
     if(systemProtectedBases.includes(viewId) && viewId !== 'view-splash') {
@@ -373,7 +429,6 @@ function handleGlobalBack() {
   }
 }
 
-// THE ABSOLUTE ESCAPE HATCH: Invoking this always routes the current persona back to their specific dashboard landing base
 function routeHome() {
   if (CU.role === "admin") switchView('view-admin-dashboard');
   else if (CU.role === "customer") switchView('view-customer-dashboard');
@@ -446,8 +501,8 @@ function submitFamilyRegistration() {
     pets: document.getElementById('regPets').value.trim()
   };
 
-  if (!payload.name || !payload.email || !payload.pass || !payload.address) { alert("Onboarding indicators required."); return; }
-  if (!document.getElementById('regWaiver').checked) { alert("Waiver agreement mandatory."); return; }
+  if (!payload.name || !payload.email || !payload.pass || !payload.address) { alert("All fields are required."); return; }
+  if (!document.getElementById('regWaiver').checked) { alert("You must accept the Disclaimers and Policies to join."); return; }
 
   setSyncState("loading");
 
@@ -532,12 +587,6 @@ function hydrateCustomerDashboard() {
   fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "BOOKINGS" }) })
     .then(res => res.json())
     .then(data => { container.innerHTML = "<p style='font-style:italic;'>No active schedules logged.</p>"; });
-}
-
-function logout() {
-  CU = { email: "", role: "guest", name: "" };
-  viewHistory = ['view-splash'];
-  switchView('view-splash');
 }
 </script>
 </body>
