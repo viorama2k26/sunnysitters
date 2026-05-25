@@ -49,7 +49,7 @@ body{
 .sync-badge.loading{background:var(--sun);animation:blink 1s infinite;}
 @keyframes blink{50%{opacity:0.4;}}
 
-/* Enforces full width block layouts to smash parent split-screen compression bugs */
+/* Complete structural isolation blocks cut off split flex row compression */
 .view-frame {
   display:none;
   width:100% !important;
@@ -77,7 +77,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   display:block !important;
 }
 
-/* Roomy & Breathable Single-Column Input Layout System */
+/* Roomy & Breathable Single-Column Element Structures */
 .input-group{
   margin-bottom:22px;
   display:flex !important;
@@ -112,13 +112,13 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   box-shadow:0 0 0 3px var(--sky-light);
 }
 
-/* Scrollable Legal Disclosures Box Styling */
+/* Live Synchronized Legal Disclosures Box Styling */
 .disclosure-scroller {
   background:var(--s2);
   border:1px solid var(--border);
   border-radius:16px;
   padding:14px;
-  height:180px;
+  height:200px;
   overflow-y:auto;
   font-size:13px;
   line-height:1.6;
@@ -128,7 +128,8 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   width:100%;
   box-sizing:border-box;
 }
-.disclosure-section { margin-bottom:14px; }
+.disclosure-section { margin-bottom:14px; border-bottom:1px dashed var(--border); padding-bottom:10px; }
+.disclosure-section:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
 .disclosure-title { font-weight:800; color:var(--ink); margin-bottom:4px; text-transform:uppercase; font-size:11px; letter-spacing:0.5px;}
 
 .btn{
@@ -180,11 +181,12 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
         <input type="email" id="loginEmail" class="input-field" placeholder="name@domain.com">
       </div>
       <div class="input-group">
+        <label class="input-field" style="display:none;"></label>
         <label class="input-label">Password</label>
         <input type="password" id="loginPass" class="input-field" placeholder="••••••••">
       </div>
       <button class="btn btn-primary" onclick="attemptLogin()">Log In</button>
-      <button class="btn btn-secondary" onclick="switchView('view-register-family')">New Neighbor Join Form</button>
+      <button class="btn btn-secondary" onclick="loadRegistrationView()">New Neighbor Join Form</button>
     </div>
   </div>
 
@@ -194,7 +196,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
       <p style="font-size:16px; margin-bottom:0; color:var(--ink-mid);">We are thrilled to welcome your family to our neighborhood circle. Let's create your account profile to quickly verify your address and get you connected with local sitters.</p>
     </div>
     
-    <div class="card" style="max-height: 68vh; overflow-y: auto; border-top: 4px solid var(--sun);">
+    <div class="card" style="max-height: 68vh; overflow-y: auto; border-top: 4px solid var(--sun); width:100% !important;">
       <h3 style="font-size:18px; margin-bottom:16px; font-weight:800; text-align:left;">1. Account Credentials</h3>
       
       <div class="input-group">
@@ -235,34 +237,15 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
       </div>
       
       <h3 style="font-size:18px; margin:24px 0 12px 0; font-weight:800; text-align:left;">3. Legal Disclaimers & Policies</h3>
-      <p style="font-size:13px; margin-bottom:10px; text-align:left;">Please scroll through and thoroughly review our local network operating parameters before joining:</p>
+      <p style="font-size:13px; margin-bottom:10px; text-align:left;">The parameters below are streamed dynamically from the master database register:</p>
       
-      <div class="disclosure-scroller">
-        <div class="disclosure-section">
-          <div class="disclosure-title">1. Pricing Transparency Policy</div>
-          <div>All rates are strictly fixed by the neighborhood group. Base rate is locked at $15/hour for a single sitter, and a unified team rate of $25/hour applies when multiple sitters are deployed. Rounding up or custom side haggling is explicitly prohibited to maintain fairness across families.</div>
-        </div>
-        <div class="disclosure-section">
-          <div class="disclosure-title">2. Casual Youth Pocket Money & Tax Status</div>
-          <div>Sunny Sitters operates strictly as a casual neighborhood network assisting local youth in secure pocket-money earnings. This engagement does not constitute formal corporate childcare or commercial business employment. Families acknowledge responsibility for verifying individual compliance with personal casual labor metrics.</div>
-        </div>
-        <div class="disclosure-section">
-          <div class="disclosure-title">3. Limitation of Network Liability</div>
-          <div>This digital portal functions solely as an intake communication routing pipeline between pre-screened Newton Corner neighbors. The administration and creators of the portal assume zero liability for specific personal actions, scheduling discrepancies, or private agreements resulting from time-block coordinates.</div>
-        </div>
-        <div class="disclosure-section">
-          <div class="disclosure-title">4. 12-Hour Cancellation Rule</div>
-          <div>To protect the schedule commitments of neighborhood sitters, cancellations submitted within 12 hours of a scheduled block's start time automatically trigger a late-cancellation penalty fee equivalent to 50% of the projected session value (calculated at a minimum baseline of 3 hours).</div>
-        </div>
-        <div class="disclosure-section">
-          <div class="disclosure-title">5. Emergency Medical Authorization</div>
-          <div>By completing membership profiles, joining parents explicitly grant authorized sitters the provisional right to trigger emergency safety services and summon medical support if an urgent crisis arises while caring for registered children on household premises.</div>
-        </div>
+      <div id="dynamicDisclosuresScroller" class="disclosure-scroller">
+        <p style="font-style:italic; text-align:center; padding-top:40px; color:var(--ink-light);">Downloading official policy disclaimers from spreadsheet...</p>
       </div>
       
       <div style="margin:16px 0 24px 0; display:flex; gap:12px; align-items:flex-start; text-align:left;">
         <input type="checkbox" id="regWaiver" style="width:22px; height:22px; accent-color:var(--sun); cursor:pointer; flex-shrink:0; margin-top:2px;"> 
-        <label for="regWaiver" style="font-size:14px; font-weight:700; line-height:1.4; color:var(--ink);">I have thoroughly read and explicitly agree to all 5 Legal Disclaimers, the 12-Hour Cancellation Rule, and community guidelines.</label>
+        <label for="regWaiver" style="font-size:14px; font-weight:700; line-height:1.4; color:var(--ink);">I have thoroughly reviewed and explicitly agree to all terms of service parameters populated above.</label>
       </div>
       
       <button class="btn btn-primary" style="font-size:17px; padding:16px; margin-bottom:5px;" onclick="submitFamilyRegistration()">Accept Policies & Create Account</button>
@@ -365,6 +348,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
           <option value="USERS">USERS</option>
           <option value="FAMILIES">FAMILIES</option>
           <option value="BOOKINGS">BOOKINGS</option>
+          <option value="LEGAL_DISCLAIMERS">LEGAL_DISCLAIMERS</option>
         </select>
       </div>
       <div id="adminTabViewer" class="admin-scroller" style="font-family:monospace; font-size:11px; white-space:pre-wrap;">Select a tab above...</div>
@@ -401,7 +385,7 @@ function switchView(viewId) {
   document.querySelectorAll('.view-frame').forEach(f => f.style.display = 'none');
   const target = document.getElementById(viewId);
   if (target) {
-    target.style.display = 'block'; // Fixed layout grid structure errors
+    target.style.display = 'block'; // Smashes high level compression constraints cleanly
     window.scrollTo(0,0);
     
     if (viewHistory[viewHistory.length - 1] !== viewId) {
@@ -411,7 +395,6 @@ function switchView(viewId) {
     const systemProtectedBases = ['view-splash', 'view-customer-dashboard', 'view-sitter-dashboard', 'view-sitterparent-dashboard', 'view-admin-dashboard', 'view-vetting-wall'];
     document.getElementById('globalBackBtn').style.display = (viewHistory.length > 1 && !systemProtectedBases.includes(viewId)) ? 'flex' : 'none';
     
-    // Controlled footer hidden states
     document.getElementById('appFooterNav').style.display = ['view-splash', 'view-vetting-wall', 'view-register-family'].includes(viewId) ? 'none' : 'flex';
     
     if(systemProtectedBases.includes(viewId) && viewId !== 'view-splash') {
@@ -440,6 +423,40 @@ function routeHome() {
 function forceSystemSync() {
   if (CU.role === "admin") refreshAdminWorkspace();
   else if (CU.role === "customer") hydrateCustomerDashboard();
+}
+
+// LIVE SYNC LOGIC: Queries spreadsheet disclaimers register automatically prior to opening view
+function loadRegistrationView() {
+  switchView('view-register-family');
+  const box = document.getElementById('dynamicDisclosuresScroller');
+  setSyncState("loading");
+
+  fetch(CONFIG.API_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "readTab", tab: "LEGAL_DISCLAIMERS" })
+  })
+  .then(res => res.json())
+  .then(data => {
+    setSyncState("online");
+    if(data.status === "success" && data.records && data.records.length > 0) {
+      box.innerHTML = "";
+      data.records.forEach((r, idx) => {
+        const div = document.createElement('div');
+        div.className = "disclosure-section";
+        div.innerHTML = `
+          <div class="disclosure-title">${idx + 1}. ${r.Disclaimer_Title || 'Operating Policy'}</div>
+          <div>${r.Disclaimer_Wording || 'No statement text loaded inside spreadsheet.'}</div>
+        `;
+        box.appendChild(div);
+      });
+    } else {
+      box.innerHTML = "<p style='font-style:italic; padding:20px; text-align:center;'>⚠️ Setup Alert: Seed the LEGAL_DISCLAIMERS tab inside your Google Sheet to view live parameters here.</p>";
+    }
+  })
+  .catch(() => {
+    setSyncState("online");
+    box.innerHTML = "<p style='color:var(--coral); font-size:12px;'>Error initializing real-time policy streams.</p>";
+  });
 }
 
 function attemptLogin() {
@@ -587,6 +604,12 @@ function hydrateCustomerDashboard() {
   fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "BOOKINGS" }) })
     .then(res => res.json())
     .then(data => { container.innerHTML = "<p style='font-style:italic;'>No active schedules logged.</p>"; });
+}
+
+function logout() {
+  CU = { email: "", role: "guest", name: "" };
+  viewHistory = ['view-splash'];
+  switchView('view-splash');
 }
 </script>
 </body>
