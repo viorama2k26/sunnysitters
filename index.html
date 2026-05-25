@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Sunny Sitters Portal</title>
+<title>Sunny Sitters Neighborhood Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%2232%22 height=%2232%22><text y=%2226%22 font-size=%2226%22>☀️</text></svg>">
@@ -49,7 +49,7 @@ body{
 .sync-badge.loading{background:var(--sun);animation:blink 1s infinite;}
 @keyframes blink{50%{opacity:0.4;}}
 
-/* Isolated structural frames prevent right-side layout compression */
+/* Isolated structural view blocks prevent horizontal squishing bugs */
 .view-frame {
   display:none;
   width:100% !important;
@@ -73,6 +73,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   display:block !important;
 }
 
+/* Breathable Fluid Form Fields Layout Block */
 .input-group{
   margin-bottom:22px;
   display:flex !important;
@@ -146,11 +147,11 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
       <h2>Sign In</h2>
       <div class="input-group">
         <label class="input-label">Email Address</label>
-        <input type="email" id="loginEmail" class="input-field" value="admin@sunnysitters.com">
+        <input type="email" id="loginEmail" class="input-field" placeholder="name@domain.com">
       </div>
       <div class="input-group">
         <label class="input-label">Password</label>
-        <input type="password" id="loginPass" class="input-field" value="admin123">
+        <input type="password" id="loginPass" class="input-field" placeholder="••••••••">
       </div>
       <button class="btn btn-primary" onclick="attemptLogin()">Log In</button>
       <button class="btn btn-secondary" onclick="loadRegistrationView()">New Neighbor Join Form</button>
@@ -162,22 +163,23 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
       <h1>Choose Your Journey ☀️</h1>
       <p>Your email account is connected to multiple neighborhood profiles. Select a portal to enter:</p>
     </div>
-    <div class="card" id="roleSelectionCard" style="border-top:4px solid var(--sky);">
-      </div>
+    <div class="card" id="roleSelectionCard" style="border-top:4px solid var(--sky);"></div>
     <button class="btn btn-secondary" onclick="logout()">Return to Sign In</button>
   </div>
 
   <div id="view-register-family" class="view-frame">
     <div style="margin-bottom:24px; padding:8px 4px 0 4px; text-align:left;">
-      <h1 style="font-size:28px; line-height:1.2; margin-bottom:10px;">Welcome to Sunny Sitters!</h1>
-      <p style="font-size:16px; margin-bottom:0; color:var(--ink-mid);">We are thrilled to welcome your family to our neighborhood circle. Let's create your account profile to quickly verify your address and get you connected with local sitters.</p>
+      <h1>Welcome to Sunny Sitters!</h1>
+      <p style="color:var(--ink-mid);">We are thrilled to welcome your family to our neighborhood circle. Let's create your account profile to quickly verify your address and get you connected with local sitters.</p>
     </div>
     
     <div class="card" style="max-height: 65vh; overflow-y: auto; border-top: 4px solid var(--sun);">
       <h3 style="font-size:18px; margin-bottom:16px; font-weight:800; text-align:left;">1. Account Credentials</h3>
       <div class="input-group"><label class="input-label">Parent Full Name</label><input type="text" id="regName" class="input-field" placeholder="Jane Doe"></div>
       <div class="input-group"><label class="input-label">Email Address</label><input type="email" id="regEmail" class="input-field" placeholder="jane@example.com"></div>
+      
       <div class="input-group"><label class="input-label">Account Password</label><input type="password" id="regPass" class="input-field" placeholder="••••••••"></div>
+      <div class="input-group"><label class="input-label">Confirm Account Password</label><input type="password" id="regPassConfirm" class="input-field" placeholder="••••••••"></div>
       
       <h3 style="font-size:18px; margin:24px 0 16px 0; font-weight:800; text-align:left;">2. Household Profile</h3>
       <div class="input-group"><label class="input-label">Your Street Address</label><input type="text" id="regAddress" class="input-field" placeholder="e.g., 42 Magnolia Ave, Newton Corner"></div>
@@ -251,7 +253,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
     
     <div class="card" style="background:var(--coral-light); border: 2px solid var(--coral);">
       <h3 style="color:var(--coral); display:flex; align-items:center; gap:6px;">🚨 GPS Emergency Panic</h3>
-      <p style="font-size:12px; margin-bottom:10px; color:var(--ink); text-align:left;">Pressing this instantly fires automated high-priority crisis text alerts and map logs to the Guardian Operator.</p>
+      <p style="font-size:12px; margin-bottom:10px; color:var(--ink; text-align:left);">Pressing this instantly fires automated high-priority crisis text alerts and map logs to the Guardian Operator.</p>
       <button class="btn btn-danger" style="margin-bottom:0;" onclick="alert('🚨 PANIC DISPATCHED: Safety alert triggered.')">Trigger Emergency Alert</button>
     </div>
 
@@ -338,7 +340,6 @@ function switchView(viewId) {
     const systemProtectedBases = ['view-splash', 'view-customer-dashboard', 'view-sitter-dashboard', 'view-sitterparent-dashboard', 'view-admin-dashboard', 'view-vetting-wall', 'view-role-selection'];
     document.getElementById('globalBackBtn').style.display = (viewHistory.length > 1 && !systemProtectedBases.includes(viewId)) ? 'flex' : 'none';
     
-    // Controlled footer visibility states
     document.getElementById('appFooterNav').style.display = ['view-splash', 'view-vetting-wall', 'view-register-family', 'view-role-selection'].includes(viewId) ? 'none' : 'flex';
     
     if(systemProtectedBases.includes(viewId) && viewId !== 'view-splash' && viewId !== 'view-role-selection') {
@@ -396,7 +397,6 @@ function loadRegistrationView() {
   .catch(() => { setSyncState("online"); box.innerHTML = "<p style='color:var(--coral); font-size:12px;'>Error initializing real-time policy streams.</p>"; });
 }
 
-// PIPELINE: Handles multi-persona arrays and local overrides
 function attemptLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pass = document.getElementById('loginPass').value.trim();
@@ -424,7 +424,6 @@ function attemptLogin() {
   });
 }
 
-// Local override ensures Master Admins are never locked out by sheet compilation hiccups
 function handleLoginSafetyFallback(email, pass, originalError) {
   if (email === "admin@sunnysitters.com" && pass === "admin123") {
     console.warn("API Offline Catch. Booting Admin workspace local fallback loop.");
@@ -437,14 +436,12 @@ function handleLoginSafetyFallback(email, pass, originalError) {
 }
 
 function processUserRouting(user) {
-  // Split roles cleanly by commas to parse multi-persona accounts
   const rawRoles = user.Role || "customer";
   CU.allowedRoles = rawRoles.split(',').map(r => r.trim().toLowerCase());
   CU.email = user.Email;
   CU.name = user.Name;
   
   if (CU.allowedRoles.length > 1) {
-    // Open the Persona Selector Gateway
     const card = document.getElementById('roleSelectionCard');
     card.innerHTML = "";
     document.getElementById('userRoleBadge').innerText = "Multi-Role";
@@ -468,7 +465,6 @@ function processUserRouting(user) {
     });
     switchView('view-role-selection');
   } else {
-    // Route directly if account has exactly one role string
     selectSpecificPersona(CU.allowedRoles[0], user.Status);
   }
 }
@@ -496,11 +492,14 @@ function selectSpecificPersona(chosenRole, currentStatus) {
 }
 
 function submitFamilyRegistration() {
+  const pass = document.getElementById('regPass').value.trim();
+  const passConfirm = document.getElementById('regPassConfirm').value.trim();
+
   const payload = {
     action: "register",
     name: document.getElementById('regName').value.trim(),
     email: document.getElementById('regEmail').value.trim(),
-    pass: document.getElementById('regPass').value.trim(),
+    pass: pass,
     address: document.getElementById('regAddress').value.trim(),
     kids: document.getElementById('regKids').value.trim(),
     dietary: document.getElementById('regDietary').value.trim(),
@@ -508,6 +507,13 @@ function submitFamilyRegistration() {
   };
 
   if (!payload.name || !payload.email || !payload.pass || !payload.address) { alert("All fields are required."); return; }
+  
+  // Strict client-side comparison validation step
+  if (pass !== passConfirm) {
+    alert("Password verification failed. Your passwords do not match.");
+    return;
+  }
+  
   if (!document.getElementById('regWaiver').checked) { alert("You must accept the Disclaimers and Policies to join."); return; }
 
   setSyncState("loading");
@@ -590,17 +596,6 @@ function hydrateCustomerDashboard() {
   fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "BOOKINGS" }) })
     .then(res => res.json())
     .then(data => { container.innerHTML = "<p style='font-style:italic;'>No active schedules logged.</p>"; });
-}
-
-function logout() {
-  CU = { email: "", role: "guest", name: "", allowedRoles: [] };
-  document.getElementById('userRoleBadge').innerText = "Guest";
-  document.getElementById('userRoleBadge').style.background = "var(--s3)";
-  document.getElementById('userRoleBadge').style.color = "var(--ink-mid)";
-  document.getElementById('loginEmail').value = "";
-  document.getElementById('loginPass').value = "";
-  viewHistory = ['view-splash'];
-  switchView('view-splash');
 }
 </script>
 </body>
