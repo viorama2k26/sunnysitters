@@ -49,7 +49,7 @@ body{
 .sync-badge.loading{background:var(--sun);animation:blink 1s infinite;}
 @keyframes blink{50%{opacity:0.4;}}
 
-/* Isolated structural layout frames block horizontal squishing bugs */
+/* Isolated structural layout frames ensure total element containment */
 .view-frame {
   display:none;
   width:100% !important;
@@ -60,7 +60,10 @@ body{
   float:none !important;
   clear:both !important;
 }
-.view-frame.active{display:block !important;}
+/* Crucial layout guard rule */
+.view-frame.active {
+  display:block !important;
+}
 
 h1{font-size:26px;font-weight:900;margin-bottom:8px;letter-spacing:-0.5px;}
 h2{font-size:20px;font-weight:800;margin:20px 0 12px 0;text-align:left;}
@@ -73,7 +76,6 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;text-al
   display:block !important;
 }
 
-/* Fluid single column form elements system wrapper */
 .input-group{
   margin-bottom:22px;
   display:flex !important;
@@ -227,7 +229,6 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;text-al
       <div class="input-group">
         <label class="input-label">Your Sitter Parent/Guardian Email</label>
         <input type="email" id="sitRegGuardianEmail" class="input-field" placeholder="guardian@domain.com">
-        <label style="font-size:11px; color:var(--ink-mid); margin-top:6px; display:block; line-height:1.4;">Critical Security Rule: To safeguard local youth business operations, your designated guardian must carry a valid account register inside the sheet to verify and approve booking time blocks.</label>
       </div>
       
       <h3 style="font-size:18px; margin:24px 0 12px 0; font-weight:800; text-align:left;">3. Safety Disclaimer</h3>
@@ -287,9 +288,6 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;text-al
           </div>
         </div>
         <p style="font-size:13px; margin:10px 0; color:var(--ink-mid);">Open Availability Slot: This Weekend Block<br>Duration Metrics: 4:00 PM - 9:00 PM</p>
-        <div style="background:var(--s3); padding:10px; border-radius:10px; font-size:12px; margin-bottom:12px; font-weight:700;">
-          ⚠️ Pricing Acceptance Rule: By claiming this hour matrix, you explicitly lock a binding offer entry matching Violet's rate of $15/hr. Booking requires confirmation actions from both sides, including Guardian clearance.
-        </div>
         <button class="btn btn-primary" style="padding:10px; font-size:14px; margin-bottom:0;" onclick="executeDirectBookingTrigger('Violet Singh', 'violet@example.com', '2026-06-05', '16:00', '21:00', 15)">Accept Price & Request Booking</button>
       </div>
     </div>
@@ -344,14 +342,12 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;text-al
     <p>Manage child safety limitations, baseline compensation rates, and custom profile approvals.</p>
     
     <h2>⏳ Parental Booking Clearance Approvals</h2>
-    <p style="font-size:12px; margin-bottom:10px;">Specify strict legal sign-off parameters before booking rows register as fully locked.</p>
     <div id="guardianClearanceQueue" class="admin-scroller">
       <div class="row-item" style="border-left:4px solid var(--lav);">
         <strong>👧 Child Sitter: Violet Singh</strong><br>
         Client Family ID: Henderson (henderson@domain.com)<br>
-        Schedule Metrics: June 5th (5PM - 9PM)<br>
         <span class="badge" style="background:var(--lav-light); color:var(--lav);">Sitter Confirmed — Guardian Clearance Required</span>
-        <button class="btn btn-primary" style="padding:6px 12px; font-size:12px; margin-top:8px; width:auto; margin-bottom:0;" onclick="executeGuardianFinalSignoff('BK-Henderson-Test', this)">Authorize & Finalize Booking</button>
+        <button class="btn btn-primary" style="padding:6px 12px; font-size:12px; margin-top:8px; width:auto; margin-bottom:0;" onclick="executeGuardianFinalSignoff('BK-Henderson-Test', this)">Authorize Booking</button>
       </div>
     </div>
 
@@ -363,20 +359,16 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;text-al
   <div id="view-admin-dashboard" class="view-frame">
     <h1>🔑 Super Admin Master Controls</h1>
     <p>Real-time bidirectional synchronization with your 12-tab Google Sheet engine.</p>
-    
     <div class="card" style="border-left:4px solid var(--grass);">
       <h3>👥 Global User Directory & Vetting Pipeline</h3>
       <div id="adminUserDirectoryContainer" class="admin-scroller">Querying...</div>
     </div>
-    
     <div class="card" style="border-left:4px solid var(--coral);">
       <h3>⏳ Pending Neighbor Vetting Queue</h3>
       <div id="adminVettingContainer" class="admin-scroller">Syncing...</div>
     </div>
-
     <h2>📋 Global Job Board demands Register</h2>
     <div id="adminDemandBoardContainer" class="admin-scroller">Syncing...</div>
-    
     <button class="btn btn-secondary" onclick="logout()">Exit Master Workspace</button>
   </div>
 </div>
@@ -405,18 +397,21 @@ function setSyncState(state) {
   if (state === "online") badge.className = "sync-badge online";
 }
 
-// THE TARGETED SCROLL INTERCEPTOR ENGINE: Exclusively forces frames and cards back to absolute 0
+// FIX ENGINE: Strips .active class completely from all stale views so things hide perfectly
 function switchView(viewId) {
-  document.querySelectorAll('.view-frame').forEach(f => f.style.display = 'none');
+  document.querySelectorAll('.view-frame').forEach(f => {
+    f.classList.remove('active'); // Removes .active completely to allow inline style blocks to run unhindered
+    f.style.display = 'none';
+  });
+  
   const target = document.getElementById(viewId);
   if (target) {
+    target.classList.add('active');
     target.style.display = 'block';
     
-    // Core Layout Fix: Resets browser view window instantly in all cases
     window.scrollTo(0, 0);
     document.body.scrollTop = 0;
     
-    // Inner Elements Fix: Forces custom scrollable cards back to the absolute top field row
     const scrollableCards = target.querySelectorAll('.card');
     scrollableCards.forEach(card => { card.scrollTop = 0; });
 
@@ -460,7 +455,6 @@ function executeHeaderPersonaHotSwap(chosenRole) {
   selectSpecificPersona(chosenRole, CU.status);
 }
 
-// Unified Trigger Method A: Resets view containers and fetches disclaimers cleanly
 function loadParentRegistrationView() {
   switchView('view-register-family');
   const box = document.getElementById('dynamicDisclosuresScroller');
@@ -483,7 +477,6 @@ function loadParentRegistrationView() {
   });
 }
 
-// Unified Trigger Method B: Instantly snaps sitter view block to the absolute top spot
 function loadSitterRegistrationView() {
   switchView('view-register-sitter');
 }
@@ -643,7 +636,6 @@ function executeSitterSideJobAcceptance(bookingId, buttonNode) {
   .then(() => { setSyncState("online"); buttonNode.parentElement.innerHTML = "<p style='color:var(--grass); font-weight:700;'>✅ Confirmed! Sent to parent.</p>"; });
 }
 
-// final clearance hook commits matching transaction variables
 function executeGuardianFinalSignoff(bookingId, buttonNode) {
   setSyncState("loading");
   fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ type: "SAFETY_CLEAR", bookingId: bookingId, by: CU.email }) })
@@ -663,6 +655,10 @@ function submitFamilyCustomDemandListing() {
   setSyncState("loading");
   fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify(payload) })
   .then(() => { setSyncState("online"); alert("Listing published."); routeHome(); });
+}
+
+function migrateFormViewLayout() {
+  switchView('view-register-family');
 }
 
 function hydrateGatedFamilyDemandsBulletin() {
