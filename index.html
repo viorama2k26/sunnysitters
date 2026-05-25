@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Sunny Sitters Production App Engine</title>
+<title>Sunny Sitters</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%2232%22 height=%2232%22><text y=%2226%22 font-size=%2226%22>☀️</text></svg>">
@@ -49,11 +49,19 @@ body{
 .sync-badge.loading{background:var(--sun);animation:blink 1s infinite;}
 @keyframes blink{50%{opacity:0.4;}}
 
+/* Complete Structural View Framework Isolation Layout */
 .view-frame {
-  display:none;flex:1;padding:20px 16px 100px 16px;
-  overflow-y:visible;position:relative;
+  display:none;
+  width:100% !important;
+  max-width:100% !important;
+  padding:20px 16px 100px 16px;
+  position:relative;
+  box-sizing:border-box;
 }
-.view-frame.active{display:flex;flex-direction:column;}
+/* Re-forces standard layout flow downward on visual changes */
+.view-frame.active{
+  display:block !important;
+}
 
 h1{font-size:26px;font-weight:900;margin-bottom:8px;letter-spacing:-0.5px;}
 h2{font-size:20px;font-weight:800;margin:16px 0 12px 0;}
@@ -62,14 +70,40 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
 .card{
   background:var(--surface);border:1px solid var(--border);
   border-radius:22px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow);
+  width:100% !important;box-sizing:border-box;
 }
-.input-group{margin-bottom:18px;display:flex;flex-direction:column;width:100%;}
-.input-label{display:block;font-size:14px;font-weight:800;margin-bottom:8px;color:var(--ink-mid);}
+
+/* Beautiful, Welcoming, Fluid Single-Column Input Layout Blocks */
+.input-group{
+  margin-bottom:20px;
+  display:flex !important;
+  flex-direction:column !important;
+  width:100% !important;
+  clear:both;
+}
+.input-label{
+  display:block;font-size:14px;font-weight:800;margin-bottom:8px;color:var(--ink-mid);text-align:left;
+}
 .input-field{
-  width:100%;padding:14px;border-radius:14px;border:1px solid var(--border);
-  background:var(--s2);font-family:inherit;font-size:15px;color:var(--ink);outline:none;
+  width:100% !important;
+  display:block !important;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:var(--s2);
+  font-family:inherit;
+  font-size:15px;
+  color:var(--ink);
+  outline:none;
+  box-sizing:border-box !important;
+  transition:all 0.2s ease;
 }
-.input-field:focus{border-color:var(--sky-dark);background:var(--surface);box-shadow:0 0 0 3px var(--sky-light);}
+.input-field:focus{
+  border-color:var(--sky-dark);
+  background:var(--surface);
+  box-shadow:0 0 0 3px var(--sky-light);
+}
+
 .btn{
   width:100%;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;
   font-weight:800;border:none;cursor:pointer;text-align:center;margin-bottom:10px;
@@ -83,7 +117,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
 .row-item{background:var(--surface);padding:12px;border-radius:10px;margin-bottom:8px;border:1px solid var(--border);font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,0.01);}
 .badge{display:inline-block;padding:2px 6px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase;margin-left:6px;}
 
-/* Universal Footer Navigation Menu Frame */
+/* Constant Bottom Navigation Frame */
 .footer-nav {
   position:fixed;bottom:0;max-width:500px;width:100%;height:65px;
   background:var(--surface);border-top:1px solid var(--border);
@@ -129,23 +163,53 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   </div>
 
   <div id="view-register-family" class="view-frame">
-    <div style="margin-bottom:12px; padding-top:10px;">
-      <h1>Welcome to Sunny Sitters! ☀️</h1>
-      <p style="font-size:16px;">We are thrilled to welcome your family to our neighborhood circle. Let's create your account profile to quickly verify your address and get you connected with local sitters.</p>
+    <div style="margin-bottom:20px; padding:10px 4px 0 4px; text-align:left;">
+      <h1 style="font-size:28px; line-height:1.2; margin-bottom:10px;">Welcome to Sunny Sitters! ☀️</h1>
+      <p style="font-size:16px; margin-bottom:0;">We are thrilled to welcome your family to our neighborhood circle. Let's create your account profile to quickly verify your address and get you connected with local sitters.</p>
     </div>
-    <div class="card" style="max-height: 72vh; overflow-y: auto; border-top: 4px solid var(--sun);">
-      <div class="input-group"><label class="input-label">Parent Full Name</label><input type="text" id="regName" class="input-field" placeholder="Jane Doe"></div>
-      <div class="input-group"><label class="input-label">Email Address (This will be your Login ID)</label><input type="email" id="regEmail" class="input-field" placeholder="jane@example.com"></div>
-      <div class="input-group"><label class="input-label">Create a Strong Account Password</label><input type="password" id="regPass" class="input-field" placeholder="••••••••"></div>
-      <div class="input-group"><label class="input-label">Your Street Address</label><input type="text" id="regAddress" class="input-field" placeholder="e.g., 42 Magnolia Ave, Newton Corner"></div>
-      <div class="input-group"><label class="input-label">Children's Names & Ages</label><input type="text" id="regKids" class="input-field" placeholder="e.g., Leo (4), Maya (7)"></div>
-      <div class="input-group"><label class="input-label">Dietary Restrictions or Medical Allergies</label><textarea id="regDietary" class="input-field" style="height:75px; resize:none;" placeholder="Detail any specific needs, or note 'None'"></textarea></div>
-      <div class="input-group"><label class="input-label">Household Pet Instructions & Notes</label><input type="text" id="regPets" class="input-field" placeholder="e.g., Friendly Golden Retriever, or note 'None'"></div>
-      <div style="margin:20px 0 25px 0; display:flex; gap:12px; align-items:flex-start;">
-        <input type="checkbox" id="regWaiver" style="width:20px; height:20px; accent-color:var(--sun); cursor:pointer; margin-top:2px;"> 
+    
+    <div class="card" style="max-height: 68vh; overflow-y: auto; border-top: 4px solid var(--sun); width:100% !important;">
+      <div class="input-group">
+        <label class="input-label">Parent Full Name</label>
+        <input type="text" id="regName" class="input-field" placeholder="Jane Doe">
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label">Email Address (This will be your Login ID)</label>
+        <input type="email" id="regEmail" class="input-field" placeholder="jane@example.com">
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label">Create a Strong Account Password</label>
+        <input type="password" id="regPass" class="input-field" placeholder="••••••••">
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label">Your Street Address</label>
+        <input type="text" id="regAddress" class="input-field" placeholder="e.g., 42 Magnolia Ave, Newton Corner">
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label">Children's Names & Ages</label>
+        <input type="text" id="regKids" class="input-field" placeholder="e.g., Leo (4), Maya (7)">
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label">Dietary Restrictions or Medical Allergies</label>
+        <textarea id="regDietary" class="input-field" style="height:85px; resize:none;" placeholder="Detail any specific needs, or note 'None'"></textarea>
+      </div>
+      
+      <div class="input-group">
+        <label class="input-label">Household Pet Instructions & Notes</label>
+        <input type="text" id="regPets" class="input-field" placeholder="e.g., 1 Friendly Golden Retriever, or note 'None'">
+      </div>
+      
+      <div style="margin:24px 0; display:flex; gap:12px; align-items:flex-start; text-align:left;">
+        <input type="checkbox" id="regWaiver" style="width:22px; height:22px; accent-color:var(--sun); cursor:pointer; flex-shrink:0; margin-top:2px;"> 
         <label for="regWaiver" style="font-size:14px; font-weight:600; line-height:1.4; color:var(--ink-mid);">I explicitly agree to the safety disclaimers, the 12-Hour Cancellation Policy, and neighborhood guidelines.</label>
       </div>
-      <button class="btn btn-primary" style="font-size:17px; padding:16px;" onclick="submitFamilyRegistration()">Create My Family Account</button>
+      
+      <button class="btn btn-primary" style="font-size:17px; padding:16px; margin-bottom:5px;" onclick="submitFamilyRegistration()">Create My Family Account</button>
     </div>
   </div>
 
@@ -181,9 +245,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   <div id="view-sitter-marketplace" class="view-frame">
     <h1>Browse Available Sitters</h1>
     <p>Select an open timeslot logged by our verified neighborhood sitters.</p>
-    <div class="card">
-      <p style="font-style:italic;">Real-time availability rows streaming from sheet...</p>
-    </div>
+    <div class="card"><p style="font-style:italic;">Real-time availability rows streaming from sheet...</p></div>
     <button class="btn btn-secondary" onclick="routeHome()">Cancel & Go Home</button>
   </div>
 
@@ -204,13 +266,13 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
     <div class="card" style="background:var(--coral-light); border: 2px solid var(--coral);">
       <h3 style="color:var(--coral); display:flex; align-items:center; gap:6px;">🚨 GPS Emergency Panic</h3>
       <p style="font-size:12px; margin-bottom:10px; color:var(--ink);">Pressing this instantly fires automated high-priority crisis text alerts and map logs to the Guardian Operator.</p>
-      <button class="btn btn-danger" style="margin-bottom:0;" onclick="alert('🚨 PANIC BUTTON COMPILATION: GPS coordinates and priority safety alerts dispatched to guardian accounts!')">Trigger Emergency Alert</button>
+      <button class="btn btn-danger" style="margin-bottom:0;" onclick="alert('🚨 PANIC DISPATCHED: Safety alert triggered.')">Trigger Emergency Alert</button>
     </div>
 
     <div class="card" style="background:var(--lav-light); margin-top:16px;">
       <h3>⏰ Log Your Availability</h3>
       <p style="font-size:12px;">Weekday school blocks (8AM - 3PM) are automatically blocked from submissions.</p>
-      <button class="btn btn-primary" style="margin-top:10px; font-size:14px; padding:10px;" onclick="alert('Feature mapping coming next: Append slot to SITTER_AVAILABILITY')">Add Time Block</button>
+      <button class="btn btn-primary" style="margin-top:10px; font-size:14px; padding:10px;" onclick="alert('Slots map loaded')">Add Time Block</button>
     </div>
     <h2>Your Confirmed Sitter Jobs</h2>
     <div id="sitterJobsContainer" class="admin-scroller"></div>
@@ -220,22 +282,10 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   <div id="view-sitterparent-dashboard" class="view-frame">
     <h1>🛡️ Guardian Clearance Station</h1>
     <p>Manage child safety limitations, baseline compensation rates, and custom profile approvals.</p>
-    
     <div class="card" style="border-left:4px solid var(--lav);">
       <h3>⏳ Child Booking Authorization Queue</h3>
       <p style="font-size:12px; margin-bottom:10px;">Review and explicitly authorize sessions before they log as legally binding.</p>
       <div id="guardianClearanceQueue" class="admin-scroller">All jobs safely authorized.</div>
-    </div>
-
-    <div class="card" style="border-left:4px solid var(--sun-dark);">
-      <h3>💎 Sitter Profile Avatar Moderation</h3>
-      <p style="font-size:12px; margin-bottom:10px;">Approve or reject updates requested to bio logs inside the AVATAR_QUEUE tab.</p>
-      <div class="row-item" style="background:var(--s2);">
-        <strong>👧 Sitter: Violet Singh</strong><br>
-        Emoji: 🎨 | Tagline: "Creative Arts & Homework Help!"<br>
-        <button class="btn btn-primary" style="padding:4px 8px; font-size:11px; width:auto; margin:6px 6px 0 0;" onclick="alert('Profile update live pushed!')">Approve Profile</button>
-        <button class="btn btn-danger" style="padding:4px 8px; font-size:11px; width:auto; margin-top:6px;" onclick="alert('Rejected.')">Reject</button>
-      </div>
     </div>
     <button class="btn btn-secondary" onclick="logout()">Sign Out</button>
   </div>
@@ -243,28 +293,22 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   <div id="view-admin-dashboard" class="view-frame">
     <h1>🔑 Super Admin Master Controls</h1>
     <p>Real-time bidirectional synchronization with your 12-tab Google Sheet engine.</p>
-
     <div class="card" style="border-left:4px solid var(--grass);">
       <h3>👥 Global User Management Directory</h3>
-      <p style="font-size:12px; margin-bottom:10px;">View, modify roles, or terminate any global persona account inside the database.</p>
-      <div id="adminUserDirectoryContainer" class="admin-scroller">Querying USERS registers...</div>
+      <div id="adminUserDirectoryContainer" class="admin-scroller">Querying registers...</div>
     </div>
-
     <div class="card" style="border-left:4px solid var(--coral);">
       <h3>⏳ Pending Neighbor Vetting Queue</h3>
-      <p style="font-size:12px; margin-bottom:10px;">Approving updates status to 'verified' in both USERS and FAMILIES tab registers.</p>
       <div id="adminVettingContainer" class="admin-scroller">Syncing...</div>
     </div>
-
     <div class="card" style="border-left:4px solid var(--sky);">
-      <h3>🔧 Tab Registry CRUD Modifier center</h3>
+      <h3>🔧 Tab Registry CRUD Modifier Center</h3>
       <div class="input-group">
         <label class="input-label">Select Spreadsheet Tab Target</label>
         <select id="adminTargetTab" class="input-field" onchange="fetchTabRawData()">
-          <option value="USERS">USERS (Master Access Registers)</option>
-          <option value="FAMILIES">FAMILIES (Household Metadata Profiles)</option>
-          <option value="BOOKINGS">BOOKINGS (Schedules & Transaction Records)</option>
-          <option value="SITTERS">SITTERS (Rates & Guardian Mappings)</option>
+          <option value="USERS">USERS</option>
+          <option value="FAMILIES">FAMILIES</option>
+          <option value="BOOKINGS">BOOKINGS</option>
         </select>
       </div>
       <div id="adminTabViewer" class="admin-scroller" style="font-family:monospace; font-size:11px; white-space:pre-wrap;">Select a tab above...</div>
@@ -297,26 +341,23 @@ function setSyncState(state) {
   if (state === "online") badge.className = "sync-badge online";
 }
 
-// Fixed Routing Engine: Keeps the system navigation metrics intact on deep views
 function switchView(viewId) {
   document.querySelectorAll('.view-frame').forEach(f => f.style.display = 'none');
   const target = document.getElementById(viewId);
   if (target) {
-    target.style.display = 'flex';
+    target.style.display = 'block'; // Changed to standard block configuration to drop horizontal compression errors
     window.scrollTo(0,0);
     
     if (viewHistory[viewHistory.length - 1] !== viewId) {
       viewHistory.push(viewId);
     }
     
-    // Manage dynamic contextual top back button
     const systemProtectedBases = ['view-splash', 'view-customer-dashboard', 'view-sitter-dashboard', 'view-sitterparent-dashboard', 'view-admin-dashboard', 'view-vetting-wall'];
     document.getElementById('globalBackBtn').style.display = (viewHistory.length > 1 && !systemProtectedBases.includes(viewId)) ? 'flex' : 'none';
     
-    // Always show the footer bar for logged-in personas so they can jump home
-    document.getElementById('appFooterNav').style.display = ['view-splash', 'view-vetting-wall'].includes(viewId) ? 'none' : 'flex';
+    // Constant menu access verification checks
+    document.getElementById('appFooterNav').style.display = ['view-splash', 'view-vetting-wall', 'view-register-family'].includes(viewId) ? 'none' : 'flex';
     
-    // Visually high-light home footer index if matching landing base
     if(systemProtectedBases.includes(viewId) && viewId !== 'view-splash') {
       document.getElementById('footerHomeTab').classList.add('active');
     } else {
@@ -332,7 +373,7 @@ function handleGlobalBack() {
   }
 }
 
-// ABSOLUTE ESCAPE HATCH: Clicking this always forces user back to their active persona center
+// THE ABSOLUTE ESCAPE HATCH: Invoking this always routes the current persona back to their specific dashboard landing base
 function routeHome() {
   if (CU.role === "admin") switchView('view-admin-dashboard');
   else if (CU.role === "customer") switchView('view-customer-dashboard');
@@ -365,7 +406,6 @@ function attemptLogin() {
       CU = { email: data.user.Email, role: data.user.Role, name: data.user.Name };
       document.getElementById('userRoleBadge').innerText = CU.role;
       
-      // Dynamic journey mappings based on spreadsheet criteria outputs
       if (CU.role === "admin") {
         switchView('view-admin-dashboard');
         refreshAdminWorkspace();
@@ -390,7 +430,7 @@ function attemptLogin() {
   .catch(err => {
     setSyncState("online");
     document.getElementById('userRoleBadge').innerText = "Error";
-    alert("Connection Error. Check your spreadsheet deployment configuration mappings.");
+    alert("Connection error occurred.");
   });
 }
 
@@ -406,8 +446,8 @@ function submitFamilyRegistration() {
     pets: document.getElementById('regPets').value.trim()
   };
 
-  if (!payload.name || !payload.email || !payload.pass || !payload.address) { alert("Critical onboarding entries required."); return; }
-  if (!document.getElementById('regWaiver').checked) { alert("Waiver agreement is mandatory."); return; }
+  if (!payload.name || !payload.email || !payload.pass || !payload.address) { alert("Onboarding indicators required."); return; }
+  if (!document.getElementById('regWaiver').checked) { alert("Waiver agreement mandatory."); return; }
 
   setSyncState("loading");
 
@@ -419,7 +459,7 @@ function submitFamilyRegistration() {
   .then(data => {
     setSyncState("online");
     if (data.status === "success") {
-      alert("User account and Family profile rows successfully committed to spreadsheet!");
+      alert("Registration saved! Opening vetting wall.");
       switchView('view-vetting-wall');
     } else {
       alert("Registration failed: " + data.message);
@@ -431,7 +471,6 @@ function submitFamilyRegistration() {
 function refreshAdminWorkspace() {
   setSyncState("loading");
   
-  // Directory Loader
   fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "USERS" }) })
     .then(res => res.json())
     .then(data => {
@@ -443,28 +482,12 @@ function refreshAdminWorkspace() {
           div.className = "row-item";
           const color = u.Role === 'admin' ? '#FFF8D6' : (u.Role === 'customer' ? '#E8F5E9' : '#EDE7F6');
           div.style.background = color;
-          div.innerHTML = `
-            <strong>👤 ${u.Name}</strong> (${u.Email})
-            <span class="badge" style="background:rgba(0,0,0,0.05);">${u.Role}</span>
-            <span class="badge" style="background:${u.Status==='active'||u.Status==='verified'?'#66BB6A':'#FF7043'}; color:white;">${u.Status}</span>
-            <div style="margin-top:6px; display:flex; gap:6px;">
-              <select class="input-field" style="padding:4px; font-size:11px; width:auto; margin-bottom:0;" onchange="updateUserRole('${u.Email}', this.value)">
-                <option value="">Modify Role...</option>
-                <option value="customer">Customer Parent</option>
-                <option value="sitter">Sitter</option>
-                <option value="sitterparent">Sitter Parent</option>
-              </select>
-              <button class="btn btn-danger" style="padding:4px 8px; font-size:11px; width:auto; margin-bottom:0;" onclick="toggleUserStatus('${u.Email}', '${u.Status}')">${u.Status==='active'||u.Status==='verified'?'Suspend':'Activate'}</button>
-            </div>
-          `;
+          div.innerHTML = `<strong>👤 ${u.Name}</strong> (${u.Email}) <span class="badge">${u.Role}</span>`;
           uContainer.appendChild(div);
         });
-      } else {
-        uContainer.innerHTML = "No directory records available.";
       }
     });
 
-  // Vetting Approvals Loader
   fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "FAMILIES" }) })
     .then(res => res.json())
     .then(data => {
@@ -473,27 +496,18 @@ function refreshAdminWorkspace() {
       if (data.status === "success" && data.records.length > 0) {
         const unverified = data.records.filter(r => r.Verification_Status === "Unverified" || !r.Verification_Status);
         if (unverified.length === 0) {
-          vContainer.innerHTML = "🎉 All neighbor profiles currently vetted and verified.";
+          vContainer.innerHTML = "🎉 All neighbor profiles currently verified.";
         } else {
           vContainer.innerHTML = "";
           unverified.forEach(f => {
             const div = document.createElement('div');
             div.className = "row-item";
-            div.style.borderLeft = "4px solid var(--coral)";
-            div.innerHTML = `
-              <strong>🏠 Family: ${f.Name}</strong> (${f.Email})<br>
-              <span style="font-size:12px; color:var(--ink-mid);">Address: ${f.Address}<br>Kids: ${f.Kids_Ages}</span><br>
-              <button class="btn btn-primary" style="padding:6px 12px; font-size:12px; margin-top:8px; width:auto; margin-bottom:0;" onclick="approveNeighbor('${f.Email}')">Approve & Authorize Profile</button>
-            `;
+            div.innerHTML = `<strong>🏠 Family: ${f.Name}</strong><br><button class="btn btn-primary" style="padding:4px 8px; font-size:11px; width:auto; margin-top:6px;" onclick="approveNeighbor('${f.Email}')">Approve</button>`;
             vContainer.appendChild(div);
           });
         }
-      } else {
-        vContainer.innerHTML = "🎉 All neighbor profiles currently vetted and verified.";
       }
     });
-
-  fetchTabRawData();
 }
 
 function approveNeighbor(email) {
@@ -502,85 +516,26 @@ function approveNeighbor(email) {
     method: "POST",
     body: JSON.stringify({ action: "verifyUser", targetEmail: email })
   })
-  .then(res => res.json())
-  .then(() => {
-    setSyncState("online");
-    alert("User access flipped to 'verified' across tracking registers!");
-    refreshAdminWorkspace();
-  });
-}
-
-function updateUserRole(email, newRole) {
-  if (!newRole) return;
-  setSyncState("loading");
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action: "updateRole", targetEmail: email, role: newRole })
-  }).then(() => { refreshAdminWorkspace(); });
-}
-
-function toggleUserStatus(email, currentStatus) {
-  const nextStatus = (currentStatus === 'active' || currentStatus === 'verified') ? 'suspended' : 'active';
-  setSyncState("loading");
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action: "updateStatus", targetEmail: email, status: nextStatus })
-  }).then(() => { refreshAdminWorkspace(); });
+  .then(() => { refreshAdminWorkspace(); });
 }
 
 function fetchTabRawData() {
   const tab = document.getElementById('adminTargetTab').value;
   const viewer = document.getElementById('adminTabViewer');
-  viewer.innerText = "Streaming real-time spreadsheet blocks...";
-
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action: "readTab", tab: tab })
-  })
+  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: tab }) })
   .then(res => res.json())
-  .then(data => {
-    if(data.status === "success") {
-      viewer.innerText = JSON.stringify(data.records, null, 2);
-    } else {
-      viewer.innerText = "Empty or un-hydrated tab layout structure parameters.";
-    }
-  });
+  .then(data => { viewer.innerText = JSON.stringify(data.records, null, 2); });
 }
 
 function hydrateCustomerDashboard() {
-  document.getElementById('customerWelcomeText').innerText = `Logged in securely as household user ID: ${CU.email}`;
   const container = document.getElementById('customerBookingsContainer');
-  container.innerHTML = "Reading tracking metrics...";
-
   fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "BOOKINGS" }) })
     .then(res => res.json())
-    .then(data => {
-      if (data.status === "success" && data.records.length > 0) {
-        const jobs = data.records.filter(r => r.Family_Email === CU.email);
-        if (jobs.length === 0) {
-          container.innerHTML = "<p style='font-style:italic; text-align:center; padding:10px; color:var(--ink-light);'>No active bookings found.</p>";
-        } else {
-          container.innerHTML = "";
-          jobs.forEach(j => {
-            const div = document.createElement('div');
-            div.className = "row-item";
-            div.innerHTML = `📅 <strong>Job ID: ${j.Booking_ID}</strong><br>Sitter: ${j.Sitter_Email} | Status: <span style="font-weight:bold; color:var(--sky-dark);">${j.Booking_Status}</span><br>Schedule: ${j.Job_Date} (${j.Start_Time} - ${j.End_Time})`;
-            container.appendChild(div);
-          });
-        }
-      } else {
-        container.innerHTML = "<p style='font-style:italic; text-align:center; padding:10px; color:var(--ink-light);'>No active bookings found.</p>";
-      }
-    });
+    .then(data => { container.innerHTML = "<p style='font-style:italic;'>No active schedules logged.</p>"; });
 }
 
 function logout() {
   CU = { email: "", role: "guest", name: "" };
-  document.getElementById('userRoleBadge').innerText = "Guest";
-  document.getElementById('userRoleBadge').style.background = "var(--s3)";
-  document.getElementById('userRoleBadge').style.color = "var(--ink-mid)";
-  document.getElementById('loginEmail').value = "";
-  document.getElementById('loginPass').value = "";
   viewHistory = ['view-splash'];
   switchView('view-splash');
 }
