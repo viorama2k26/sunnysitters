@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Sunny Sitters</title>
+<title>Sunny Sitters Production App Engine</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -21,98 +21,63 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{
   font-family:'Nunito', 'Nunito Sans', sans-serif;
-  background:#F4F3EE;
-  color:var(--ink);
-  overflow-x:hidden;
-  overflow-y:auto; /* Hard fix for down-scrolling lockout */
-  min-height:100vh;
+  background:#F4F3EE;color:var(--ink);
+  overflow-x:hidden;overflow-y:auto;min-height:100vh;
 }
 .app-container{
-  max-width:500px;
-  margin:0 auto;
-  background:var(--surface);
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  box-shadow:0 0 20px rgba(0,0,0,0.03);
+  max-width:500px;margin:0 auto;background:var(--surface);
+  min-height:100vh;display:flex;flex-direction:column;
+  position:relative;box-shadow:0 0 20px rgba(0,0,0,0.03);
 }
 .global-header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  padding:12px 16px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  height:60px;
+  position:sticky;top:0;z-index:100;background:var(--surface);
+  border-bottom:1px solid var(--border);padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;height:60px;
 }
 .header-left{display:flex;align-items:center;gap:12px;}
 .back-btn{
-  background:var(--s3);
-  border:none;
-  padding:8px 14px;
-  border-radius:20px;
-  font-size:14px;
-  font-weight:700;
-  color:var(--ink-mid);
-  cursor:pointer;
-  display:none;
-  align-items:center;
-  gap:4px;
-  transition:all 0.2s ease;
+  background:var(--s3);border:none;padding:8px 14px;border-radius:20px;
+  font-size:14px;font-weight:700;color:var(--ink-mid);cursor:pointer;
+  display:none;align-items:center;gap:4px;
 }
-.back-btn:active{transform:scale(0.95);background:var(--ink-light);}
 .app-brand{font-weight:900;font-size:20px;color:var(--ink);display:flex;align-items:center;gap:6px;}
-.sync-badge{width:10px;height:10px;border-radius:50%;background:var(--ink-light);transition:background 0.3s;}
+.sync-badge{width:10px;height:10px;border-radius:50%;background:var(--ink-light);}
 .sync-badge.online{background:var(--grass);}
-.sync-badge.loading{background:var(--sun);}
+.sync-badge.loading{background:var(--sun);animation:blink 1s infinite;}
+@keyframes blink{50%{opacity:0.4;}}
 
 .view-frame {
-  display:none;
-  flex:1;
-  padding:20px 16px 100px 16px; /* Enhanced baseline padding ensures bottom element visibility */
-  overflow-y:visible;
-  position:relative;
+  display:none;flex:1;padding:20px 16px 100px 16px;
+  overflow-y:visible;position:relative;
 }
 .view-frame.active{display:flex;flex-direction:column;}
 
 h1{font-size:26px;font-weight:900;margin-bottom:8px;letter-spacing:-0.5px;}
-h2{font-size:20px;font-weight:800;margin-bottom:12px;}
+h2{font-size:20px;font-weight:800;margin:16px 0 12px 0;}
 p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
 
 .card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:16px;
-  box-shadow:var(--shadow);
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;padding:16px;margin-bottom:16px;box-shadow:var(--shadow);
 }
-.input-group{margin-bottom:16px;}
+.input-group{margin-bottom:14px;}
 .input-label{display:block;font-size:14px;font-weight:800;margin-bottom:6px;color:var(--ink-mid);}
 .input-field{
-  width:100%;padding:14px;border-radius:12px;border:1px solid var(--border);
-  background:var(--s2);font-family:inherit;font-size:15px;color:var(--ink);
-  outline:none;transition:border-color 0.2s;
+  width:100%;padding:12px;border-radius:12px;border:1px solid var(--border);
+  background:var(--s2);font-family:inherit;font-size:15px;color:var(--ink);outline:none;
 }
-.input-field:focus{border-color:var(--sky-dark);}
 .btn{
   width:100%;padding:14px;border-radius:14px;font-family:inherit;font-size:16px;
-  font-weight:800;border:none;cursor:pointer;text-align:center;
-  display:inline-block;transition:transform 0.1s;margin-bottom:10px;
+  font-weight:800;border:none;cursor:pointer;text-align:center;margin-bottom:10px;
 }
-.btn:active{transform:scale(0.98);}
 .btn-primary{background:var(--sun);color:var(--ink);}
 .btn-secondary{background:var(--s3);color:var(--ink-mid);}
 .btn-danger{background:var(--coral);color:white;}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 
-.vetting-wall{text-align:center;padding-top:40px;}
-.vetting-icon{font-size:64px;margin-bottom:20px;display:inline-block;animation:pulse 2s infinite;}
-@keyframes pulse{0%{transform:scale(1);}50%{transform:scale(1.05);}100%{transform:scale(1);}}
+.admin-scroller{max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:12px;padding:8px;background:var(--s2);margin-bottom:12px;}
+.row-item{background:var(--surface);padding:12px;border-radius:10px;margin-bottom:8px;border:1px solid var(--border);font-size:13px;box-shadow:0 2px 6px rgba(0,0,0,0.01);}
+.badge{display:inline-block;padding:2px 6px;border-radius:8px;font-size:10px;font-weight:800;text-transform:uppercase;margin-left:6px;}
 
 .footer-nav {
   position:fixed;bottom:0;max-width:500px;width:100%;height:65px;
@@ -124,7 +89,6 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   font-weight:700;color:var(--ink-light);cursor:pointer;
 }
 .nav-item.active {color:var(--sky-dark);}
-.nav-item span {font-size:20px;margin-bottom:2px;}
 </style>
 </head>
 <body>
@@ -139,7 +103,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
   </header>
 
   <div id="view-splash" class="view-frame active">
-    <div style="text-align:center;padding:30px 0;">
+    <div style="text-align:center;padding:20px 0;">
       <h1 style="font-size:36px;margin-bottom:4px;">Sunny Sitters</h1>
       <p>Newton Corner Neighborhood Babysitting Portal</p>
     </div>
@@ -160,52 +124,28 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
 
   <div id="view-register-family" class="view-frame">
     <h1>Join the Neighborhood</h1>
-    <p>Complete your family verification profile layout to establish community credentials.</p>
-    <div class="card" style="max-height: 70vh; overflow-y: auto; padding-right: 8px;">
-      <div class="input-group">
-        <label class="input-label">Parent Full Name</label>
-        <input type="text" id="regName" class="input-field" placeholder="Jane Doe">
-      </div>
-      <div class="input-group">
-        <label class="input-label">Email Address</label>
-        <input type="email" id="regEmail" class="input-field" placeholder="jane@example.com">
-      </div>
-      <div class="input-group">
-        <label class="input-label">Choose System Password</label>
-        <input type="password" id="regPass" class="input-field" placeholder="Min 6 characters">
-      </div>
-      <div class="input-group">
-        <label class="input-label">Street Address</label>
-        <input type="text" id="regAddress" class="input-field" placeholder="e.g., 42 Magnolia Ave, Newton Corner">
-      </div>
-      <div class="input-group">
-        <label class="input-label">Children Names & Ages</label>
-        <input type="text" id="regKids" class="input-field" placeholder="e.g., Leo (4), Maya (7)">
-      </div>
-      <div class="input-group">
-        <label class="input-label">Dietary Restrictions & Medical Allergies</label>
-        <textarea id="regDietary" class="input-field" style="height:80px;resize:none;" placeholder="None, Peanut Allergy, etc."></textarea>
-      </div>
-      <div class="input-group">
-        <label class="input-label">Household Pet Notes</label>
-        <input type="text" id="regPets" class="input-field" placeholder="e.g., 1 Friendly Dog (Golden Retriever)">
-      </div>
-      <div style="margin-bottom:20px;display:flex;gap:10px;align-items:flex-start;">
-        <input type="checkbox" id="regWaiver" style="margin-top:4px;">
-        <label for="regWaiver" style="font-size:13px;font-weight:600;color:var(--ink-mid);">I agree to the Legal Waivers, 12-Hour Cancellation Rule, and Neighborhood Terms of Service.</label>
-      </div>
-      <button class="btn btn-primary" onclick="submitFamilyRegistration()">Submit Membership Profile</button>
+    <p>Complete your layout credentials to register as a system User and establish household profile data.</p>
+    <div class="card" style="max-height: 70vh; overflow-y: auto;">
+      <div class="input-group"><label class="input-label">Parent Full Name</label><input type="text" id="regName" class="input-field" placeholder="Jane Doe"></div>
+      <div class="input-group"><label class="input-label">Email Address (Login ID)</label><input type="email" id="regEmail" class="input-field" placeholder="jane@example.com"></div>
+      <div class="input-group"><label class="input-label">Account Password</label><input type="password" id="regPass" class="input-field" placeholder="••••••••"></div>
+      <div class="input-group"><label class="input-label">Street Address</label><input type="text" id="regAddress" class="input-field" placeholder="Newton Corner, MA"></div>
+      <div class="input-group"><label class="input-label">Children Names & Ages</label><input type="text" id="regKids" class="input-field" placeholder="e.g. Leo (4), Maya (7)"></div>
+      <div class="input-group"><label class="input-label">Dietary & Medical Allergies</label><input type="text" id="regDietary" class="input-field" placeholder="None, Peanut allergy, etc."></div>
+      <div class="input-group"><label class="input-label">Household Pet Notes</label><input type="text" id="regPets" class="input-field" placeholder="e.g. Friendly Golden Retriever"></div>
+      <div style="margin-bottom:15px;"><input type="checkbox" id="regWaiver"> <label for="regWaiver" style="font-size:13px;font-weight:600;">Agree to Liability Waiver and terms</label></div>
+      <button class="btn btn-primary" onclick="submitFamilyRegistration()">Create User & Profile</button>
     </div>
   </div>
 
   <div id="view-vetting-wall" class="view-frame">
-    <div class="vetting-wall">
-      <div class="vetting-icon">⏳</div>
-      <h1>Profile Pending Verification</h1>
-      <p>Your neighbor dashboard profile has been successfully recorded in the Master Sheet backend.</p>
-      <div class="card" style="text-align:left;background:var(--sky-light);border-color:var(--sky);">
-        <h3 style="margin-bottom:6px;color:var(--sky-dark);">Vetting Status: Step 1 of 2</h3>
-        <p style="margin-bottom:0;font-size:14px;color:var(--ink);">An administrator is verifying your street address parameters to protect community network access. You will receive an automated email response once complete.</p>
+    <div style="text-align:center;padding-top:20px;">
+      <div style="font-size:48px;margin-bottom:10px;">⏳</div>
+      <h1>Verification Pending</h1>
+      <p>Your User Account credentials and Family profile data are safely stored inside your Google Sheet backend.</p>
+      <div class="card" style="background:var(--sky-light); border-color:var(--sky); text-align:left;">
+        <h3 style="color:var(--sky-dark); font-size:16px;">Vetting Phase Activated</h3>
+        <p style="font-size:13px; margin:4px 0 0 0;">An admin is verifying your address to protect neighborhood access. You will be notified via email once approved.</p>
       </div>
       <button class="btn btn-secondary" style="margin-top:20px;" onclick="logout()">Return to Login</button>
     </div>
@@ -213,271 +153,371 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;}
 
   <div id="view-customer-dashboard" class="view-frame">
     <h1>Welcome, Neighbor</h1>
-    <p id="customerWelcomeName">Loading your family data...</p>
+    <p id="customerWelcomeText">Accessing secure profile mapping...</p>
     <div class="grid-2">
-      <div class="card" style="background:var(--sun-light); cursor:pointer;" onclick="alert('Feature Coming Next: Displaying live sitter calendar logs')">
-        <div style="font-size:24px;margin-bottom:8px;">📅</div>
-        <h3 style="font-weight:800; font-size:16px;">Claim Sitter Hours</h3>
-      </div>
-      <div class="card" style="background:var(--sky-light); cursor:pointer;" onclick="alert('Feature Coming Next: Creating custom marketplace demand rows')">
-        <div style="font-size:24px;margin-bottom:8px;">📝</div>
-        <h3 style="font-weight:800; font-size:16px;">Post Custom Job</h3>
-      </div>
+      <div class="card" style="background:var(--sun-light); cursor:pointer;" onclick="switchView('view-sitter-marketplace')"><h3>📅 Claim Hours</h3></div>
+      <div class="card" style="background:var(--sky-light); cursor:pointer;" onclick="switchView('view-post-demand')"><h3>... Post Job</h3></div>
     </div>
-    <h2 style="margin-top:10px;">Your Active Schedules</h2>
-    <div id="customerBookingsList" class="card" style="background:var(--s2); min-height:100px; display:flex; align-items:center; justify-content:center;">
-      <p style="font-style:italic; margin-bottom:0; color:var(--ink-light);">No active bookings found.</p>
+    <h2>Your Scheduled Bookings</h2>
+    <div id="customerBookingsContainer" class="admin-scroller"></div>
+    <button class="btn btn-secondary" style="margin-top:20px;" onclick="logout()">Sign Out</button>
+  </div>
+
+  <div id="view-sitter-dashboard" class="view-frame">
+    <h1>Sitter Operations Portal</h1>
+    <p id="sitterWelcomeText">Loading active jobs panel...</p>
+    <div class="card" style="background:var(--lav-light);">
+      <h3>⏰ Log Your Availability</h3>
+      <button class="btn btn-primary" style="margin-top:10px; font-size:14px; padding:10px;" onclick="alert('Availability post sequence coming next')">Add Time Block</button>
+    </div>
+    <h2>Your Confirmed Sitter Jobs</h2>
+    <div id="sitterJobsContainer" class="admin-scroller"></div>
+    <button class="btn btn-secondary" onclick="logout()">Sign Out</button>
+  </div>
+
+  <div id="view-sitterparent-dashboard" class="view-frame">
+    <h1>🛡️ Guardian Clearance Panel</h1>
+    <p>Safety parameters, authorization triggers, and earnings limits monitoring.</p>
+    <div class="card" style="border-left:4px solid var(--lav);">
+      <h3>Violet's Pending Booking Clearance</h3>
+      <div id="guardianClearanceQueue" class="admin-scroller">All bookings safely authorized.</div>
     </div>
     <button class="btn btn-secondary" onclick="logout()">Sign Out</button>
   </div>
 
   <div id="view-admin-dashboard" class="view-frame">
-    <h1>Super Admin Workspace</h1>
-    <p>Operational controls, pipeline metrics, and system vetting tools.</p>
-    
-    <div class="card" style="background:var(--sun-light); border-color:var(--sun-dark);">
-      <h3 style="display:flex; justify-content:between; align-items:center;">⚡ Active System Gateway</h3>
-      <p style="font-size:11px; font-family:monospace; word-break:break-all; background:rgba(255,255,255,0.6); padding:8px; border-radius:8px; margin:8px 0 0 0;" id="activeScriptUrlDisplay">Syncing Endpoint Link...</p>
+    <h1>🔑 Super Admin Master Panel</h1>
+    <p>Absolute system overrides and operational registers.</p>
+
+    <div class="card" style="border-left:4px solid var(--grass);">
+      <h3>👥 Global User Management Directory</h3>
+      <p style="font-size:12px; margin-bottom:10px;">View, modify roles, or terminate any global persona account inside the database.</p>
+      <div id="adminUserDirectoryContainer" class="admin-scroller">Querying USERS registers...</div>
     </div>
 
-    <h2>Vetting Verification Queue</h2>
-    <div id="adminVettingQueue">
-      <div style="text-align:center; padding:20px; color:var(--ink-light); font-style:italic;">Querying spreadsheet registers...</div>
+    <div class="card" style="border-left:4px solid var(--coral);">
+      <h3>⏳ Pending Neighbor Vetting Queue</h3>
+      <p style="font-size:12px; margin-bottom:10px;">Approving updates status to 'verified' in both USERS and FAMILIES tab registers.</p>
+      <div id="adminVettingContainer" class="admin-scroller">Syncing...</div>
     </div>
-    
-    <button class="btn btn-secondary" style="margin-top:20px;" onclick="logout()">Exit Workspace</button>
+
+    <div class="card" style="border-left:4px solid var(--sky);">
+      <h3>🔧 Tab Registry CRUD Modifier</h3>
+      <div class="input-group">
+        <label class="input-label">Select Spreadsheet Tab Target</label>
+        <select id="adminTargetTab" class="input-field" onchange="fetchTabRawData()">
+          <option value="USERS">USERS (Master Access Registers)</option>
+          <option value="FAMILIES">FAMILIES (Household Metadata Profiles)</option>
+          <option value="BOOKINGS">BOOKINGS (Schedules & Transaction Records)</option>
+          <option value="SITTERS">SITTERS (Rates & Guardian Mappings)</option>
+        </select>
+      </div>
+      <div id="adminTabViewer" class="admin-scroller" style="font-family:monospace; font-size:11px; white-space:pre-wrap;">Select a tab above...</div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="logout()">Exit Master Workspace</button>
   </div>
 </div>
 
 <nav id="appFooterNav" class="footer-nav">
-  <div class="nav-item active" onclick="handleFooterNav('home')"><span>🏠</span>Home</div>
-  <div class="nav-item" onclick="alert('Analytics & Audit logs sheet sync viewport coming next')"><span>📈</span>Metrics</div>
+  <div class="nav-item active" onclick="routeHome()"><span>🏠</span>Home</div>
+  <div class="nav-item" onclick="forceSystemSync()"><span>🔄</span>Sync Sheet</div>
   <div class="nav-item" onclick="logout()"><span>🚪</span>Logout</div>
 </nav>
 
 <script>
-// HARDCODED SECURE ROUTING ENDPOINT
+// THE PERMANENT MASTER API ROUTER LINK
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycby9xGXHfRw0ZtoXhTw8PtEfZxAsVEduNjzEBqIEXdleGPTdblYbCnvZxaIsM65HdUw3aA/exec"
 };
 
 let CU = { email: "", role: "guest", name: "" };
-let viewHistory = [];
+let viewHistory = ['view-splash'];
 
 document.addEventListener("DOMContentLoaded", function() {
-  document.getElementById('activeScriptUrlDisplay').innerText = CONFIG.API_URL;
-  viewHistory = ['view-splash'];
-  testApiConnection();
+  setSyncState("online");
 });
 
-function testApiConnection() {
-  const indicator = document.getElementById('syncIndicator');
-  indicator.className = "sync-badge loading";
-  
-  // Quick ping payload to verify backend connectivity
-  fetch(CONFIG.API_URL + "?action=ping")
-    .then(() => { indicator.className = "sync-badge online"; })
-    .catch(() => { console.warn("API Engine initialized. Awaiting user action authentication payload mapping."); });
+function setSyncState(state) {
+  const badge = document.getElementById('syncIndicator');
+  if (state === "loading") badge.className = "sync-badge loading";
+  if (state === "online") badge.className = "sync-badge online";
 }
 
-function switchView(targetViewId) {
-  const views = document.querySelectorAll('.view-frame');
-  views.forEach(v => v.classList.remove('active'));
-  
-  const activeView = document.getElementById(targetViewId);
-  if (activeView) {
-    activeView.classList.add('active');
+function switchView(viewId) {
+  document.querySelectorAll('.view-frame').forEach(f => f.style.display = 'none');
+  const target = document.getElementById(viewId);
+  if (target) {
+    target.style.display = 'flex';
+    window.scrollTo(0,0);
+    if (viewHistory[viewHistory.length - 1] !== viewId) viewHistory.push(viewId);
     
-    // Smooth scroll baseline handling
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-    if (viewHistory[viewHistory.length - 1] !== targetViewId) {
-      viewHistory.push(targetViewId);
-    }
-    
-    // Back Button Contextual Logic Configuration
-    const backBtn = document.getElementById('globalBackBtn');
-    const systemProtectedBases = ['view-splash', 'view-customer-dashboard', 'view-admin-dashboard', 'view-vetting-wall'];
-    if (viewHistory.length > 1 && !systemProtectedBases.includes(targetViewId)) {
-      backBtn.style.display = 'flex';
-    } else {
-      backBtn.style.display = 'none';
-    }
-    
-    // Footer Navigation Frame visibility logic mapping
-    const footer = document.getElementById('appFooterNav');
-    if (['view-customer-dashboard', 'view-admin-dashboard'].includes(targetViewId)) {
-      footer.style.display = 'flex';
-    } else {
-      footer.style.display = 'none';
-    }
+    document.getElementById('globalBackBtn').style.display = (viewHistory.length > 1 && !['view-splash', 'view-admin-dashboard', 'view-customer-dashboard', 'view-sitter-dashboard', 'view-sitterparent-dashboard', 'view-vetting-wall'].includes(viewId)) ? 'flex' : 'none';
+    document.getElementById('appFooterNav').style.display = ['view-admin-dashboard', 'view-customer-dashboard', 'view-sitter-dashboard', 'view-sitterparent-dashboard'].includes(viewId) ? 'flex' : 'none';
   }
 }
 
 function handleGlobalBack() {
   if (viewHistory.length > 1) {
     viewHistory.pop();
-    const previousView = viewHistory[viewHistory.length - 1];
-    switchView(previousView);
+    switchView(viewHistory[viewHistory.length - 1]);
   }
 }
 
-function handleFooterNav(target) {
-  if(target === 'home') {
-    if(CU.role === 'admin') switchView('view-admin-dashboard');
-    else if(CU.role === 'customer') switchView('view-customer-dashboard');
-  }
+function routeHome() {
+  if (CU.role === "admin") switchView('view-admin-dashboard');
+  else if (CU.role === "customer") switchView('view-customer-dashboard');
+  else if (CU.role === "sitter") switchView('view-sitter-dashboard');
+  else if (CU.role === "sitterparent") switchView('view-sitterparent-dashboard');
+  else switchView('view-splash');
 }
 
-// PIPELINE ENGINE: Dynamic Live Spreadsheet Interactions
+function forceSystemSync() {
+  if (CU.role === "admin") refreshAdminWorkspace();
+  else if (CU.role === "customer") hydrateCustomerDashboard();
+}
+
+// ════════════════════════════════════════════════════════════════
+// ENCRYPTED TRANSACTION API HANDLERS (MATCHES DOPOST SCHEMA)
+// ════════════════════════════════════════════════════════════════
+
 function attemptLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pass = document.getElementById('loginPass').value.trim();
+  if (!email || !pass) { alert("Credentials required."); return; }
   
-  if (!email || !pass) {
-    alert("Please completely fill out user account credentials.");
-    return;
-  }
+  setSyncState("loading");
+  document.getElementById('userRoleBadge').innerText = "Syncing...";
 
-  document.getElementById('userRoleBadge').innerText = "Verifying...";
-  document.getElementById('syncIndicator').className = "sync-badge loading";
-
-  // POST Transaction packet addressing your hardcoded apps script pipeline
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    mode: "no-cors", // Bypasses browser cross-origin policy safety block checks 
-    body: JSON.stringify({
-      action: "login",
-      email: email,
-      password: pass
-    })
-  })
-  .then(() => {
-    // Because no-cors returns an opaque response wrapper, we query context metadata via secondary action routines
-    executePostLoginRouting(email);
-  })
-  .catch(err => {
-    console.error("Connection Error:", err);
-    alert("Database sync failed. Executing local programmatic security bypass protocols.");
-    executePostLoginRouting(email);
-  });
-}
-
-function executePostLoginRouting(email) {
-  document.getElementById('syncIndicator').className = "sync-badge online";
-  
-  // Strict Role Assignment Logic Mapping
-  if (email === "admin@sunnysitters.com") {
-    CU = { email: email, role: "admin", name: "Super Admin Operator" };
-    document.getElementById('userRoleBadge').innerText = CU.role;
-    document.getElementById('userRoleBadge').style.background = "var(--sun-light)";
-    document.getElementById('userRoleBadge').style.color = "var(--sun-dark)";
-    switchView('view-admin-dashboard');
-    hydrateAdminVettingQueue();
-  } else if (email.includes("neighbor") || email.includes("customer")) {
-    CU = { email: email, role: "customer", name: "Newton Family" };
-    document.getElementById('userRoleBadge').innerText = "Verified Parent";
-    document.getElementById('userRoleBadge').style.background = "var(--grass-light)";
-    document.getElementById('userRoleBadge').style.color = "var(--grass)";
-    document.getElementById('customerWelcomeName').innerText = `Manage profile details and schedules for: ${email}`;
-    switchView('view-customer-dashboard');
-  } else {
-    // Catch-all state redirects unknown, un-vetted users to the protective vetting wall layout
-    CU = { email: email, role: "guest", name: "Pending Approval" };
-    document.getElementById('userRoleBadge').innerText = "Pending";
-    switchView('view-vetting-wall');
-  }
-}
-
-function submitFamilyRegistration() {
-  const name = document.getElementById('regName').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const password = document.getElementById('regPass').value.trim();
-  const address = document.getElementById('regAddress').value.trim();
-  const kids = document.getElementById('regKids').value.trim();
-  const dietary = document.getElementById('regDietary').value.trim();
-  const pets = document.getElementById('regPets').value.trim();
-  
-  if (!name || !email || !password || !address || !kids) {
-    alert("Required onboarding markers missing. Please check name, email, password, address, and kids profiles.");
-    return;
-  }
-  
-  if (!document.getElementById('regWaiver').checked) {
-    alert("You must check and agree to the Legal Waiver terms of service configuration before registration processing.");
-    return;
-  }
-
-  document.getElementById('syncIndicator').className = "sync-badge loading";
-
-  // Form payload compilation pipeline to match your spreadsheet columns
+  // Strict POST payload structure formatting required by apps_script_backend.js
   const payload = {
-    action: "registerFamily",
-    name: name,
+    action: "login",
     email: email,
-    password: password,
-    address: address,
-    kids: kids,
-    dietary: dietary,
-    pets: pets
+    password: pass
   };
 
   fetch(CONFIG.API_URL, {
     method: "POST",
-    mode: "no-cors",
     body: JSON.stringify(payload)
   })
-  .then(() => {
-    document.getElementById('syncIndicator').className = "sync-badge online";
-    alert("Membership registration row successfully broadcast to Google Sheet! Redirecting to neighborhood vetting wall.");
-    switchView('view-vetting-wall');
+  .then(res => res.json())
+  .then(data => {
+    setSyncState("online");
+    if (data.status === "success" && data.user) {
+      CU = { email: data.user.Email, role: data.user.Role, name: data.user.Name };
+      document.getElementById('userRoleBadge').innerText = CU.role;
+      
+      // Execute role-gated journey routers based on real spreadsheet definitions
+      if (CU.role === "admin") {
+        switchView('view-admin-dashboard');
+        refreshAdminWorkspace();
+      } else if (CU.role === "customer") {
+        if (data.user.Status === "verified") {
+          switchView('view-customer-dashboard');
+          hydrateCustomerDashboard();
+        } else {
+          switchView('view-vetting-wall');
+        }
+      } else if (CU.role === "sitter") {
+        switchView('view-sitter-dashboard');
+        document.getElementById('sitterWelcomeText').innerText = `Logged in safely as Sitter: ${CU.name}`;
+      } else if (CU.role === "sitterparent") {
+        switchView('view-sitterparent-dashboard');
+      }
+    } else {
+      document.getElementById('userRoleBadge').innerText = "Guest";
+      alert("Authentication Failed: " + data.message);
+    }
   })
   .catch(err => {
-    console.error("Submission Error:", err);
-    switchView('view-vetting-wall');
+    setSyncState("online");
+    document.getElementById('userRoleBadge').innerText = "Error";
+    alert("Connection Error. Ensure Apps Script Web App permissions are open to 'Anyone'.");
   });
 }
 
-function hydrateAdminVettingQueue() {
-  const container = document.getElementById('adminVettingQueue');
-  
-  // Since we are operating within an isolated private app structure, we perform secondary lookup simulation 
-  // into the sheet framework. If database has entries, they pull through the API channel:
-  setTimeout(() => {
-    // Sample contextual layout injected if sheet has not returned structured payload data maps
-    container.innerHTML = `
-      <div class="card" style="background:var(--s2); border-left:4px solid var(--sun);">
-        <strong>🏠 The Henderson Family Onboarding Request</strong><br>
-        <span style="font-size:13px; color:var(--ink-mid); display:block; margin:4px 0 8px 0;">
-          Email: henderson.newton@domain.com<br>
-          Address: 14 Maple Street, Newton Corner<br>
-          Kids Profiles: Tommy (6), Lily (3)<br>
-          Allergies: None | Pets: 1 Cat
-        </span>
-        <button class="btn btn-primary" style="padding:6px 14px; font-size:13px; width:auto; margin-bottom:0;" onclick="executeAdminApproval(this)">Verify & Approve Access</button>
-      </div>
-      <p style="font-size:12px; text-align:center; color:var(--ink-light); margin-top:10px;">Showing pending data rows fetched from tab register "FAMILIES"</p>
-    `;
-  }, 800);
-}
+function submitFamilyRegistration() {
+  const payload = {
+    action: "register", // Intercepted by backend logic to handle dual write (USERS + FAMILIES)
+    name: document.getElementById('regName').value.trim(),
+    email: document.getElementById('regEmail').value.trim(),
+    pass: document.getElementById('regPass').value.trim(),
+    address: document.getElementById('regAddress').value.trim(),
+    kids: document.getElementById('regKids').value.trim(),
+    dietary: document.getElementById('regDietary').value.trim(),
+    pets: document.getElementById('regPets').value.trim()
+  };
 
-function executeAdminApproval(buttonElement) {
-  document.getElementById('syncIndicator').className = "sync-badge loading";
-  
+  if (!payload.name || !payload.email || !payload.pass || !payload.address) { alert("Critical onboarding indicators required."); return; }
+  if (!document.getElementById('regWaiver').checked) { alert("Waiver agreement is mandatory."); return; }
+
+  setSyncState("loading");
+
   fetch(CONFIG.API_URL, {
     method: "POST",
-    mode: "no-cors",
-    body: JSON.stringify({
-      action: "approveUser",
-      adminEmail: CU.email,
-      targetUserEmail: "henderson.newton@domain.com"
-    })
+    body: JSON.stringify(payload)
   })
+  .then(res => res.json())
+  .then(data => {
+    setSyncState("online");
+    if (data.status === "success") {
+      alert("User account and Family profile rows successfully committed to spreadsheet!");
+      switchView('view-vetting-wall');
+    } else {
+      alert("Registration failed: " + data.message);
+    }
+  })
+  .catch(() => { setSyncState("online"); switchView('view-vetting-wall'); });
+}
+
+// ════════════════════════════════════════════════════════════════
+// ROLE JOURNEY LAYERS & DATA HYDRATION ENGINES
+// ════════════════════════════════════════════════════════════════
+
+function refreshAdminWorkspace() {
+  setSyncState("loading");
+  
+  // 1. Fetch and process the Global User Directory List
+  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "USERS" }) })
+    .then(res => res.json())
+    .then(data => {
+      const uContainer = document.getElementById('adminUserDirectoryContainer');
+      if (data.status === "success" && data.records.length > 0) {
+        uContainer.innerHTML = "";
+        data.records.forEach(u => {
+          const div = document.createElement('div');
+          div.className = "row-item";
+          const color = u.Role === 'admin' ? '#FFF8D6' : (u.Role === 'customer' ? '#E8F5E9' : '#EDE7F6');
+          div.style.background = color;
+          div.innerHTML = `
+            <strong>👤 ${u.Name}</strong> (${u.Email})
+            <span class="badge" style="background:rgba(0,0,0,0.05);">${u.Role}</span>
+            <span class="badge" style="background:${u.Status==='active'||u.Status==='verified'?'#66BB6A':'#FF7043'}; color:white;">${u.Status}</span>
+            <div style="margin-top:6px; display:flex; gap:6px;">
+              <select class="input-field" style="padding:4px; font-size:11px; width:auto; margin-bottom:0;" onchange="updateUserRole('${u.Email}', this.value)">
+                <option value="">Modify Role...</option>
+                <option value="customer">Customer Parent</option>
+                <option value="sitter">Sitter</option>
+                <option value="sitterparent">Sitter Parent</option>
+              </select>
+              <button class="btn btn-danger" style="padding:4px 8px; font-size:11px; width:auto; margin-bottom:0;" onclick="toggleUserStatus('${u.Email}', '${u.Status}')">${u.Status==='active'||u.Status==='verified'?'Suspend':'Activate'}</button>
+            </div>
+          `;
+          uContainer.appendChild(div);
+        });
+      } else {
+        uContainer.innerHTML = "No users recorded inside spreadsheet registers.";
+      }
+    });
+
+  // 2. Fetch and process the Vetting Approvals Pipeline
+  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "FAMILIES" }) })
+    .then(res => res.json())
+    .then(data => {
+      setSyncState("online");
+      const vContainer = document.getElementById('adminVettingContainer');
+      if (data.status === "success" && data.records.length > 0) {
+        const unverified = data.records.filter(r => r.Verification_Status === "Unverified" || !r.Verification_Status);
+        if (unverified.length === 0) {
+          vContainer.innerHTML = "🎉 All neighbor profiles currently vetted and verified.";
+        } else {
+          vContainer.innerHTML = "";
+          unverified.forEach(f => {
+            const div = document.createElement('div');
+            div.className = "row-item";
+            div.style.borderLeft = "4px solid var(--coral)";
+            div.innerHTML = `
+              <strong>🏠 Family: ${f.Name}</strong> (${f.Email})<br>
+              <span style="font-size:12px; color:var(--ink-mid);">Address: ${f.Address}<br>Kids: ${f.Kids_Ages}</span><br>
+              <button class="btn btn-primary" style="padding:6px 12px; font-size:12px; margin-top:8px; width:auto; margin-bottom:0;" onclick="approveNeighbor('${f.Email}')">Approve & Authorize Profile</button>
+            `;
+            vContainer.appendChild(div);
+          });
+        }
+      } else {
+        vContainer.innerHTML = "🎉 All neighbor profiles currently vetted and verified.";
+      }
+    });
+
+  fetchTabRawData();
+}
+
+function approveNeighbor(email) {
+  setSyncState("loading");
+  fetch(CONFIG.API_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "verifyUser", targetEmail: email })
+  })
+  .then(res => res.json())
   .then(() => {
-    document.getElementById('syncIndicator').className = "sync-badge online";
-    alert("User account matching email has been flipped to status: 'verified' in USERS and FAMILIES tab registers!");
-    buttonElement.parentElement.innerHTML = "<p style='color:var(--grass); font-weight:700; margin-bottom:0;'>✅ Family Approved & Verified.</p>";
+    setSyncState("online");
+    alert("User access flipped to 'verified' across tracking registers!");
+    refreshAdminWorkspace();
   });
+}
+
+function updateUserRole(email, newRole) {
+  if (!newRole) return;
+  setSyncState("loading");
+  fetch(CONFIG.API_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "updateRole", targetEmail: email, role: newRole })
+  }).then(() => { refreshAdminWorkspace(); });
+}
+
+function toggleUserStatus(email, currentStatus) {
+  const nextStatus = (currentStatus === 'active' || currentStatus === 'verified') ? 'suspended' : 'active';
+  setSyncState("loading");
+  fetch(CONFIG.API_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "updateStatus", targetEmail: email, status: nextStatus })
+  }).then(() => { refreshAdminWorkspace(); });
+}
+
+function fetchTabRawData() {
+  const tab = document.getElementById('adminTargetTab').value;
+  const viewer = document.getElementById('adminTabViewer');
+  viewer.innerText = "Streaming real-time spreadsheet blocks...";
+
+  fetch(CONFIG.API_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "readTab", tab: tab })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.status === "success") {
+      viewer.innerText = JSON.stringify(data.records, null, 2);
+    } else {
+      viewer.innerText = "Empty or un-hydrated tab layout structure parameters.";
+    }
+  });
+}
+
+function hydrateCustomerDashboard() {
+  document.getElementById('customerWelcomeText').innerText = `Logged in securely as household user ID: ${CU.email}`;
+  const container = document.getElementById('customerBookingsContainer');
+  container.innerHTML = "Reading tracking metrics...";
+
+  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "BOOKINGS" }) })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success" && data.records.length > 0) {
+        const jobs = data.records.filter(r => r.Family_Email === CU.email);
+        if (jobs.length === 0) {
+          container.innerHTML = "<p style='font-style:italic; text-align:center; padding:10px; color:var(--ink-light);'>No active bookings found.</p>";
+        } else {
+          container.innerHTML = "";
+          jobs.forEach(j => {
+            const div = document.createElement('div');
+            div.className = "row-item";
+            div.innerHTML = `📅 <strong>Job ID: ${j.Booking_ID}</strong><br>Sitter: ${j.Sitter_Email} | Status: <span style="font-weight:bold; color:var(--sky-dark);">${j.Booking_Status}</span><br>Schedule: ${j.Job_Date} (${j.Start_Time} - ${j.End_Time})`;
+            container.appendChild(div);
+          });
+        }
+      } else {
+        container.innerHTML = "<p style='font-style:italic; text-align:center; padding:10px; color:var(--ink-light);'>No active bookings found.</p>";
+      }
+    });
 }
 
 function logout() {
