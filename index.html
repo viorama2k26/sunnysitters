@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Sunny Sitters Neighborhood Portal</title>
-<link href="https://fonts.googleapis.com/css2 family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:wght@400;600&display=swap" rel="stylesheet">
 
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%2232%22 height=%2232%22><text y=%2226%22 font-size=%2226%22>☀️</text></svg>">
 
@@ -49,7 +49,7 @@ body{
 .sync-badge.loading{background:var(--sun);animation:blink 1s infinite;}
 @keyframes blink{50%{opacity:0.4;}}
 
-/* Complete layout isolation blocks eliminate right-side margins squishing */
+/* Isolated structural layout frames block horizontal squishing bugs */
 .view-frame {
   display:none;
   width:100% !important;
@@ -73,6 +73,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;text-al
   display:block !important;
 }
 
+/* Fluid single column form elements system wrapper */
 .input-group{
   margin-bottom:22px;
   display:flex !important;
@@ -164,8 +165,8 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;text-al
         <input type="password" id="loginPass" class="input-field" placeholder="••••••••">
       </div>
       <button class="btn btn-primary" onclick="attemptLogin()">Log In</button>
-      <button class="btn btn-secondary" style="margin-bottom:8px;" onclick="loadRegistrationView()">New Neighbor Parent Join Form</button>
-      <button class="btn btn-secondary" onclick="switchView('view-register-sitter')">New Sitter Registration Form</button>
+      <button class="btn btn-secondary" style="margin-bottom:8px;" onclick="loadParentRegistrationView()">New Neighbor Parent Join Form</button>
+      <button class="btn btn-secondary" onclick="loadSitterRegistrationView()">New Sitter Registration Form</button>
     </div>
   </div>
 
@@ -184,7 +185,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;text-al
       <p style="color:var(--ink-mid);">Let's create your account profile to quickly verify your address and get you connected with local sitters.</p>
     </div>
     
-    <div class="card" style="max-height: 65vh; overflow-y: auto; border-top: 4px solid var(--sun);">
+    <div id="familyCardScroller" class="card" style="max-height: 65vh; overflow-y: auto; border-top: 4px solid var(--sun);">
       <h3 style="font-size:18px; margin-bottom:16px; font-weight:800; text-align:left;">1. Account Credentials</h3>
       <div class="input-group"><label class="input-label">Parent Full Name</label><input type="text" id="regName" class="input-field" placeholder="Jane Doe"></div>
       <div class="input-group"><label class="input-label">Email Address</label><input type="email" id="regEmail" class="input-field" placeholder="jane@example.com"></div>
@@ -214,7 +215,7 @@ p{color:var(--ink-mid);line-height:1.5;font-size:15px;margin-bottom:16px;text-al
       <p style="color:var(--ink-mid);">Join our trusted, pre-screened neighborhood team to manage schedules, log availability windows, and build pocket-money earnings.</p>
     </div>
     
-    <div class="card" style="max-height: 65vh; overflow-y: auto; border-top: 4px solid var(--lav);">
+    <div id="sitterCardScroller" class="card" style="max-height: 65vh; overflow-y: auto; border-top: 4px solid var(--lav);">
       <h3 style="font-size:18px; margin-bottom:16px; font-weight:800; text-align:left;">1. Personal Credentials</h3>
       <div class="input-group"><label class="input-label">Your Full Name</label><input type="text" id="sitRegName" class="input-field" placeholder="Violet Singh"></div>
       <div class="input-group"><label class="input-label">Your Email Address</label><input type="email" id="sitRegEmail" class="input-field" placeholder="violet@example.com"></div>
@@ -404,12 +405,21 @@ function setSyncState(state) {
   if (state === "online") badge.className = "sync-badge online";
 }
 
+// THE TARGETED SCROLL INTERCEPTOR ENGINE: Exclusively forces frames and cards back to absolute 0
 function switchView(viewId) {
   document.querySelectorAll('.view-frame').forEach(f => f.style.display = 'none');
   const target = document.getElementById(viewId);
   if (target) {
     target.style.display = 'block';
-    window.scrollTo(0,0);
+    
+    // Core Layout Fix: Resets browser view window instantly in all cases
+    window.scrollTo(0, 0);
+    document.body.scrollTop = 0;
+    
+    // Inner Elements Fix: Forces custom scrollable cards back to the absolute top field row
+    const scrollableCards = target.querySelectorAll('.card');
+    scrollableCards.forEach(card => { card.scrollTop = 0; });
+
     if (viewHistory[viewHistory.length - 1] !== viewId) viewHistory.push(viewId);
     
     const systemProtectedBases = ['view-splash', 'view-customer-dashboard', 'view-sitter-dashboard', 'view-sitterparent-dashboard', 'view-admin-dashboard', 'view-vetting-wall', 'view-role-selection'];
@@ -448,6 +458,34 @@ function forceSystemSync() {
 function executeHeaderPersonaHotSwap(chosenRole) {
   if(!chosenRole || chosenRole === "guest") return;
   selectSpecificPersona(chosenRole, CU.status);
+}
+
+// Unified Trigger Method A: Resets view containers and fetches disclaimers cleanly
+function loadParentRegistrationView() {
+  switchView('view-register-family');
+  const box = document.getElementById('dynamicDisclosuresScroller');
+  box.innerHTML = "<p style='font-style:italic; text-align:center;'>Syncing disclaimers...</p>";
+  
+  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "LEGAL_DISCLAIMERS" }) })
+  .then(res => res.json())
+  .then(data => {
+    if(data.status === "success" && data.records && data.records.length > 0) {
+      box.innerHTML = "";
+      data.records.forEach((r, idx) => {
+        const div = document.createElement('div');
+        div.className = "disclosure-section";
+        div.innerHTML = `<div class="disclosure-title">${idx + 1}. ${r.Disclaimer_Title}</div><div>${r.Disclaimer_Wording}</div>`;
+        box.appendChild(div);
+      });
+    } else {
+      box.innerHTML = "<p style='font-style:italic;'>Using default network policy constraints.</p>";
+    }
+  });
+}
+
+// Unified Trigger Method B: Instantly snaps sitter view block to the absolute top spot
+function loadSitterRegistrationView() {
+  switchView('view-register-sitter');
 }
 
 function attemptLogin() {
@@ -543,25 +581,6 @@ function selectSpecificPersona(chosenRole, currentStatus) {
   }
 }
 
-function loadRegistrationView() {
-  switchView('view-register-family');
-  const box = document.getElementById('dynamicDisclosuresScroller');
-  box.innerHTML = "Syncing policies...";
-  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ action: "readTab", tab: "LEGAL_DISCLAIMERS" }) })
-  .then(res => res.json())
-  .then(data => {
-    if(data.status === "success" && data.records && data.records.length > 0) {
-      box.innerHTML = "";
-      data.records.forEach((r, idx) => {
-        const div = document.createElement('div');
-        div.className = "disclosure-section";
-        div.innerHTML = `<div class="disclosure-title">${idx + 1}. ${r.Disclaimer_Title}</div><div>${r.Disclaimer_Wording}</div>`;
-        box.appendChild(div);
-      });
-    }
-  });
-}
-
 function submitFamilyRegistration() {
   const pass = document.getElementById('regPass').value.trim();
   const passConfirm = document.getElementById('regPassConfirm').value.trim();
@@ -583,15 +602,14 @@ function submitFamilyRegistration() {
   .then(() => { setSyncState("online"); switchView('view-vetting-wall'); });
 }
 
-// NEW NEW SUBMISSION PIPELINE: Encapsulates Sitter Registration Data & Consent Hooks
 function submitSitterNetworkRegistration() {
   const pass = document.getElementById('sitRegPass').value.trim();
   const passConfirm = document.getElementById('sitRegPassConfirm').value.trim();
   const guardianEmail = document.getElementById('sitRegGuardianEmail').value.trim();
   
-  if (pass !== passConfirm) { alert("Sitter Registration Error: Passwords do not match."); return; }
-  if (!guardianEmail) { alert("A Guardian Email configuration entry is mandatory."); return; }
-  if (!document.getElementById('sitRegConsentCheck').checked) { alert("Acknowledgment of the Guardian Waiver Block is required."); return; }
+  if (pass !== passConfirm) { alert("Passwords do not match."); return; }
+  if (!guardianEmail) { alert("A Guardian Email entry is mandatory."); return; }
+  if (!document.getElementById('sitRegConsentCheck').checked) { alert("Acknowledgment of parental warning is required."); return; }
 
   setSyncState("loading");
   
@@ -605,62 +623,31 @@ function submitSitterNetworkRegistration() {
     guardianEmail: guardianEmail
   };
 
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify(payload)
-  })
-  .then(() => {
-    setSyncState("online");
-    alert("Sitter profile successfully submitted to spreadsheet tracking channels! Awaiting Guardian authorization sign-off.");
-    logout();
-  })
+  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify(payload) })
+  .then(() => { setSyncState("online"); alert("Sitter profile submitted!"); logout(); })
   .catch(() => { setSyncState("online"); logout(); });
 }
 
-// TWO-SIDED BOOKING INITIATION LAYER
 function executeDirectBookingTrigger(sitterName, sitterEmail, date, start, end, rateApproved) {
   setSyncState("loading");
   const payload = {
-    type: "BOOKING",
-    parent: CU.email, // Family ID
-    sitter: sitterEmail, // Sitter ID
-    rate: rateApproved,
-    date: date,
-    start: start,
-    end: end,
-    kids: 2
+    type: "BOOKING", parent: CU.email, sitter: sitterEmail, rate: rateApproved, date: date, start: start, end: end, kids: 2
   };
-
   fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify(payload) })
-  .then(() => {
-    setSyncState("online");
-    alert(`Booking initiated! Sitter ID (${sitterEmail}) and Family ID (${CU.email}) successfully cross-referenced. Awaiting sitter acceptance actions.`);
-    routeHome();
-  });
+  .then(() => { setSyncState("online"); alert("Booking initiated!"); routeHome(); });
 }
 
 function executeSitterSideJobAcceptance(bookingId, buttonNode) {
   setSyncState("loading");
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify({ type: "JOB_ACCEPT", bookingId: bookingId, by: CU.email })
-  })
-  .then(() => {
-    setSyncState("online");
-    buttonNode.parentElement.innerHTML = "<p style='color:var(--grass); font-weight:700; margin-bottom:0;'>✅ Confirmed on your end! Forwarded to Guardian for final review.</p>";
-  });
+  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ type: "JOB_ACCEPT", bookingId: bookingId, by: CU.email }) })
+  .then(() => { setSyncState("online"); buttonNode.parentElement.innerHTML = "<p style='color:var(--grass); font-weight:700;'>✅ Confirmed! Sent to parent.</p>"; });
 }
 
+// final clearance hook commits matching transaction variables
 function executeGuardianFinalSignoff(bookingId, buttonNode) {
   setSyncState("loading");
-  fetch(CONFIG.API_URL, {
-    method: "POST",
-    body: JSON.stringify({ type: "SAFETY_CLEAR", bookingId: bookingId, by: CU.email })
-  })
-  .then(() => {
-    setSyncState("online");
-    buttonNode.parentElement.innerHTML = "<p style='color:var(--sky-dark); font-weight:700; margin-bottom:0;'>🔒 Booking final authorized and committed to sheet arrays!</p>";
-  });
+  fetch(CONFIG.API_URL, { method: "POST", body: JSON.stringify({ type: "SAFETY_CLEAR", bookingId: bookingId, by: CU.email }) })
+  .then(() => { setSyncState("online"); buttonNode.parentElement.innerHTML = "<p style='color:var(--sky-dark); font-weight:700;'>🔒 Booking authorized!</p>"; });
 }
 
 function submitFamilyCustomDemandListing() {
